@@ -9,44 +9,167 @@
     </nav>
   </aside>
 
-  <main class="flex-1 flex flex-col overflow-hidden p-8">
-    <div class="flex justify-between items-center mb-8">
-      <h2 class="text-3xl font-black text-gray-800">Alertas y Recordatorios</h2>
-      <button (click)="limpiarHistorial()" class="text-sm text-red-500 font-bold hover:underline">
-        Limpiar historial
-      </button>
+  <main class="flex-1 flex flex-col overflow-y-auto p-8">
+    <div class="mb-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-3xl font-black text-gray-800 mb-2">Alertas y Recordatorios</h2>
+          <p class="text-sm text-gray-500">Gestiona tus notificaciones y programar recordatorios</p>
+        </div>
+        <button (click)="regresar()" 
+                class="flex items-center gap-2 px-6 py-3 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition-all border-2 border-gray-300">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Regresar
+        </button>
+      </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Create: Formulario para crear alerta programada -->
       <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit">
         <h3 class="font-bold text-gray-700 mb-4">Programar Nueva Alerta</h3>
         <div class="space-y-4">
-          <input [(ngModel)]="nuevaAlerta.titulo" placeholder="Título (ej: Vacuna)" class="w-full p-3 bg-gray-50 border rounded-xl outline-none focus:border-[#F27438]">
-          <textarea [(ngModel)]="nuevaAlerta.mensaje" placeholder="Mensaje..." class="w-full p-3 bg-gray-50 border rounded-xl h-24 outline-none focus:border-[#F27438]"></textarea>
+          <input [(ngModel)]="nuevaAlerta.titulo" placeholder="Título (ej: Recordar vacuna en 6 meses)" class="w-full p-3 bg-gray-50 border rounded-xl outline-none focus:border-[#F27438] transition">
+          <textarea [(ngModel)]="nuevaAlerta.mensaje" placeholder="Mensaje..." class="w-full p-3 bg-gray-50 border rounded-xl h-24 outline-none focus:border-[#F27438] transition"></textarea>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Programar para (meses):</label>
+            <input type="number" [(ngModel)]="nuevaAlerta.mesesProgramacion" min="1" max="24" class="w-full p-3 bg-gray-50 border rounded-xl outline-none focus:border-[#F27438] transition">
+          </div>
           <button (click)="agregarAlerta()" class="w-full py-3 bg-[#F27438] text-white font-bold rounded-xl shadow-md hover:scale-[1.02] transition">
-            Crear Alerta
+            Crear Alerta Programada
           </button>
         </div>
       </div>
 
-      <div class="lg:col-span-2 space-y-4">
-        <div *ngIf="notificaciones.length === 0" class="text-center py-20 text-gray-400 font-medium">
-          No tienes notificaciones pendientes.
+      <!-- Read: Bandeja de notificaciones -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Notificaciones No Leídas -->
+        <div>
+          <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 bg-[#F27438] rounded-full"></span>
+            No Leídas ({{notificacionesNoLeidas.length}})
+          </h3>
+          <div *ngIf="notificacionesNoLeidas.length === 0" class="text-center py-10 text-gray-400 text-sm">
+            No tienes notificaciones pendientes.
+          </div>
+          <div *ngFor="let noti of notificacionesNoLeidas" 
+               (click)="abrirModal(noti)"
+               class="notification-card bg-orange-50 border-l-4 border-[#F27438] p-5 rounded-2xl shadow-sm cursor-pointer hover:shadow-md">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-[#F27438]">{{noti.tipo}}</span>
+            <h4 class="font-bold text-gray-800 mt-1">{{noti.titulo}}</h4>
+            <p class="text-sm text-gray-600 mt-1 line-clamp-2">{{noti.mensaje}}</p>
+            <p class="text-xs text-gray-400 mt-2">{{noti.fecha | date:'d/M/yyyy, h:mm a'}}</p>
+          </div>
         </div>
 
-        <div *ngFor="let noti of notificaciones" 
-             [ngClass]="{'bg-white': noti.leida, 'bg-orange-50 border-l-4 border-[#F27438]': !noti.leida}"
-             class="p-5 rounded-2xl shadow-sm flex justify-between items-center transition-all">
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-widest text-[#F27438]">{{noti.tipo}}</span>
-            <h4 class="font-bold text-gray-800" [class.opacity-50]="noti.leida">{{noti.titulo}}</h4>
-            <p class="text-sm text-gray-500">{{noti.mensaje}}</p>
+        <!-- Notificaciones Leídas -->
+        <div>
+          <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+            Leídas ({{notificacionesLeidas.length}})
+          </h3>
+          <div *ngIf="notificacionesLeidas.length === 0" class="text-center py-10 text-gray-400 text-sm">
+            No hay notificaciones leídas.
           </div>
-          <button *ngIf="!noti.leida" (click)="marcarComoLeida(noti.id)" class="px-4 py-2 text-xs bg-white border border-gray-200 rounded-lg font-bold text-gray-600 hover:bg-gray-50">
-            Marcar como leída
-          </button>
+          <div *ngFor="let noti of notificacionesLeidas" 
+               (click)="abrirModal(noti)"
+               class="notification-card bg-white border border-gray-200 p-5 rounded-2xl shadow-sm cursor-pointer hover:shadow-md opacity-75">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">{{noti.tipo}}</span>
+            <h4 class="font-bold text-gray-600 mt-1">{{noti.titulo}}</h4>
+            <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{noti.mensaje}}</p>
+            <p class="text-xs text-gray-400 mt-2">{{noti.fecha | date:'d/M/yyyy, h:mm a'}}</p>
+          </div>
         </div>
       </div>
     </div>
   </main>
+
+  <!-- Modal: Vista/Modal de Notificación -->
+  <div *ngIf="mostrarModal && notificacionSeleccionada" 
+       class="modal-backdrop fixed inset-0 flex items-center justify-center z-50 p-4"
+       (click)="cerrarModal()">
+    <div class="modal-content max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+         (click)="$event.stopPropagation()">
+      <div class="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl border-2 border-gray-100">
+        <!-- Header con fondo destacado -->
+        <div class="bg-gradient-to-r from-[#F27438] to-orange-400 rounded-t-3xl p-6 text-white">
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <span class="text-xs font-bold uppercase tracking-widest text-white opacity-90">{{notificacionSeleccionada.tipo}}</span>
+              <h2 class="text-3xl font-black text-white mt-2 leading-tight">{{notificacionSeleccionada.titulo}}</h2>
+            </div>
+            <button (click)="cerrarModal()" class="text-white hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all text-2xl w-10 h-10 flex items-center justify-center">
+              &times;
+            </button>
+          </div>
+        </div>
+
+        <!-- Contenido -->
+        <div class="p-8 bg-white">
+          <!-- Mensaje principal -->
+          <div class="mb-8">
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-5 rounded-xl">
+              <p class="text-gray-800 text-lg leading-relaxed font-medium">{{notificacionSeleccionada.mensaje}}</p>
+            </div>
+          </div>
+
+          <!-- Información adicional -->
+          <div class="bg-gray-50 rounded-xl p-6 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="bg-gray-200 rounded-lg p-2">
+                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-bold uppercase text-gray-500 mb-1">Fecha de creación</p>
+                <p class="text-gray-800 font-medium">{{notificacionSeleccionada.fecha | date:'EEEE, d \'de\' MMMM \'de\' y, h:mm:ss a'}}</p>
+              </div>
+            </div>
+            <div *ngIf="notificacionSeleccionada.fechaProgramada" class="flex items-center gap-3">
+              <div class="bg-orange-100 rounded-lg p-2">
+                <svg class="w-5 h-5 text-[#F27438]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-bold uppercase text-gray-500 mb-1">Programada para</p>
+                <p class="text-gray-800 font-medium">{{notificacionSeleccionada.fechaProgramada | date:'EEEE, d \'de\' MMMM \'de\' y, h:mm:ss a'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="bg-gray-50 rounded-b-3xl px-8 py-6 border-t border-gray-200">
+          <div class="flex flex-wrap gap-3 justify-end">
+            <button *ngIf="!notificacionSeleccionada.leida" 
+                    (click)="marcarComoLeida()" 
+                    class="flex items-center gap-2 px-6 py-3 bg-[#F27438] text-white font-bold rounded-xl hover:bg-orange-600 hover:shadow-lg transition-all transform hover:scale-105">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Marcar como leída
+            </button>
+            <button (click)="limpiarHistorial()" 
+                    class="flex items-center gap-2 px-6 py-3 bg-red-500 text-white font-bold rounded-xl hover:bg-red-600 hover:shadow-lg transition-all transform hover:scale-105">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+              Limpiar historial
+            </button>
+            <button (click)="cerrarModal()" 
+                    class="flex items-center gap-2 px-6 py-3 bg-white text-gray-700 font-bold rounded-xl hover:bg-gray-100 border-2 border-gray-200 hover:shadow-md transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
