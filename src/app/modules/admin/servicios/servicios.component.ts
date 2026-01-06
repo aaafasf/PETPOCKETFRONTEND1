@@ -49,9 +49,9 @@ export class ServiciosComponent implements OnInit {
       next: (resp: any[]) => {
         this.servicios = resp.map((s: any) => ({
           idServicio: s.idServicio,
-          nombreServicio: s.nombre,
-          descripcionServicio: s.descripcion,
-          precioServicio: s.precio,
+          nombreServicio: s.nombreServicio,
+          descripcionServicio: s.descripcionServicio,
+          precioServicio: s.precioServicio,
           estadoServicio: s.estadoServicio ?? 'activo',
           imagen: s.imagen ?? null
         }));

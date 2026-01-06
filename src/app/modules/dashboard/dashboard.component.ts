@@ -32,9 +32,9 @@ export class DashboardComponent implements OnInit {
       // Mapeo correcto para que HTML funcione
       this.servicios = data.map((s: any) => ({
         idServicio: s.idServicio,
-        nombreServicio: s.nombre,
-        descripcionServicio: s.descripcion,
-        precioServicio: s.precio,
+        nombreServicio: s.nombreServicio,
+        descripcionServicio: s.descripcionServicio,
+        precioServicio: s.precioServicio,
         imagen: s.imagen ? 'servicios/' + s.imagen : null,
         color: s.color || 'border-blue-400',
         icon: s.icon || '🩺'
