@@ -1,0 +1,123 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <div class="p-6">
+      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-32 mx-auto">
+    </div>  
+    <nav class="flex-1 px-4 space-y-2">
+      <a routerLink="/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl transition">
+        <span class="mr-3">🏠</span> Inicio
+      </a>
+      <a routerLink="/pets/register" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">➕</span> Registrar Mascota
+      </a>
+      <a routerLink="/appointments" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">📅</span> Citas
+      </a>
+      <a routerLink="/notifications" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">🔔</span> Notificaciones
+      </a>
+    </nav>
+    <div class="p-6">
+      <img src="/assets/img/pet-illustration.jpg" alt="Icon" class="w-20 mx-auto opacity-30">
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
+      <h2 class="text-xl font-bold text-gray-800">Panel Principal</h2>
+      <div class="flex items-center space-x-6">
+        <button routerLink="/notifications" class="relative p-2 text-gray-400 hover:text-[#F27438] transition-colors">
+          <span class="text-2xl">🔔</span>
+          <span class="absolute top-2 right-2 w-5 h-5 bg-red-500 border-2 border-white rounded-full text-[10px] text-white flex items-center justify-center font-bold">2</span>
+        </button>
+        <div class="flex items-center space-x-3">
+          <button routerLink="/auth/login" class="px-5 py-2 text-[#F27438] font-bold hover:bg-orange-50 rounded-full transition">Iniciar Sesión</button>
+          <button routerLink="/auth/register" class="bg-[#F27438] text-white px-6 py-2 rounded-full font-bold hover:bg-[#e0632e] transition shadow-md">Registrarse</button>
+        </div>
+        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600 border border-gray-100">J</div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
+      <!-- Banner -->
+      <div class="relative w-full h-64 rounded-3xl overflow-hidden shadow-sm mb-10 border border-gray-100">
+        <img src="/assets/img/banner-horizontal.jpg" alt="Mascotas" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex items-center p-12">
+          <div class="max-w-md text-white">
+            <h1 class="text-4xl font-black mb-4 leading-tight">Cuidamos a tus <br> mejores amigos</h1>
+            <p class="text-white font-bold text-lg opacity-90">Atención profesional para cada etapa de su vida.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Servicios -->
+      <h2 class="text-2xl font-black text-gray-800 mb-6">Nuestros Servicios</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        <!-- Loader -->
+        <div *ngIf="isLoading" class="col-span-full text-center py-20">
+          <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#F27438] mb-4"></div>
+          <p class="text-gray-400 font-bold text-lg italic">Sincronizando con PetPocket Cloud...</p>
+        </div>
+
+        <!-- Servicios -->
+        <div *ngFor="let item of servicios" 
+             class="bg-white rounded-3xl shadow-sm overflow-hidden flex flex-col border-b-8 {{item.color || 'border-blue-400'}} hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+          
+          <div class="relative w-full h-44 overflow-hidden bg-gray-100 rounded-2xl">
+            <!-- Imagen corregida -->
+            <img 
+              [src]="'http://localhost:3000/uploads/' + item.imagen" 
+              [alt]="item.nombreServicio || 'Servicio'" 
+              class="w-full h-full object-contain">
+
+            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow">
+              {{item.icon || '🩺'}}
+            </div>
+          </div>
+          
+          <div class="p-6 flex flex-col flex-grow">
+            <h3 class="font-bold text-gray-800 text-lg mb-2">{{item.nombreServicio || 'Sin nombre'}}</h3>
+            <p class="text-gray-500 text-[11px] mb-4 flex-grow leading-relaxed italic">{{item.descripcionServicio || 'Sin descripción'}}</p>
+            
+            <div class="mb-4">
+              <span class="text-[10px] font-bold text-gray-400 block uppercase">Precio sugerido</span>
+              <span class="text-xl font-black text-[#F27438]">${{item.precioServicio | number:'1.2-2'}}</span>
+            </div>
+
+            <button (click)="agendarCita(item.idServicio)" 
+                    class="w-full py-3 bg-[#F27438] text-white font-bold rounded-2xl hover:bg-[#e0632e] transition-all shadow-md active:scale-95">
+              Agendar Cita
+            </button>
+          </div>
+        </div>
+
+        <!-- Sin servicios -->
+        <div *ngIf="!isLoading && servicios.length === 0" class="col-span-full text-center py-10">
+          <p class="text-gray-400 font-bold">No se encontraron servicios disponibles en este momento.</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="mt-16 pt-8 border-t border-gray-200">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-400">
+          <div>
+            <h4 class="font-black text-[#F27438] text-lg mb-2">PetPocket</h4>
+            <p>Servicios veterinarios de confianza.</p>
+          </div>
+          <div>
+            <p>📞 +593 1234 5678</p>
+            <p>✉️ petpocket@yavirac.edu.ec</p>
+          </div>
+          <div class="md:text-right">
+            <p>© 2026 PetPocket. Quito | Ecuador</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,152 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+  <div class="p-6">
+    <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
+    <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
+  </div>  
+
+  <nav class="flex-1 px-4 space-y-2">
+    <a routerLink="/admin/dashboard"
+       routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+      <span class="mr-3">📊</span> Dashboard
+    </a>
+
+    <a routerLink="/admin/servicios"
+       routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+      <span class="mr-3">🩺</span> Servicios
+    </a>
+
+    <a routerLink="/admin/configuracion"
+       routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+      <span class="mr-3">⚙️</span> Configuración
+    </a>
+  </nav>
+
+  <div class="p-6">
+    <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
+  </div>
+</aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- HEADER -->
+    <header class="bg-white h-20 border-b flex items-center px-8">
+      <h2 class="text-xl font-black text-gray-800">
+        Configuración de la Clínica
+      </h2>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
+
+      <h1 class="text-3xl font-black text-gray-800 mb-10">
+        Configuración de la Clínica
+      </h1>
+
+      <div class="bg-white rounded-3xl p-10 shadow-sm max-w-4xl">
+
+        <!-- DATOS CLÍNICA -->
+        <h3 class="text-lg font-black text-[#F27438] mb-6">
+          Datos de la clínica
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <input [(ngModel)]="datosClinica.nombre" placeholder="Nombre clínica" class="input-admin">
+          <input [(ngModel)]="datosClinica.telefono" placeholder="Teléfono" class="input-admin">
+          <input [(ngModel)]="datosClinica.correo" placeholder="Correo" class="input-admin">
+          <input [(ngModel)]="datosClinica.direccion" placeholder="Dirección" class="input-admin">
+          <input [(ngModel)]="datosClinica.horarios" placeholder="Horarios de atención" class="input-admin">
+          <input type="file" (change)="cargarLogo($event)" class="input-admin">
+        </div>
+
+        <!-- PARÁMETROS -->
+        <h3 class="text-lg font-black text-[#F27438] mb-6">
+          Parámetros generales
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <select [(ngModel)]="datosClinica.zonaHoraria" class="input-admin">
+            <option value="">Zona horaria</option>
+            <option value="America/Guayaquil">America/Guayaquil</option>
+            <option value="America/Bogota">America/Bogotá</option>
+          </select>
+
+          <select [(ngModel)]="datosClinica.idioma" class="input-admin">
+            <option value="">Idioma</option>
+            <option value="es">Español</option>
+            <option value="en">Inglés</option>
+          </select>
+
+          <select [(ngModel)]="datosClinica.formatoFecha" class="input-admin">
+            <option value="">Formato fecha</option>
+            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+          </select>
+        </div>
+
+        <!-- POLÍTICAS -->
+        <textarea
+          [(ngModel)]="datosClinica.politicas"
+          placeholder="Políticas de la clínica"
+          class="w-full p-4 border rounded-2xl mb-6"></textarea>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <input type="number"
+                 [(ngModel)]="datosClinica.horasMinimasCancelacion"
+                 placeholder="Horas mínimas de cancelación"
+                 class="input-admin">
+
+          <input type="number"
+                 [(ngModel)]="datosClinica.limiteMascotas"
+                 placeholder="Máximo de mascotas"
+                 class="input-admin">
+        </div>
+
+        <button
+          (click)="guardarConfiguracion()"
+          class="bg-[#F27438] text-white px-10 py-4 rounded-2xl font-black text-lg">
+          Guardar configuración
+        </button>
+
+      </div>
+
+      <!-- LISTA DE CONFIGURACIONES -->
+      <div class="bg-white rounded-3xl p-10 shadow-sm max-w-6xl mt-10">
+
+        <h3 class="text-lg font-black text-[#F27438] mb-6">
+          Configuraciones Guardadas
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+          <div *ngFor="let c of configuraciones" class="bg-white p-6 rounded-3xl shadow border">
+
+            <h3 class="font-black text-lg">{{ c.nombre }}</h3>
+            <p class="text-gray-500 text-sm">{{ c.direccion }}</p>
+            <p class="text-gray-500 text-sm">{{ c.telefono }}</p>
+            <p class="text-gray-500 text-sm">{{ c.correo }}</p>
+            <p class="text-gray-500 text-sm">Horarios: {{ c.horarios }}</p>
+            <p class="text-gray-500 text-sm">Zona Horaria: {{ c.zonaHoraria }}</p>
+            <p class="text-gray-500 text-sm">Idioma: {{ c.idioma }}</p>
+            <p class="text-gray-500 text-sm">Formato Fecha: {{ c.formatoFecha }}</p>
+            <p class="text-gray-500 text-sm">Horas Cancelación: {{ c.horasMinimasCancelacion }}</p>
+            <p class="text-gray-500 text-sm">Límite Mascotas: {{ c.limiteMascotas }}</p>
+            <p class="text-gray-600 text-sm mt-2" *ngIf="c.politicas">Políticas: {{ c.politicas }}</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>

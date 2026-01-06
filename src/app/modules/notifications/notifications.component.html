@@ -1,0 +1,52 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <div class="p-6">
+      <img src="/assets/img/logo-circular.png" alt="Logo" class="w-32 mx-auto">
+    </div>
+    <nav class="flex-1 px-4 space-y-2">
+      <a routerLink="/dashboard" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">🏠 Inicio</a>
+      <a routerLink="/notifications" class="flex items-center p-3 bg-gray-100 text-[#F27438] rounded-xl font-bold">🔔 Notificaciones</a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 flex flex-col overflow-hidden p-8">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-3xl font-black text-gray-800">Alertas y Recordatorios</h2>
+      <button (click)="limpiarHistorial()" class="text-sm text-red-500 font-bold hover:underline">
+        Limpiar historial
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit">
+        <h3 class="font-bold text-gray-700 mb-4">Programar Nueva Alerta</h3>
+        <div class="space-y-4">
+          <input [(ngModel)]="nuevaAlerta.titulo" placeholder="Título (ej: Vacuna)" class="w-full p-3 bg-gray-50 border rounded-xl outline-none focus:border-[#F27438]">
+          <textarea [(ngModel)]="nuevaAlerta.mensaje" placeholder="Mensaje..." class="w-full p-3 bg-gray-50 border rounded-xl h-24 outline-none focus:border-[#F27438]"></textarea>
+          <button (click)="agregarAlerta()" class="w-full py-3 bg-[#F27438] text-white font-bold rounded-xl shadow-md hover:scale-[1.02] transition">
+            Crear Alerta
+          </button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2 space-y-4">
+        <div *ngIf="notificaciones.length === 0" class="text-center py-20 text-gray-400 font-medium">
+          No tienes notificaciones pendientes.
+        </div>
+
+        <div *ngFor="let noti of notificaciones" 
+             [ngClass]="{'bg-white': noti.leida, 'bg-orange-50 border-l-4 border-[#F27438]': !noti.leida}"
+             class="p-5 rounded-2xl shadow-sm flex justify-between items-center transition-all">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-[#F27438]">{{noti.tipo}}</span>
+            <h4 class="font-bold text-gray-800" [class.opacity-50]="noti.leida">{{noti.titulo}}</h4>
+            <p class="text-sm text-gray-500">{{noti.mensaje}}</p>
+          </div>
+          <button *ngIf="!noti.leida" (click)="marcarComoLeida(noti.id)" class="px-4 py-2 text-xs bg-white border border-gray-200 rounded-lg font-bold text-gray-600 hover:bg-gray-50">
+            Marcar como leída
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

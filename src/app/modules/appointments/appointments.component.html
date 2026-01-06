@@ -1,0 +1,80 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <div class="p-6">
+      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-32 mx-auto">
+    </div>
+    <nav class="flex-1 px-4 space-y-2">
+      <a routerLink="/dashboard" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">🏠</span> Inicio
+      </a>
+      <a routerLink="/pets/register" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">➕</span> Registrar Mascota
+      </a>
+      <a routerLink="/appointments" routerLinkActive="bg-gray-100" class="flex items-center p-3 text-[#F27438] rounded-xl font-bold">
+        <span class="mr-3">📅</span> Citas
+      </a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
+      <h2 class="text-xl font-bold text-gray-800">Agendar Cita Médica</h2>
+      <div class="flex items-center space-x-4">
+        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600 border border-gray-300">J</div>
+      </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
+      <div class="max-w-2xl mx-auto bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
+        
+        <div class="mb-8 p-6 bg-orange-50 rounded-2xl border-l-8 border-[#F27438]">
+          <h3 class="text-sm font-bold text-[#F27438] uppercase tracking-wider">Servicio Seleccionado</h3>
+          <p class="text-2xl font-black text-gray-800">{{ nombreServicio }}</p>
+          <p class="text-gray-500 text-sm mt-1">ID de seguimiento: #0{{ servicioId }}</p>
+        </div>
+
+        <form class="space-y-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-600">Selecciona tu Mascota *</label>
+            <select class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition appearance-none">
+              <option value="">Selecciona una mascota</option>
+              <option value="1">Pelusa (Gato)</option>
+              <option value="2">Max (Perro)</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-600">Fecha de la Cita *</label>
+              <input type="date" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition">
+            </div>
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-600">Hora preferida *</label>
+              <input type="time" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition">
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-600">Observaciones (Opcional)</label>
+            <textarea placeholder="Ej: Mi mascota está un poco nerviosa o tiene alergias..." 
+                      class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl h-32 outline-none focus:border-[#F27438] transition resize-none"></textarea>
+          </div>
+
+          <div class="pt-4 flex flex-col items-center">
+            <button type="submit" 
+                    class="w-full bg-[#56C57F] hover:bg-[#45a067] text-white font-black py-4 rounded-2xl text-lg shadow-lg transition-all transform active:scale-95">
+              Confirmar Cita
+            </button>
+            
+            <button type="button" 
+                    (click)="irAlInicio()" 
+                    class="mt-6 text-gray-400 font-bold hover:text-[#F27438] transition-colors cursor-pointer text-sm">
+              ✕ Cancelar y volver al menú principal
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </main>
+</div>

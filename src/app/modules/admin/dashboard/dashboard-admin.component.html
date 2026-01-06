@@ -1,0 +1,83 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+  <!-- SIDEBAR -->
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <div class="p-6">
+      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
+      <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
+    </div>
+    <nav class="flex-1 px-4 space-y-2">
+      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📊</span> Dashboard
+      </a>
+      <a routerLink="/admin/servicios" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">🩺</span> Servicios
+      </a>
+      <a routerLink="/admin/configuracion" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">⚙️</span> Configuración
+      </a>
+    </nav>
+    <div class="p-6">
+      <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <!-- HEADER -->
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
+      <h2 class="text-xl font-black text-gray-800">Panel Administrativo</h2>
+      <div class="flex items-center space-x-6">
+        <button class="relative p-2 text-gray-400 hover:text-[#F27438] transition-colors">
+          <span class="text-2xl">🔔</span>
+        </button>
+        <div class="flex items-center space-x-3">
+          <span class="text-sm font-bold text-gray-600">Admin</span>
+          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">A</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
+      <!-- BANNER -->
+      <div class="relative w-full h-48 rounded-3xl overflow-hidden shadow-sm mb-10 border border-gray-100">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#F27438] to-orange-300 flex items-center p-10">
+          <div class="text-white">
+            <h1 class="text-3xl font-black mb-2">Bienvenido, Administrador</h1>
+            <p class="font-bold opacity-90">Resumen general del sistema PetPocket</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
+        <div class="bg-white rounded-3xl p-8 shadow-sm text-center">
+          <p class="text-gray-400 font-bold uppercase text-xs">Servicios Totales</p>
+          <p class="text-4xl font-black text-[#F27438] mt-2">{{ totalServicios }}</p>
+        </div>
+        <div class="bg-white rounded-3xl p-8 shadow-sm text-center">
+          <p class="text-gray-400 font-bold uppercase text-xs">Servicios Activos</p>
+          <p class="text-4xl font-black text-[#F27438] mt-2">{{ serviciosActivos }}</p>
+        </div>
+        <div class="bg-white rounded-3xl p-8 shadow-sm text-center">
+          <p class="text-gray-400 font-bold uppercase text-xs">Citas Totales</p>
+          <p class="text-4xl font-black text-[#F27438] mt-2">{{ totalCitas }}</p>
+        </div>
+      </div>
+
+      <!-- CITAS POR SERVICIO -->
+      <div class="bg-white rounded-3xl p-8 shadow-sm">
+        <h3 class="text-lg font-black mb-6 text-gray-800">Citas por servicio</h3>
+        <ul class="space-y-4 font-bold text-gray-600">
+          <li *ngFor="let s of servicios" class="flex justify-between">
+            <span>{{ s.nombreServicio }}</span>
+            <span class="text-[#F27438]">{{ s.citas || 0 }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- SPINNER -->
+      <div *ngIf="cargando" class="text-center text-gray-400 mt-10">Cargando servicios...</div>
+    </div>
+  </main>
+</div>
