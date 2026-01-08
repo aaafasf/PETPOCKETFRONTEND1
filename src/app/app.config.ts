@@ -1,11 +1,12 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http'; // 1. Importamos el proveedor HTTP
+import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes'; 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient() // 2. Habilitamos el cliente para hacer peticiones al Backend
+    provideHttpClient(), // Sin withFetch() para mejor compatibilidad con CORS
+    { provide: LOCALE_ID, useValue: 'es' }
   ]
 };

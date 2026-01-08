@@ -5,24 +5,46 @@
       <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
       <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
     </div>
-    <nav class="flex-1 px-4 space-y-2">
-      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">📊</span> Dashboard
-      </a>
-      <a routerLink="/admin/servicios" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">🩺</span> Servicios
-      </a>
-      <a routerLink="/admin/configuracion" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">⚙️</span> Configuración
-      </a>
-      <a routerLink="/admin/users/create" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">➕</span> Registro de usuario
-      </a>
-      <a routerLink="/admin/users" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">👥</span> Usuarios registrados
-      </a>
-    </nav>
-    
+
+<nav class="flex-1 px-4 space-y-2">
+  
+  <a routerLink="/admin/dashboard" 
+     routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
+     [routerLinkActiveOptions]="{ exact: true }" 
+     class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+    <span class="mr-3">📊</span> Dashboard
+  </a>
+
+  <a routerLink="/admin/agenda" 
+     routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
+     [routerLinkActiveOptions]="{ exact: true }" 
+     class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+    <span class="mr-3">📅</span> Agenda
+  </a>
+
+  <a routerLink="/admin/planner" 
+     routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
+     [routerLinkActiveOptions]="{ exact: true }" 
+     class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+    <span class="mr-3">📋</span> Panel
+  </a>
+
+  <a routerLink="/admin/servicios" 
+     routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
+     [routerLinkActiveOptions]="{ exact: true }" 
+     class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+    <span class="mr-3">🩺</span> Servicios
+  </a>
+
+  <a routerLink="/admin/configuracion" 
+     routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
+     [routerLinkActiveOptions]="{ exact: true }" 
+     class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+    <span class="mr-3">⚙️</span> Configuración
+  </a>
+
+</nav>
+
     <div class="p-6">
       <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
     </div>
