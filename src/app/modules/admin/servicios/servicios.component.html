@@ -1,188 +1,163 @@
-  <div class="flex h-screen bg-gray-100 font-sans">
+<div class="flex h-screen bg-gray-100 font-sans">
 
-    <!-- SIDEBAR -->
-    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-      <div class="p-6">
-        <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
-        <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
-      </div>
-
-      <nav class="flex-1 px-4 space-y-2">
-        <a routerLink="/admin/dashboard"
-          routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-          <span class="mr-3">📊</span> Dashboard
-        </a>
-
-        <a routerLink="/admin/servicios"
-          routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-          <span class="mr-3">🩺</span> Servicios
-        </a>
-
-        <a routerLink="/admin/configuracion"
-          routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-          <span class="mr-3">⚙️</span> Configuración
-        </a>
-      </nav>
-
-      <div class="p-6">
-        <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
-      </div>
-    </aside>
-
-    <!-- MAIN -->
-    <main class="flex-1 flex flex-col">
-
-      <!-- HEADER -->
-      <header class="bg-white h-20 border-b flex items-center px-8">
-        <h2 class="text-xl font-black">Gestión de Servicios</h2>
-      </header>
-
-      <!-- CONTENT -->
-      <div class="flex-1 overflow-y-auto p-8">
-
-        <!-- MODAL EDITAR -->
-<div *ngIf="editando" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-  <div class="bg-orange-50 p-6 rounded-2xl max-w-xl w-full relative">
-
-    <!-- Botón cerrar -->
-    <button (click)="cancelarEdicion()" class="absolute top-3 right-3 text-gray-700 text-xl">✖</button>
-
-    <h3 class="font-black mb-4 text-lg">Editar servicio</h3>
-
-    <!-- Inputs -->
-    <input [(ngModel)]="servicioEditando.nombreServicio"
-           class="w-full mb-3 p-3 rounded-xl border"
-           placeholder="Nombre">
-
-    <input [(ngModel)]="servicioEditando.descripcionServicio"
-           class="w-full mb-3 p-3 rounded-xl border"
-           placeholder="Descripción">
-
-    <input [(ngModel)]="servicioEditando.precioServicio"
-           type="number"
-           class="w-full mb-3 p-3 rounded-xl border"
-           placeholder="Precio">
-
-    <!-- Imagen -->
-    <input type="file"
-           accept="image/*"
-           (change)="onFileSelectedEdit($event)"
-           class="w-full mb-3 p-3 rounded-xl border">
-
-    <!-- Preview -->
-    <img *ngIf="previewImagenEdit || servicioEditando.imagen"
-         [src]="previewImagenEdit || 'http://localhost:3000/uploads/servicios/' + servicioEditando.imagen + '?t=' + timestamp"
-         class="w-24 h-24 object-cover rounded-xl mb-3 border">
-
-    <!-- Botones -->
-    <div class="flex gap-3">
-      <button (click)="guardarEdicion()"
-              class="bg-green-500 text-white px-4 py-2 rounded-xl flex-1">
-        Guardar
-      </button>
-
-      <button (click)="cancelarEdicion()"
-              class="bg-gray-400 text-white px-4 py-2 rounded-xl flex-1">
-        Cancelar
-      </button>
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <div class="p-6">
+      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
+      <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
     </div>
 
-  </div>
-</div>
+    <nav class="flex-1 px-4 space-y-2">
+      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📊</span> Dashboard
+      </a>
+      <a routerLink="/admin/agenda" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📅</span> Agenda
+      </a>
+      <a routerLink="/admin/planner" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📋</span> Panel
+      </a>
+      <a routerLink="/admin/servicios" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">🩺</span> Servicios
+      </a>
+      <a routerLink="/admin/configuracion" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">⚙️</span> Configuración
+      </a>
+    </nav>
 
+    <div class="p-6">
+      <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
+    </div>
+  </aside>
 
-        <!-- NUEVO SERVICIO -->
-        <div class="bg-white p-8 rounded-3xl shadow max-w-xl mb-10">
-          <h3 class="font-black mb-4">Agregar nuevo servicio</h3>
+  <main class="flex-1 flex flex-col">
 
-          <input [(ngModel)]="nuevoServicio.nombreServicio"
-                placeholder="Nombre"
-                class="w-full mb-3 p-3 rounded-xl border">
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
+      <h2 class="text-xl font-black text-gray-800">Gestión de Servicios</h2>
 
-          <input [(ngModel)]="nuevoServicio.descripcionServicio"
-                placeholder="Descripción"
-                class="w-full mb-3 p-3 rounded-xl border">
-
-          <input [(ngModel)]="nuevoServicio.precioServicio"
-                type="number"
-                placeholder="Precio"
-                class="w-full mb-3 p-3 rounded-xl border">
-
-          <!-- IMAGEN -->
-          <input type="file"
-                accept="image/*"
-                (change)="onFileSelected($event)"
-                class="w-full mb-3 p-3 rounded-xl border">
-
-          <!-- PREVIEW -->
-          <img *ngIf="previewImagen"
-              [src]="previewImagen"
-              class="w-24 h-24 object-cover rounded-xl mb-3 border">
-
-          <button (click)="agregarServicio()"
-                  class="bg-[#F27438] text-white px-6 py-3 rounded-xl font-bold">
-            Agregar servicio
-          </button>
+      <div class="flex items-center space-x-6">
+        <button class="relative p-2 text-gray-400 hover:text-[#F27438] transition-colors">
+          <span class="text-2xl">🔔</span>
+        </button>
+        <div class="flex items-center space-x-3">
+          <span class="text-sm font-bold text-gray-600">Admin</span>
+          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">A
+          </div>
         </div>
+      </div>
+    </header>
 
-        <!-- LISTA -->
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
 
-  <div *ngFor="let s of servicios" class="bg-white p-6 rounded-3xl shadow">
+      <div *ngIf="editando" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-orange-50 p-6 rounded-2xl max-w-xl w-full relative">
 
-    <!-- IMAGEN -->
-    <div class="relative w-full h-32 overflow-hidden rounded-xl mb-3 bg-gray-100">
-      <img *ngIf="s.imagen"
-           [src]="'http://localhost:3000/uploads/servicios/' + s.imagen + '?t=' + timestamp"
-           [alt]="s.nombreServicio || 'Servicio'"
-           class="w-full h-full object-contain ">
-    </div>
+          <button (click)="cancelarEdicion()" class="absolute top-3 right-3 text-gray-700 text-xl">✖</button>
 
-    <!-- INFO -->
-    <h3 class="font-black text-lg">{{ s.nombreServicio }}</h3>
-    <p class="text-gray-500 text-sm">{{ s.descripcionServicio }}</p>
-    <p class="text-xl font-black text-[#F27438] mt-3">
-      ${{ s.precioServicio }}
-    </p>
+          <h3 class="font-black mb-4 text-lg">Editar servicio</h3>
 
-    <!-- ESTADO -->
-    <span class="block mt-2 font-bold"
-          [ngClass]="{
+          <input [(ngModel)]="servicioEditando.nombreServicio" class="w-full mb-3 p-3 rounded-xl border"
+            placeholder="Nombre">
+
+          <input [(ngModel)]="servicioEditando.descripcionServicio" class="w-full mb-3 p-3 rounded-xl border"
+            placeholder="Descripción">
+
+          <input [(ngModel)]="servicioEditando.precioServicio" type="number" class="w-full mb-3 p-3 rounded-xl border"
+            placeholder="Precio">
+
+          <input type="file" accept="image/*" (change)="onFileSelectedEdit($event)"
+            class="w-full mb-3 p-3 rounded-xl border">
+
+          <img *ngIf="previewImagenEdit || servicioEditando.imagen"
+            [src]="previewImagenEdit || 'http://localhost:3000/uploads/servicios/' + servicioEditando.imagen + '?t=' + timestamp"
+            class="w-24 h-24 object-cover rounded-xl mb-3 border">
+
+          <div class="flex gap-3">
+            <button (click)="guardarEdicion()" class="bg-green-500 text-white px-4 py-2 rounded-xl flex-1">
+              Guardar
+            </button>
+
+            <button (click)="cancelarEdicion()" class="bg-gray-400 text-white px-4 py-2 rounded-xl flex-1">
+              Cancelar
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="bg-white p-8 rounded-3xl shadow max-w-xl mb-10">
+        <h3 class="font-black mb-4">Agregar nuevo servicio</h3>
+
+        <input [(ngModel)]="nuevoServicio.nombreServicio" placeholder="Nombre"
+          class="w-full mb-3 p-3 rounded-xl border">
+
+        <input [(ngModel)]="nuevoServicio.descripcionServicio" placeholder="Descripción"
+          class="w-full mb-3 p-3 rounded-xl border">
+
+        <input [(ngModel)]="nuevoServicio.precioServicio" type="number" placeholder="Precio"
+          class="w-full mb-3 p-3 rounded-xl border">
+
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" class="w-full mb-3 p-3 rounded-xl border">
+
+        <img *ngIf="previewImagen" [src]="previewImagen" class="w-24 h-24 object-cover rounded-xl mb-3 border">
+
+        <button (click)="agregarServicio()" class="bg-[#F27438] text-white px-6 py-3 rounded-xl font-bold">
+          Agregar servicio
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+        <div *ngFor="let s of servicios" class="bg-white p-6 rounded-3xl shadow">
+
+          <div class="relative w-full h-32 overflow-hidden rounded-xl mb-3 bg-gray-100">
+            <img *ngIf="s.imagen"
+              [src]="'http://localhost:3000/uploads/servicios/' + s.imagen + '?t=' + timestamp"
+              [alt]="s.nombreServicio || 'Servicio'" class="w-full h-full object-contain ">
+          </div>
+
+          <h3 class="font-black text-lg">{{ s.nombreServicio }}</h3>
+          <p class="text-gray-500 text-sm">{{ s.descripcionServicio }}</p>
+          <p class="text-xl font-black text-[#F27438] mt-3">
+            ${{ s.precioServicio }}
+          </p>
+
+          <span class="block mt-2 font-bold" [ngClass]="{
             'text-green-600': s.estadoServicio === 'activo',
             'text-red-500': s.estadoServicio === 'inactivo'
           }">
-      {{ s.estadoServicio }}
-    </span>
+            {{ s.estadoServicio }}
+          </span>
 
-    <!-- BOTONES -->
-    <div class="flex gap-2 mt-5">
-      <button (click)="editarServicio(s)"
-              class="flex-1 bg-green-500 text-white py-2 rounded-xl">
-        Editar
-      </button>
+          <div class="flex gap-2 mt-5">
+            <button (click)="editarServicio(s)" class="flex-1 bg-green-500 text-white py-2 rounded-xl">
+              Editar
+            </button>
 
-      <button (click)="toggleEstado(s)"
-              class="flex-1 bg-blue-500 text-white py-2 rounded-xl">
-        {{ s.estadoServicio === 'activo' ? 'Desactivar' : 'Activar' }}
-      </button>
+            <button (click)="toggleEstado(s)" class="flex-1 bg-blue-500 text-white py-2 rounded-xl">
+              {{ s.estadoServicio === 'activo' ? 'Desactivar' : 'Activar' }}
+            </button>
 
-      <button (click)="eliminarServicio(s.idServicio)"
-              class="flex-1 bg-red-500 text-white py-2 rounded-xl">
-        Eliminar
-      </button>
-    </div>
+            <button (click)="eliminarServicio(s.idServicio)" class="flex-1 bg-red-500 text-white py-2 rounded-xl">
+              Eliminar
+            </button>
+          </div>
 
-  </div>
-
-</div>
-
+        </div>
 
       </div>
-    </main>
-  </div>
+
+
+    </div>
+  </main>
+</div>

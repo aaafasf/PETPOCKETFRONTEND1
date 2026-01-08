@@ -1,0 +1,157 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+  
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <div class="p-6">
+      <img src="assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
+      <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
+    </div>
+
+    <nav class="flex-1 px-4 space-y-2">
+      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📊</span> Dashboard
+      </a>
+      <a routerLink="/admin/agenda" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📅</span> Agenda
+      </a>
+      <a routerLink="/admin/planner" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📋</span> Panel
+      </a>
+      <a routerLink="/admin/servicios" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">🩺</span> Servicios
+      </a>
+      <a routerLink="/admin/configuracion" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">⚙️</span> Configuración
+      </a>
+    </nav>
+
+    <div class="p-6">
+      <img src="assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
+    </div>
+  </aside>
+
+  <main class="flex-1 flex flex-col overflow-hidden">
+    
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
+      <h2 class="text-xl font-black text-gray-800">Panel Clínico</h2>
+      <div class="flex items-center space-x-6">
+        
+        <div class="flex items-center space-x-3">
+          <span class="text-sm font-bold text-gray-600">Admin</span>
+          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">A</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
+      
+      <div class="planner-wrapper">
+       
+        <section class="search-filters">
+       
+          <div class="filters-left">
+            <div class="filter-group">
+              <label>Fecha</label>
+              <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" class="filter-input">
+            </div>
+       
+            <div class="filter-group">
+              <label>Veterinario</label>
+              <select [(ngModel)]="searchVetId" (change)="onFilterChange()" class="filter-select">
+                <option value="">Todos los veterinarios</option>
+                <option *ngFor="let vet of veterinarians" [value]="vet.id">{{ vet.name }}</option>
+              </select>
+            </div>
+       
+            <div class="filter-group">
+              <label>Servicios:</label>
+              <select [(ngModel)]="searchServiceId" (change)="onFilterChange()" class="filter-select">
+                <option value="">Todos los servicios</option>
+                <option *ngFor="let srv of clinicServices" [value]="srv.idServicio">{{ srv.nombreServicio }}</option>
+              </select>
+            </div>
+       
+            <button class="btn-reset" (click)="resetFilters()" title="Reset Filters">
+              🔄
+            </button>
+          </div>
+       
+          <div class="actions-right">
+            <button class="btn-add" (click)="openCreateModal()">
+              <span class="icon">+</span> Nueva Cita
+            </button>
+          </div>
+       
+        </section>
+       
+        <div class="calendar-container">
+       
+          <div class="planner-grid" [style.grid-template-columns]="'repeat(' + veterinarians.length + ', 1fr)'">
+       
+            <div *ngFor="let vet of veterinarians" class="vet-column">
+       
+              <div class="header-cell">
+                <span class="vet-name">{{ vet.name }}</span>
+              </div>
+       
+              <div class="slots-container">
+       
+                <ng-container *ngIf="plannerAppointments$ | async as allAppts">
+                  
+                  <div *ngFor="let appt of getAppointmentsForVet(vet.id, allAppts)" 
+                       class="appointment-card"
+                       [class]="(appt.estadoCita | lowercase)" 
+                       (click)="onAppointmentClick(appt.idCita)">
+       
+                    <div class="card-header" [class]="(appt.estadoCita | lowercase)">
+                      <div class="date-box">
+                        <span class="day">{{ appt.fecha | date:'dd' }}</span>
+                        <span class="month-year">{{ appt.fecha | date:'MMM' }}</span>
+                      </div>
+                      <span class="status-label">{{ appt.estadoCita | titlecase }}</span>
+                    </div>
+       
+                    <div class="card-body">
+                      <div class="main-info">
+                        <h3 class="patient-name">{{ appt.mascotaNombre }}</h3>
+                        <span class="owner-name">Dueño: {{ appt.clienteNombre }}</span>
+                      </div>
+       
+                      <div class="tags-row">
+                        <div class="tag-item"><span>⏰</span> {{ appt.hora }}</div>
+                        <div class="tag-item" [style.color]="appt.color"><span>🩺</span> {{ (appt.servicioNombre) }}</div>
+                      </div>
+       
+                      <div class="card-footer">
+                        <div class="action-buttons">
+                          <button class="btn-icon edit">✎</button>
+                          <button class="btn-icon delete" (click)="onDeleteClick($event, appt.idCita)">🗑</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+       
+                  <div *ngIf="getAppointmentsForVet(vet.id, allAppts).length === 0" class="empty-col-msg">
+                    Libre
+                  </div>
+       
+                </ng-container>
+       
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      <app-form-manual 
+      *ngIf="isModalOpen" 
+      [veterinarians]="veterinarians" 
+      [clientes]="clientes" 
+      [mascotas]="mascotas"
+      [services]="clinicServices"
+      [appointmentId]="selectedAppointmentId" 
+      (save)="handleSaveAppointment($event)" 
+      (close)="isModalOpen = false">
+      </app-form-manual>
+      </div>
+  </main>
+</div>

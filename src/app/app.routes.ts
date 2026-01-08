@@ -9,6 +9,8 @@ import { LoginComponent } from './modules/auth/login/login.component';
 import { RegisterComponent } from './modules/auth/register/register.component';
 import { AppointmentsComponent } from './modules/appointments/appointments.component'; 
 import { NotificationsComponent } from './modules/notifications/notifications.component';
+import { Planner } from './modules/admin/planner/planner';
+import { Agenda } from './modules/admin/agenda/agenda';
 
 
 
@@ -70,6 +72,19 @@ export const routes: Routes = [
             .then(m => m.ConfiguracionComponent),
     runGuardsAndResolvers: 'always'
 },
-
+{
+    path: 'admin/planner',
+    loadComponent: () =>
+        import('./modules/admin/planner/planner')
+            .then(m => m.Planner),
+    runGuardsAndResolvers: 'always'
+},
+{
+    path: 'admin/agenda',
+    loadComponent: () =>
+        import('./modules/admin/agenda/agenda')
+            .then(m => m.Agenda),
+    runGuardsAndResolvers: 'always'
+}
 
 ];
