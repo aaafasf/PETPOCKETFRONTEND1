@@ -1,0 +1,43 @@
+<div class="clinic-background">
+  <div class="clinic-card-container">
+    <h2 class="clinic-title">Gestión de Notificaciones Médicas</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="clinic-form">
+      
+      <div class="form-grid">
+        <div class="form-column">
+          <div class="input-section">
+            <label>ID Usuario (Propietario)</label>
+            <input pInputText type="number" formControlName="idUsuario" placeholder="0000" />
+          </div>
+
+          <div class="input-section">
+            <label>Motivo de Notificación</label>
+            <p-select 
+              [options]="['recordatorio','campaña','general']" 
+              formControlName="tipo">
+            </p-select>
+          </div>
+        </div>
+
+        <div class="form-column">
+          @if (form.get('tipo')?.value === 'recordatorio') {
+            <div class="input-section highlight-orange">
+              <label>Fecha y Hora Programada</label>
+              <p-datepicker formControlName="fechaProgramada" [showIcon]="true" [showTime]="true" appendTo="body"></p-datepicker>
+            </div>
+          }
+
+          <div class="input-section">
+            <label>Mensaje para el Cliente</label>
+            <textarea pInputTextarea rows="4" formControlName="mensaje" placeholder="Escriba el detalle médico aquí..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <button pButton type="submit" label="Registrar Notificación" class="btn-green" [disabled]="form.invalid"></button>
+      </div>
+    </form>
+  </div>
+</div>

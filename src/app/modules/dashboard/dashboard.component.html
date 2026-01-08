@@ -1,283 +1,130 @@
-<div class="flex h-screen bg-gray-100 font-sans">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-    <div class="p-6">
-      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-32 mx-auto">
+<div class="flex min-h-screen bg-gray-100 font-sans">
+  
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col shadow-lg h-screen sticky top-0 z-20">
+    <div class="p-4 flex items-center justify-center min-h-[120px]">
+      <img src="/assets/img/logo2.jpg" 
+           alt="PetPocket Logo" 
+           class="w-full h-auto object-contain hover:scale-105 transition-transform duration-500 cursor-pointer">
     </div>  
-    <nav class="flex-1 px-4 space-y-2">
-      <a routerLink="/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl transition">
-        <span class="mr-3">🏠</span> Inicio
+
+    <nav class="flex-1 px-4 space-y-1.5">
+      <a routerLink="/dashboard" routerLinkActive="bg-orange-50 text-[#F27438] font-bold shadow-sm" class="flex items-center p-4 rounded-2xl transition-all duration-300 group">
+        <span class="mr-3 group-hover:scale-125 transition-transform duration-300">🏠</span> Inicio
       </a>
-      <a routerLink="/pets/register" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
-        <span class="mr-3">➕</span> Registrar Mascota
+      <a routerLink="/pets/register" routerLinkActive="bg-orange-50 text-[#F27438] font-bold shadow-sm" class="flex items-center p-4 text-gray-600 hover:bg-gray-50 rounded-2xl transition-all duration-300 group">
+        <span class="mr-3 group-hover:scale-125 transition-transform duration-300">➕</span> Registrar Mascota
       </a>
-      <a routerLink="/appointments" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
-        <span class="mr-3">📅</span> Citas
+      <a routerLink="/appointments" routerLinkActive="bg-orange-50 text-[#F27438] font-bold shadow-sm" class="flex items-center p-4 text-gray-600 hover:bg-gray-50 rounded-2xl transition-all duration-300 group">
+        <span class="mr-3 group-hover:scale-125 transition-transform duration-300">📅</span> Citas
       </a>
-      <a routerLink="/notifications" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
-        <span class="mr-3">🔔</span> Notificaciones
+      <a routerLink="/notifications" routerLinkActive="bg-orange-50 text-[#F27438] font-bold shadow-sm" class="flex items-center p-4 text-gray-600 hover:bg-gray-50 rounded-2xl transition-all duration-300 group">
+        <span class="mr-3 group-hover:scale-125 transition-transform duration-300">🔔</span> Notificaciones
       </a>
     </nav>
+
     <div class="p-6">
-      <img src="/assets/img/pet-illustration.jpg" alt="Icon" class="w-20 mx-auto opacity-30">
+      <img src="/assets/img/pet-illustration.jpg" alt="Icon" class="w-20 mx-auto opacity-10 grayscale">
     </div>
   </aside>
 
-  <!-- Main Content -->
-  <main class="flex-1 flex flex-col overflow-hidden">
-    <!-- Header -->
-    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
-      <h2 class="text-xl font-bold text-gray-800">Panel Principal</h2>
-      <div class="flex items-center space-x-6">
-        <div class="relative">
-          <button (click)="toggleNotificaciones()" class="relative p-2 text-gray-400 hover:text-[#F27438] transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-            </svg>
-            <span *ngIf="notificacionesNoLeidas.length > 0" class="absolute top-1 right-1 w-5 h-5 bg-red-500 border-2 border-white rounded-full text-[10px] text-white flex items-center justify-center font-bold">{{notificacionesNoLeidas.length}}</span>
-          </button>
+  <main class="flex-1 flex flex-col">
+    <header class="bg-white/90 backdrop-blur-md h-24 border-b flex items-center justify-between px-12 shadow-sm sticky top-0 z-10">
+      <h2 class="text-5xl font-black tracking-tighter text-gray-900">
+        PetPocket <span class="text-[#F27438]">Ecuador</span>
+      </h2>
 
-          <!-- Dropdown de Notificaciones -->
-          <div *ngIf="mostrarNotificaciones" 
-               class="dropdown-notificaciones absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 max-h-96 overflow-hidden flex flex-col">
-            <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gradient-to-r from-[#F27438] to-orange-400">
-              <h3 class="text-white font-bold text-lg">Notificaciones</h3>
-              <button (click)="toggleNotificaciones()" class="text-white hover:bg-white/20 rounded-full p-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </div>
-            
-            <div class="overflow-y-auto max-h-64">
-              <div *ngIf="notificacionesNoLeidas.length === 0 && notificacionesLeidas.length === 0" 
-                   class="p-6 text-center text-gray-400 text-sm">
-                No tienes notificaciones
-              </div>
-              
-              <!-- Notificaciones no leídas -->
-              <div *ngFor="let noti of notificacionesNoLeidas" 
-                   (click)="verDetalle(noti)"
-                   class="p-4 border-b border-gray-100 hover:bg-orange-50 cursor-pointer transition">
-                <div class="flex items-start gap-3">
-                  <div class="w-2 h-2 bg-[#F27438] rounded-full mt-2"></div>
-                  <div class="flex-1">
-                    <p class="text-xs font-bold uppercase text-[#F27438] mb-1">{{noti.tipo}}</p>
-                    <p class="font-bold text-gray-800 text-sm">{{noti.titulo}}</p>
-                    <p class="text-xs text-gray-600 mt-1 line-clamp-2">{{noti.mensaje}}</p>
-                    <p class="text-xs text-gray-400 mt-2">{{noti.fecha | date:'d/M/yyyy, h:mm a'}}</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Notificaciones leídas (solo últimas 3) -->
-              <div *ngFor="let noti of notificacionesLeidas.slice(0, 3)" 
-                   (click)="verDetalle(noti)"
-                   class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition opacity-75">
-                <div class="flex items-start gap-3">
-                  <div class="w-2 h-2 bg-gray-300 rounded-full mt-2"></div>
-                  <div class="flex-1">
-                    <p class="text-xs font-bold uppercase text-gray-400 mb-1">{{noti.tipo}}</p>
-                    <p class="font-bold text-gray-600 text-sm">{{noti.titulo}}</p>
-                    <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{noti.mensaje}}</p>
-                    <p class="text-xs text-gray-400 mt-2">{{noti.fecha | date:'d/M/yyyy, h:mm a'}}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="p-3 border-t border-gray-200 bg-gray-50">
-              <button (click)="verTodasLasNotificaciones()" 
-                      class="w-full py-2 bg-[#F27438] text-white font-bold rounded-xl hover:bg-orange-600 transition text-sm">
-                Ver todas las notificaciones
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="flex items-center space-x-3">
-          <button routerLink="/auth/login" class="px-5 py-2 text-[#F27438] font-bold hover:bg-orange-50 rounded-full transition">Iniciar Sesión</button>
-          <button routerLink="/auth/register" class="bg-[#F27438] text-white px-6 py-2 rounded-full font-bold hover:bg-[#e0632e] transition shadow-md">Registrarse</button>
-        </div>
-        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600 border border-gray-100">J</div>
+      <div class="flex items-center">
+        <button routerLink="/notifications" class="group relative p-3 bg-gray-50 hover:bg-orange-100 rounded-2xl transition-all duration-300 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-400 group-hover:text-[#F27438] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <span class="absolute -top-1 -right-1 flex h-6 w-6">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-6 w-6 bg-red-500 border-2 border-white text-xs text-white items-center justify-center font-bold">2</span>
+          </span>
+        </button>
       </div>
     </header>
 
-    <!-- Content -->
-    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
-      <!-- Banner -->
-      <div class="relative w-full h-64 rounded-3xl overflow-hidden shadow-sm mb-10 border border-gray-100">
-        <img src="/assets/img/banner-horizontal.jpg" alt="Mascotas" class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex items-center p-12">
-          <div class="max-w-md text-white">
-            <h1 class="text-4xl font-black mb-4 leading-tight">Cuidamos a tus <br> mejores amigos</h1>
-            <p class="text-white font-bold text-lg opacity-90">Atención profesional para cada etapa de su vida.</p>
+    <div class="p-10 bg-[#F8FAFC] space-y-10">
+      
+      <div class="relative w-full h-60 rounded-[45px] overflow-hidden shadow-2xl group transition-all duration-500 hover:shadow-orange-200/60">
+        <img src="/assets/img/banner-horizontal.jpg" alt="Mascotas" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent flex items-center p-14">
+          <div class="max-w-xl text-white transition-all duration-500 group-hover:translate-x-4">
+            <h1 class="text-4xl font-black mb-3 leading-tight drop-shadow-2xl">
+              Cuidamos a tus <br> <span class="text-[#F27438]">mejores amigos</span>
+            </h1>
+            <p class="text-gray-200 font-medium text-lg opacity-90 italic">Excelencia veterinaria en el centro del mundo.</p>
           </div>
         </div>
       </div>
 
-      <!-- Servicios -->
-      <h2 class="text-2xl font-black text-gray-800 mb-6">Nuestros Servicios</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        
-        <!-- Loader -->
-        <div *ngIf="isLoading" class="col-span-full text-center py-20">
-          <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#F27438] mb-4"></div>
-          <p class="text-gray-400 font-bold text-lg italic">Sincronizando con PetPocket Cloud...</p>
+      <div>
+        <div class="flex items-center mb-6">
+          <h2 class="text-2xl font-black text-gray-800 tracking-tight">Nuestros Servicios</h2>
+          <div class="h-1 flex-1 bg-gradient-to-r from-gray-200 to-transparent ml-6 rounded-full"></div>
         </div>
 
-        <!-- Servicios -->
-        <div *ngFor="let item of servicios" 
-             class="bg-white rounded-3xl shadow-sm overflow-hidden flex flex-col border-b-8 {{item.color || 'border-blue-400'}} hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
           
-          <div class="relative w-full h-44 overflow-hidden bg-gray-100 rounded-2xl">
-            <!-- Imagen corregida -->
-            <img 
-              [src]="'http://localhost:3000/uploads/' + item.imagen" 
-              [alt]="item.nombreServicio || 'Servicio'" 
-              class="w-full h-full object-contain">
-
-            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow">
-              {{item.icon || '🩺'}}
-            </div>
+          <div *ngIf="isLoading" class="col-span-full text-center py-20">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#F27438]"></div>
           </div>
-          
-          <div class="p-6 flex flex-col flex-grow">
-            <h3 class="font-bold text-gray-800 text-lg mb-2">{{item.nombreServicio || 'Sin nombre'}}</h3>
-            <p class="text-gray-500 text-[11px] mb-4 flex-grow leading-relaxed italic">{{item.descripcionServicio || 'Sin descripción'}}</p>
+
+          <div *ngFor="let item of servicios" 
+               class="group bg-white rounded-[35px] shadow-sm overflow-hidden flex flex-col border border-gray-100 transition-all duration-500 transform hover:-translate-y-3 hover:shadow-xl hover:shadow-orange-100/50 hover:border-orange-100">
             
-            <div class="mb-4">
-              <span class="text-[10px] font-bold text-gray-400 block uppercase">Precio sugerido</span>
-              <span class="text-xl font-black text-[#F27438]">${{item.precioServicio | number:'1.2-2'}}</span>
+            <div class="relative h-48 w-full p-4">
+              <div class="w-full h-full rounded-[28px] overflow-hidden bg-gray-50 transition-colors duration-500 group-hover:bg-orange-50">
+                  <img [src]="'http://localhost:3000/uploads/' + item.imagen" 
+                       class="w-full h-full object-contain p-3 transition-transform duration-700 group-hover:scale-110">
+              </div>
+              <div class="absolute top-6 right-6 bg-white/90 backdrop-blur-md w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-lg border border-white transition-all duration-300 group-hover:bg-[#F27438] group-hover:text-white group-hover:rotate-12">
+                {{item.icon || '🩺'}}
+              </div>
             </div>
+            
+            <div class="px-8 pb-8 pt-2 flex flex-col flex-grow">
+              <h3 class="font-black text-gray-800 text-lg mb-2 transition-colors duration-300 group-hover:text-[#F27438] truncate">{{item.nombreServicio}}</h3>
+              <p class="text-gray-400 text-xs mb-6 line-clamp-2 leading-relaxed font-medium transition-colors duration-300 group-hover:text-gray-600 italic">{{item.descripcionServicio}}</p>
+              
+              <div class="mb-6">
+                <span class="text-[10px] font-black text-gray-300 block uppercase tracking-widest mb-1">Precio Sugerido</span>
+                <span class="text-3xl font-black text-gray-900 transition-transform duration-300 group-hover:scale-110 inline-block">${{item.precioServicio | number:'1.2-2'}}</span>
+              </div>
 
-            <button (click)="agendarCita(item.idServicio)" 
-                    class="w-full py-3 bg-[#F27438] text-white font-bold rounded-2xl hover:bg-[#e0632e] transition-all shadow-md active:scale-95">
-              Agendar Cita
-            </button>
+              <button (click)="agendarCita(item.idServicio)" 
+                      class="w-full py-4 bg-[#F27438] text-white text-sm font-black rounded-2xl transition-all duration-300 hover:bg-[#e0632e] shadow-lg shadow-orange-100 active:scale-95">
+                Agendar Cita
+              </button>
+            </div>
           </div>
-        </div>
-
-        <!-- Sin servicios -->
-        <div *ngIf="!isLoading && servicios.length === 0" class="col-span-full text-center py-10">
-          <p class="text-gray-400 font-bold">No se encontraron servicios disponibles en este momento.</p>
         </div>
       </div>
 
-      <!-- Footer -->
-      <footer class="mt-16 pt-8 border-t border-gray-200">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-400">
-          <div>
-            <h4 class="font-black text-[#F27438] text-lg mb-2">PetPocket</h4>
-            <p>Servicios veterinarios de confianza.</p>
+      <footer class="py-10 px-12 bg-white rounded-[40px] shadow-xl border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-10">
+        <div class="flex items-center space-x-5">
+          <div class="w-14 h-14 bg-gradient-to-br from-orange-400 to-[#F27438] rounded-2xl flex items-center justify-center shadow-lg shadow-orange-200">
+            <span class="text-2xl">🐾</span>
           </div>
           <div>
-            <p>📞 +593 1234 5678</p>
-            <p>✉️ petpocket@yavirac.edu.ec</p>
+            <h4 class="font-black text-gray-900 text-xl uppercase tracking-tighter">PetPocket <span class="text-[#F27438]">Ecuador</span></h4>
+            <p class="text-xs text-gray-400 font-bold">Quito • Guayaquil • Cuenca</p>
           </div>
-          <div class="md:text-right">
-            <p>© 2026 PetPocket. Quito | Ecuador</p>
-          </div>
+        </div>
+
+        <div class="flex space-x-4">
+          <a href="#" class="w-11 h-11 rounded-xl bg-gray-50 flex items-center justify-center font-black text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-500 hover:-translate-y-1.5 shadow-sm">f</a>
+          <a href="#" class="w-11 h-11 rounded-xl bg-gray-50 flex items-center justify-center font-black text-pink-600 hover:bg-pink-600 hover:text-white transition-all duration-500 hover:-translate-y-1.5 shadow-sm">ig</a>
+          <a href="#" class="w-11 h-11 rounded-xl bg-gray-50 flex items-center justify-center font-black text-green-600 hover:bg-green-600 hover:text-white transition-all duration-500 hover:-translate-y-1.5 shadow-sm">wa</a>
+        </div>
+
+        <div class="flex flex-col items-center md:items-end space-y-1">
+          <span class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">© 2026 PetPocket S.A.</span>
+          <span class="text-[#F27438] text-[9px] font-black uppercase">Calidad Veterinaria Premium</span>
         </div>
       </footer>
     </div>
   </main>
-
-  <!-- Modal de Detalle de Notificación -->
-  <ng-container *ngIf="mostrarModalDetalle && notificacionSeleccionada">
-    <div class="modal-backdrop fixed inset-0 flex items-center justify-center z-50 p-4"
-         (click)="cerrarModalDetalle()">
-      <div class="modal-notificacion max-w-2xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden"
-           (click)="$event.stopPropagation()">
-        
-        <!-- Header -->
-        <div [ngClass]="notificacionSeleccionada.leida ? 'bg-gradient-to-r from-gray-400 to-gray-500' : 'bg-gradient-to-r from-[#F27438] to-orange-400'" 
-             class="p-6 text-white">
-          <div class="flex justify-between items-start">
-            <div class="flex-1 pr-4">
-              <div class="flex items-center gap-2 mb-2 flex-wrap">
-                <span class="text-xs font-bold uppercase tracking-widest text-white opacity-90">{{notificacionSeleccionada.tipo}}</span>
-                <span *ngIf="notificacionSeleccionada.leida" 
-                      class="px-2 py-1 bg-white/20 rounded-full text-xs font-bold whitespace-nowrap">
-                  ✓ LEÍDA
-                </span>
-                <span *ngIf="!notificacionSeleccionada.leida" 
-                      class="px-2 py-1 bg-white/20 rounded-full text-xs font-bold whitespace-nowrap">
-                  ⚠ NO LEÍDA
-                </span>
-              </div>
-              <h2 class="text-2xl font-black text-white leading-tight break-words">{{notificacionSeleccionada.titulo}}</h2>
-            </div>
-            <button (click)="cerrarModalDetalle()" 
-                    class="text-white hover:bg-white/20 rounded-full p-1 transition flex-shrink-0">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Contenido -->
-        <div class="p-6 bg-white max-h-[60vh] overflow-y-auto">
-          <!-- Mensaje -->
-          <div class="mb-6">
-            <div [ngClass]="notificacionSeleccionada.leida ? 'bg-gray-50 border-l-4 border-gray-300' : 'bg-blue-50 border-l-4 border-blue-400'" 
-                 class="p-4 rounded-xl">
-              <p class="text-gray-800 text-base leading-relaxed">{{notificacionSeleccionada.mensaje}}</p>
-            </div>
-          </div>
-
-          <!-- Fechas -->
-          <div class="space-y-3">
-            <!-- Fecha de creación -->
-            <div class="flex items-start gap-3 bg-gray-50 p-4 rounded-xl">
-              <div class="bg-gray-200 rounded-lg p-2 flex-shrink-0">
-                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-xs font-bold uppercase text-gray-500 mb-1">Fecha de creación</p>
-                <p class="text-gray-800 text-sm break-words">{{notificacionSeleccionada.fecha | date:'EEEE, d \'de\' MMMM \'de\' y, h:mm:ss a'}}</p>
-              </div>
-            </div>
-
-            <!-- Fecha programada -->
-            <div *ngIf="notificacionSeleccionada.fechaProgramada" class="flex items-start gap-3 bg-orange-50 p-4 rounded-xl">
-              <div class="bg-orange-100 rounded-lg p-2 flex-shrink-0">
-                <svg class="w-5 h-5 text-[#F27438]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-xs font-bold uppercase text-gray-500 mb-1">Programada para</p>
-                <p class="text-gray-800 text-sm break-words">{{notificacionSeleccionada.fechaProgramada | date:'EEEE, d \'de\' MMMM \'de\' y, h:mm:ss a'}}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Acciones -->
-        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
-          <div class="flex flex-wrap gap-3 justify-end">
-            <button *ngIf="!notificacionSeleccionada.leida" 
-                    (click)="marcarComoLeida()" 
-                    class="flex items-center gap-2 px-5 py-2.5 bg-[#F27438] text-white font-bold rounded-xl hover:bg-orange-600 transition whitespace-nowrap">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              Marcar como leída
-            </button>
-            <button (click)="verTodasLasNotificaciones()" 
-                    class="px-5 py-2.5 bg-white text-gray-700 font-bold rounded-xl hover:bg-gray-100 border border-gray-200 transition whitespace-nowrap">
-              Ver todas
-            </button>
-            <button (click)="cerrarModalDetalle()" 
-                    class="px-5 py-2.5 bg-white text-gray-700 font-bold rounded-xl hover:bg-gray-100 border border-gray-200 transition whitespace-nowrap">
-              Cerrar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ng-container>
 </div>

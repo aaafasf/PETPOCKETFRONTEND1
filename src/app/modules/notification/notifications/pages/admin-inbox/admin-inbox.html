@@ -1,0 +1,9 @@
+<app-dashboard></app-dashboard>
+
+<h2>Bandeja de notificaciones</h2>
+<app-notification-table
+  [data]="data"
+  (markRead)="onMarkRead($event)"
+  (remove)="onRemove($event)"
+  (edit)="onEdit($event)">
+</app-notification-table>
