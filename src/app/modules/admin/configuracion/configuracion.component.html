@@ -1,59 +1,64 @@
 <div class="flex h-screen bg-gray-100 font-sans">
 
   <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-  <div class="p-6">
-    <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
-    <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
-  </div>  
+    <div class="p-6">
+      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
+      <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
+    </div>
 
-  <nav class="flex-1 px-4 space-y-2">
-    <a routerLink="/admin/dashboard"
-       routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-       [routerLinkActiveOptions]="{ exact: true }"
-       class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-      <span class="mr-3">📊</span> Dashboard
-    </a>
+    <nav class="flex-1 px-4 space-y-2">
+      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📊</span> Dashboard
+      </a>
+      <a routerLink="/admin/agenda" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📅</span> Agenda
+      </a>
+      <a routerLink="/admin/planner" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📋</span> Panel
+      </a>
+      <a routerLink="/admin/servicios" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">🩺</span> Servicios
+      </a>
+      <a routerLink="/admin/configuracion" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">⚙️</span> Configuración
+      </a>
+    </nav>
 
-    <a routerLink="/admin/servicios"
-       routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-       [routerLinkActiveOptions]="{ exact: true }"
-       class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-      <span class="mr-3">🩺</span> Servicios
-    </a>
+    <div class="p-6">
+      <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
+    </div>
+  </aside>
 
-    <a routerLink="/admin/configuracion"
-       routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-       [routerLinkActiveOptions]="{ exact: true }"
-       class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-      <span class="mr-3">⚙️</span> Configuración
-    </a>
-  </nav>
-
-  <div class="p-6">
-    <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
-  </div>
-</aside>
-
-  <!-- MAIN -->
   <main class="flex-1 flex flex-col overflow-hidden">
 
-    <!-- HEADER -->
-    <header class="bg-white h-20 border-b flex items-center px-8">
-      <h2 class="text-xl font-black text-gray-800">
-        Configuración de la Clínica
-      </h2>
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
+      <h2 class="text-xl font-black text-gray-800">Configuración de la Clínica</h2>
+      
+      <div class="flex items-center space-x-6">
+        <button class="relative p-2 text-gray-400 hover:text-[#F27438] transition-colors">
+          <span class="text-2xl">🔔</span>
+        </button>
+        <div class="flex items-center space-x-3">
+          <span class="text-sm font-bold text-gray-600">Admin</span>
+          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">A</div>
+        </div>
+      </div>
     </header>
 
-    <!-- CONTENT -->
     <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
-
-      <h1 class="text-3xl font-black text-gray-800 mb-10">
-        Configuración de la Clínica
-      </h1>
 
       <div class="bg-white rounded-3xl p-10 shadow-sm max-w-4xl">
 
-        <!-- DATOS CLÍNICA -->
         <h3 class="text-lg font-black text-[#F27438] mb-6">
           Datos de la clínica
         </h3>
@@ -67,7 +72,6 @@
           <input type="file" (change)="cargarLogo($event)" class="input-admin">
         </div>
 
-        <!-- PARÁMETROS -->
         <h3 class="text-lg font-black text-[#F27438] mb-6">
           Parámetros generales
         </h3>
@@ -92,33 +96,24 @@
           </select>
         </div>
 
-        <!-- POLÍTICAS -->
-        <textarea
-          [(ngModel)]="datosClinica.politicas"
-          placeholder="Políticas de la clínica"
+        <textarea [(ngModel)]="datosClinica.politicas" placeholder="Políticas de la clínica"
           class="w-full p-4 border rounded-2xl mb-6"></textarea>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          <input type="number"
-                 [(ngModel)]="datosClinica.horasMinimasCancelacion"
-                 placeholder="Horas mínimas de cancelación"
-                 class="input-admin">
+          <input type="number" [(ngModel)]="datosClinica.horasMinimasCancelacion"
+            placeholder="Horas mínimas de cancelación" class="input-admin">
 
-          <input type="number"
-                 [(ngModel)]="datosClinica.limiteMascotas"
-                 placeholder="Máximo de mascotas"
-                 class="input-admin">
+          <input type="number" [(ngModel)]="datosClinica.limiteMascotas" placeholder="Máximo de mascotas"
+            class="input-admin">
         </div>
 
-        <button
-          (click)="guardarConfiguracion()"
+        <button (click)="guardarConfiguracion()"
           class="bg-[#F27438] text-white px-10 py-4 rounded-2xl font-black text-lg">
           Guardar configuración
         </button>
 
       </div>
 
-      <!-- LISTA DE CONFIGURACIONES -->
       <div class="bg-white rounded-3xl p-10 shadow-sm max-w-6xl mt-10">
 
         <h3 class="text-lg font-black text-[#F27438] mb-6">
