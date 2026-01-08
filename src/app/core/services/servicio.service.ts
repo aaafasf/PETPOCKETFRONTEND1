@@ -11,9 +11,9 @@
 
     constructor(private http: HttpClient) {}
 
-    listarAdmin(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/`);
-  }
+      listarAdmin(): Observable<any[]> {
+      return this.http.get<any[]>(`${this.API_URL}/`);
+    }
 
     crear(servicio: any): Observable<any> {
       return this.http.post<any>(`${this.API_URL}`, servicio);

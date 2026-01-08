@@ -54,15 +54,20 @@ export class ClinicService {
     const index = id % this.defaultColors.length;
     return this.defaultColors[index];
   }
-  getVeterinarians(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/cita/veterinarios`).pipe(
-      map(users => users.map(u => ({
-        id: u.idUser,           // Mapeamos idUser (BD) -> id (Frontend)
-        name: this.decryptData(u.nameUsers),      // Mapeamos nameUsers (BD) -> name (Frontend)
-        specialty: 'General'    // Valor por defecto si no tienes columna 'especialidad' en BD
-      })))
-    );
-  }
+  getVeterinarians(): Observable<{ id: number; name: string }[]> {
+  return this.http.get<any>(`${this.apiUrl}/cita/veterinarios`).pipe(
+    map(response => {
+      // Nos aseguramos que response.usuarios sea un array
+      const users = response?.usuarios ?? [];
+      return users.map((u: any) => ({
+        id: u.idUser,              // esto será el value del select
+        name: this.decryptData(u.nameUsers) // esto se mostrará en el select
+      }));
+    })
+  );
+}
+
+
   private decryptData(encryptedData: string): string {
     try {
       // Si el string no parece encriptado (no empieza con U2Fsd...), devuélvelo tal cual

@@ -12,9 +12,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrls: ['./configuracion.component.css']
 })
 export class ConfiguracionComponent implements OnInit {
+
   configuraciones: any[] = [];
 
-  datosClinica = {
+  datosClinica: any = {
     nombre: '',
     telefono: '',
     correo: '',
@@ -29,57 +30,66 @@ export class ConfiguracionComponent implements OnInit {
     limiteMascotas: 0
   };
 
+  private apiUrl = 'http://localhost:3000/configuracion';
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.cargarConfiguraciones();
+    this.cargarFormulario();
+    this.cargarListado();
   }
 
-  cargarConfiguraciones() {
-    this.http.get<any[]>('http://localhost:3000/configuracion/listar').subscribe({
+  // 🔹 CARGA LA CONFIGURACIÓN EN EL FORMULARIO
+  cargarFormulario() {
+    this.http.get<any>(this.apiUrl).subscribe({
       next: (res) => {
-        this.configuraciones = res;
+        if (res && Object.keys(res).length > 0) {
+          this.datosClinica = res; // 🔥 AQUÍ SE ARREGLA TODO
+        }
       },
-      error: (err) => console.error('Error al cargar configuraciones', err)
+      error: (err) => console.error('Error al cargar configuración', err)
     });
   }
 
-  cargarLogo(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.datosClinica.logo = file.name; // guardamos solo el nombre
-    }
-  }
+  // 🔹 CARGA LA LISTA DE CONFIGURACIONES
+  cargarListado() {
+  this.http.get<any[]>(`${this.apiUrl}/listar`).subscribe({
+    next: (res) => {
+      const agrupado: any = {};
+      res.forEach(c => {
+        switch (c.clave) {
+          case 'nombreClinica': agrupado.nombre = c.valor; break;
+          case 'telefonoClinica': agrupado.telefono = c.valor; break;
+          case 'correoClinica': agrupado.correo = c.valor; break;
+          case 'direccionClinica': agrupado.direccion = c.valor; break;
+          case 'horariosClinica': agrupado.horarios = c.valor; break;
+          case 'logoClinica': agrupado.logo = c.valor; break;
+          case 'zonaHoraria': agrupado.zonaHoraria = c.valor; break;
+          case 'idioma': agrupado.idioma = c.valor; break;
+          case 'formatoFecha': agrupado.formatoFecha = c.valor; break;
+          case 'politicas': agrupado.politicas = c.valor; break;
+          case 'horasMinimasCancelacion': agrupado.horasMinimasCancelacion = parseInt(c.valor); break;
+          case 'limiteMascotas': agrupado.limiteMascotas = parseInt(c.valor); break;
+        }
+      });
+      this.configuraciones = [agrupado];
+    },
+    error: (err) => console.error('Error al listar configuraciones', err)
+  }); // ← este paréntesis y llave deben cerrar bien
+} // ← esta llave debe cerrar la función
+
 
   guardarConfiguracion() {
-  const formData = new FormData();
-
-  // Agregar solo campos que no sean archivo
-  for (const key in this.datosClinica) {
-    if (key !== 'logo') {
-      const typedKey = key as keyof typeof this.datosClinica;
-      formData.append(typedKey, this.datosClinica[typedKey] as any);
-    }
+    this.http.post(this.apiUrl, this.datosClinica).subscribe({
+      next: () => {
+        alert('Configuración guardada correctamente');
+        this.cargarFormulario(); // recarga formulario
+        this.cargarListado();    // recarga lista
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error al guardar configuración');
+      }
+    });
   }
-
-  // Agregar archivo si existe
-  const inputFile = (<HTMLInputElement>document.querySelector('input[type="file"]'));
-  if (inputFile && inputFile.files && inputFile.files[0]) {
-    formData.append('logo', inputFile.files[0]);
-  }
-
-  this.http.post('http://localhost:3000/configuracion', formData).subscribe({
-    next: () => {
-      alert('Configuración guardada correctamente');
-      this.cargarConfiguraciones(); // Refrescar lista
-      this.datosClinica.logo = ''; // Limpiar input
-      if (inputFile) inputFile.value = '';
-    },
-    error: (err) => {
-      console.error(err);
-      alert('Error al guardar configuración');
-    }
-  });
-}
-
 }
