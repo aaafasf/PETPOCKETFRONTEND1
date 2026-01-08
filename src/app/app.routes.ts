@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 // ===================
-// IMPORTS BASE
+// IMPORTS COMPONENTES BASE
 // ===================
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { RegisterPetComponent } from './modules/pets/register-pet/register-pet.component';
@@ -12,71 +12,27 @@ import { RegisterComponent } from './modules/auth/register/register.component';
 import { AppointmentsComponent } from './modules/appointments/appointments.component';
 import { MisCitasComponent } from './modules/appointments/mis-citas/mis-citas.component';
 import { NotificationsComponent } from './modules/notifications/notifications.component';
-import { Planner } from './modules/admin/planner/planner';
-import { Agenda } from './modules/admin/agenda/agenda';
 
-export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-  },
-  {
-    path: 'auth',
-    children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
-      { path: 'forgot-password', component: ForgotPasswordComponent },
-      { path: 'reset-password', component: ResetPasswordComponent },
-    ],
-  },
-  {
-    path: 'pets',
-    children: [{ path: 'register', component: RegisterPetComponent }],
-  },
-  {
-    path: 'appointments',
-    children: [
-      { path: '', component: AppointmentsComponent },
-      { path: 'mis-citas', component: MisCitasComponent },
-    ],
-  },
-  {
-    path: 'notifications',
-    component: NotificationsComponent,
-  },
-
-  // =====================
-  // ADMIN (AGREGADO)
-  // =====================
-  {
-    path: 'admin/dashboard',
-    loadComponent: () =>
-      import('./modules/admin/dashboard/dashboard-admin.component').then(
-        (m) => m.DashboardAdminComponent
-      ),
-    runGuardsAndResolvers: 'always', // <--- fuerza recarga siempre
 // ===================
-// ADMIN - USER (CLEAN)
+// IMPORTS ADMIN - USERS
 // ===================
 import { CreateUserPage } from './modules/admin/user/pages/create-user/create-user';
 import { UserListPage } from './modules/admin/user/pages/user-list/user-list.page';
 import { ResetPasswordPage } from './modules/admin/user/pages/reset-password/reset-password.page';
 
 export const routes: Routes = [
-
   // ===================
-  // BASE
+  // REDIRECCIÓN INICIAL
   // ===================
   {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',
   },
+
+  // ===================
+  // DASHBOARD
+  // ===================
   {
     path: 'dashboard',
     component: DashboardComponent,
@@ -106,52 +62,74 @@ export const routes: Routes = [
   },
 
   // ===================
-  // OTRAS
+  // APPOINTMENTS
   // ===================
   {
     path: 'appointments',
-    component: AppointmentsComponent,
+    children: [
+      { path: '', component: AppointmentsComponent },
+      { path: 'mis-citas', component: MisCitasComponent },
+    ],
   },
+
+  // ===================
+  // NOTIFICATIONS
+  // ===================
   {
     path: 'notifications',
     component: NotificationsComponent,
   },
 
   // ===================
-  // ADMIN - USERS ✅ (AQUÍ VA EL SIDEBAR)
+  // ADMIN - USERS
   // ===================
   {
     path: 'admin/users',
     children: [
-      { path: '', component: UserListPage },               // /admin/users
-      { path: 'create', component: CreateUserPage },       // /admin/users/create
-      { path: 'reset-password/:id', component: ResetPasswordPage }, // /admin/users/reset-password
+      { path: '', component: UserListPage },                     // /admin/users
+      { path: 'create', component: CreateUserPage },             // /admin/users/create
+      { path: 'reset-password/:id', component: ResetPasswordPage }, // /admin/users/reset-password/:id
     ],
   },
 
   // ===================
-  // ADMIN (YA EXISTENTE)
+  // ADMIN DASHBOARD
   // ===================
   {
     path: 'admin/dashboard',
     loadComponent: () =>
       import('./modules/admin/dashboard/dashboard-admin.component')
         .then(m => m.DashboardAdminComponent),
+    runGuardsAndResolvers: 'always',
   },
+
+  // ===================
+  // ADMIN SERVICIOS
+  // ===================
   {
     path: 'admin/servicios',
     loadComponent: () =>
-      import('./modules/admin/servicios/servicios.component').then((m) => m.ServiciosComponent),
-    runGuardsAndResolvers: 'always',
       import('./modules/admin/servicios/servicios.component')
         .then(m => m.ServiciosComponent),
+    runGuardsAndResolvers: 'always',
   },
+
+  // ===================
+  // ADMIN CONFIGURACIÓN
+  // ===================
   {
     path: 'admin/configuracion',
     loadComponent: () =>
-      import('./modules/admin/configuracion/configuracion.component').then(
-        (m) => m.ConfiguracionComponent
-      ),
+      import('./modules/admin/configuracion/configuracion.component')
+        .then(m => m.ConfiguracionComponent),
     runGuardsAndResolvers: 'always',
+  },
+
+  // ===================
+  // RUTA POR DEFECTO PARA 404
+  // ===================
+  {
+    path: '**',
+    redirectTo: 'dashboard',
   },
 ];
