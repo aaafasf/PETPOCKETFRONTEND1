@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { NotificacionesService, Notificacion } from '../../core/services/notificaciones.service';
-import { Subscription } from 'rxjs';
+import { NotificacionesService, Notificacion, CrearNotificacionRequest } from '../../core/services/notificaciones.service';
 
 @Component({
   selector: 'app-notifications',
@@ -13,20 +12,35 @@ import { Subscription } from 'rxjs';
   styleUrl: './notifications.component.css'
 })
 export class NotificationsComponent implements OnInit, OnDestroy {
+  // Read: Lista de notificaciones
   notificaciones: Notificacion[] = [];
-  nuevaAlerta = { 
-    titulo: '', 
-    mensaje: '', 
-    tipo: 'recordatorio' as const,
-    mesesProgramacion: 0
-  };
-  
-  mostrarModal = false;
+  notificacionesFiltradas: Notificacion[] = [];
   notificacionSeleccionada: Notificacion | null = null;
-  isLoading = false;
-  backendError = false;
+  mostrarModal: boolean = false;
+  filtroLeidas: 'todas' | 'leidas' | 'no-leidas' = 'todas';
   
-  private subscription: Subscription = new Subscription();
+  // Create: Formulario para nueva alerta
+  nuevaAlerta: CrearNotificacionRequest = {
+    titulo: '',
+    mensaje: '',
+    tipo: 'recordatorio',
+    fechaProgramada: undefined
+  };
+
+  // Estados de carga y error
+  cargando: boolean = false;
+  cargandoInicial: boolean = false; // Estado separado para carga inicial
+  error: string | null = null;
+  errorDetalle: any = null;
+  timeoutCarga: any = null;
+
+  // Tipos disponibles
+  tiposNotificacion: Array<{ value: 'vacuna' | 'control' | 'recordatorio' | 'general', label: string }> = [
+    { value: 'vacuna', label: 'Vacuna' },
+    { value: 'control', label: 'Control' },
+    { value: 'recordatorio', label: 'Recordatorio' },
+    { value: 'general', label: 'General' }
+  ];
 
   constructor(
     private notificacionesService: NotificacionesService,
@@ -34,134 +48,376 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('🟢 [NotificationsComponent] Componente inicializado');
-    // Resetear estados al inicio
-    this.isLoading = false;
-    this.backendError = false;
-    
-    // Suscribirse primero a las actualizaciones del servicio
-    const sub = this.notificacionesService.notificaciones$.subscribe(notificaciones => {
-      console.log('📬 [NotificationsComponent] Recibida actualización del BehaviorSubject, notificaciones:', notificaciones.length);
-      this.notificaciones = notificaciones;
-      // Si hay notificaciones o el array está vacío, significa que el backend respondió
-      this.backendError = false;
-      this.cdr.markForCheck();
-      this.cdr.detectChanges();
-    });
-    this.subscription.add(sub);
-    
-    // Luego cargar las notificaciones
+    console.log('🚀 Inicializando componente de notificaciones');
+    console.log('🔗 URL del servicio:', 'http://localhost:3000/notificaciones');
     this.cargarNotificaciones();
   }
-
+  
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    // Limpiar timeout si el componente se destruye
+    if (this.timeoutCarga) {
+      clearTimeout(this.timeoutCarga);
+    }
   }
 
-  cargarNotificaciones(): void {
-    console.log('🟢 [NotificationsComponent] Iniciando carga de notificaciones');
-    this.isLoading = true;
-    this.backendError = false;
-    this.cdr.detectChanges();
+  // ==================== READ (Consultas) ====================
 
-    this.notificacionesService.obtenerTodas().subscribe({
+  cargarNotificaciones(): void {
+    // Usar cargandoInicial solo si es la primera carga (cuando no hay notificaciones aún)
+    const esCargaInicial = this.notificaciones.length === 0;
+    
+    if (esCargaInicial) {
+      this.cargandoInicial = true;
+    } else {
+      this.cargando = true;
+    }
+    
+    this.error = null;
+    this.errorDetalle = null;
+    
+    // Limpiar timeout anterior si existe
+    if (this.timeoutCarga) {
+      clearTimeout(this.timeoutCarga);
+    }
+    
+    // Timeout de seguridad (10 segundos)
+    this.timeoutCarga = setTimeout(() => {
+      if (this.cargando || this.cargandoInicial) {
+        if (esCargaInicial) {
+          this.cargandoInicial = false;
+        } else {
+          this.cargando = false;
+        }
+        this.error = 'El servidor está tardando demasiado en responder. Verifica la conexión.';
+        this.errorDetalle = { status: 'TIMEOUT', message: 'Timeout después de 10 segundos' };
+        alert('⚠️ Error de conexión\n\nEl servidor no responde. Verifica que:\n- El backend esté corriendo en http://localhost:3000\n- La ruta /notificaciones/lista exista\n- No haya problemas de red');
+        this.notificaciones = [];
+        this.notificacionesFiltradas = [];
+      }
+    }, 10000);
+    
+    console.log('🔄 Cargando notificaciones desde: http://localhost:3000/notificaciones/lista');
+    
+    this.notificacionesService.obtenerTodasNotificaciones().subscribe({
       next: (notificaciones) => {
-        console.log('✅ [NotificationsComponent] Éxito - notificaciones:', notificaciones.length);
-        // FORZAR que backendError sea false cuando hay éxito
-        this.backendError = false;
-        this.isLoading = false;
-        // Asegurar que las notificaciones estén actualizadas
-        this.notificaciones = notificaciones;
-        console.log('✅ [NotificationsComponent] Estados finales - isLoading:', this.isLoading, ', backendError:', this.backendError, ', notificaciones:', this.notificaciones.length);
-        this.cdr.markForCheck();
+        // Limpiar timeout
+        if (this.timeoutCarga) {
+          clearTimeout(this.timeoutCarga);
+          this.timeoutCarga = null;
+        }
+        
+        console.log('✅ Notificaciones cargadas:', notificaciones);
+        
+        // Verificar si es un array
+        if (Array.isArray(notificaciones)) {
+          this.notificaciones = notificaciones.map(n => {
+            // Mapear ID
+            const idFinal = n.id || n.idNotificacion;
+            
+            // Mapear fecha - intentar múltiples formatos
+            let fechaMapeada: Date | undefined;
+            if (n.fecha) {
+              try {
+                fechaMapeada = new Date(n.fecha);
+                if (isNaN(fechaMapeada.getTime())) {
+                  console.warn('⚠️ Fecha inválida en campo fecha:', n.fecha);
+                  fechaMapeada = undefined;
+                }
+              } catch (e) {
+                console.warn('⚠️ Error al parsear fecha:', n.fecha, e);
+                fechaMapeada = undefined;
+              }
+            }
+            
+            // Si no hay fecha válida, intentar con createNotificacion
+            if (!fechaMapeada && n.createNotificacion) {
+              try {
+                fechaMapeada = new Date(n.createNotificacion);
+                if (isNaN(fechaMapeada.getTime())) {
+                  fechaMapeada = undefined;
+                }
+              } catch (e) {
+                console.warn('⚠️ Error al parsear createNotificacion:', n.createNotificacion, e);
+              }
+            }
+            
+            // Si aún no hay fecha válida, usar fecha actual
+            if (!fechaMapeada) {
+              fechaMapeada = new Date();
+            }
+            
+            // Mapear fechaProgramada si existe
+            let fechaProgramadaMapeada: Date | undefined;
+            if (n.fechaProgramada) {
+              try {
+                fechaProgramadaMapeada = new Date(n.fechaProgramada);
+                if (isNaN(fechaProgramadaMapeada.getTime())) {
+                  fechaProgramadaMapeada = undefined;
+                }
+              } catch (e) {
+                console.warn('⚠️ Error al parsear fechaProgramada:', n.fechaProgramada, e);
+              }
+            }
+            
+            return {
+              ...n,
+              id: idFinal,
+              idNotificacion: n.idNotificacion || idFinal,
+              fecha: fechaMapeada,
+              fechaProgramada: fechaProgramadaMapeada
+            };
+          });
+          this.aplicarFiltro();
+          
+          // Actualizar el estado de carga correcto
+          if (esCargaInicial) {
+            this.cargandoInicial = false;
+          } else {
+            this.cargando = false;
+          }
+          
+          // Forzar detección de cambios
+          this.cdr.detectChanges();
+          console.log('✅ Notificaciones filtradas:', this.notificacionesFiltradas.length);
+        } else {
+          console.warn('⚠️ Respuesta no es un array:', notificaciones);
+        this.notificaciones = [];
+        this.notificacionesFiltradas = [];
+        
+        // Actualizar el estado de carga correcto
+        if (esCargaInicial) {
+          this.cargandoInicial = false;
+        } else {
+          this.cargando = false;
+        }
+        
+        this.error = 'El servidor devolvió un formato inesperado.';
         this.cdr.detectChanges();
+        }
       },
       error: (err) => {
-        console.error('❌ [NotificationsComponent] Error:', err);
-        console.error('❌ [NotificationsComponent] Status:', err?.status);
-        this.isLoading = false;
-        const status = err?.status;
-        // Solo marcar error si es realmente un problema de conexión
-        if (status === 0 || status === 404 || err?.name === 'TimeoutError') {
-          this.backendError = true;
-          console.warn('⚠️ Backend no disponible');
-        } else {
-          // Para otros errores, no mostrar como error de backend
-          this.backendError = false;
-          console.log('ℹ️ Error no crítico, continuando sin mostrar error de backend');
+        // Limpiar timeout
+        if (this.timeoutCarga) {
+          clearTimeout(this.timeoutCarga);
+          this.timeoutCarga = null;
         }
-        this.cdr.markForCheck();
+        
+        console.error('❌ Error al cargar notificaciones:', err);
+        this.errorDetalle = err;
+        
+        // Determinar el tipo de error
+        let mensajeError = 'Error al cargar las notificaciones.';
+        let mensajeAlerta = '⚠️ Error al cargar notificaciones\n\n';
+        
+        if (err.status === 0 || err.status === undefined) {
+          mensajeError = 'No se puede conectar con el servidor.';
+          mensajeAlerta += '❌ Error de conexión\n';
+          mensajeAlerta += 'El backend no está respondiendo.\n\n';
+          mensajeAlerta += 'Verifica que:\n';
+          mensajeAlerta += '• El servidor esté corriendo en http://localhost:3000\n';
+          mensajeAlerta += '• La ruta /notificaciones/lista exista\n';
+          mensajeAlerta += '• No haya errores de CORS';
+        } else if (err.status === 404) {
+          mensajeError = 'La ruta no existe en el servidor (404).';
+          mensajeAlerta += `❌ Error 404 - Ruta no encontrada\n`;
+          mensajeAlerta += `La ruta /notificaciones/lista no existe en el backend.\n\n`;
+          mensajeAlerta += `Verifica que el endpoint esté configurado correctamente.`;
+        } else if (err.status === 500) {
+          mensajeError = 'Error interno del servidor (500).';
+          mensajeAlerta += `❌ Error 500 - Error del servidor\n`;
+          mensajeAlerta += `El backend tiene un error interno.\n\n`;
+          mensajeAlerta += `Mensaje: ${err.error?.message || 'Error desconocido'}`;
+        } else {
+          mensajeError = `Error del servidor (${err.status}).`;
+          mensajeAlerta += `❌ Error ${err.status}\n`;
+          mensajeAlerta += `Mensaje: ${err.error?.message || err.message || 'Error desconocido'}\n\n`;
+          mensajeAlerta += `Detalle: ${JSON.stringify(err.error || err, null, 2)}`;
+        }
+        
+        this.error = mensajeError;
+        
+        // Actualizar el estado de carga correcto
+        if (esCargaInicial) {
+          this.cargandoInicial = false;
+        } else {
+          this.cargando = false;
+        }
+        
+        this.notificaciones = [];
+        this.notificacionesFiltradas = [];
+        
+        // Forzar detección de cambios
         this.cdr.detectChanges();
+        
+        // Mostrar alerta con detalles
+        alert(mensajeAlerta);
+        
+        // Log completo para debugging
+        console.error('Detalle completo del error:', {
+          status: err.status,
+          statusText: err.statusText,
+          error: err.error,
+          message: err.message,
+          url: err.url
+        });
       }
     });
   }
 
-  get notificacionesNoLeidas(): Notificacion[] {
-    return this.notificacionesService.obtenerNoLeidas();
+  aplicarFiltro(): void {
+    // Asegurar que los arrays estén inicializados
+    if (!Array.isArray(this.notificaciones)) {
+      this.notificaciones = [];
+    }
+    
+    if (!Array.isArray(this.notificacionesFiltradas)) {
+      this.notificacionesFiltradas = [];
+    }
+    
+    // Aplicar filtro según el tipo seleccionado
+    if (this.filtroLeidas === 'todas') {
+      this.notificacionesFiltradas = [...this.notificaciones];
+    } else if (this.filtroLeidas === 'leidas') {
+      this.notificacionesFiltradas = this.notificaciones.filter(n => n.leida === true);
+    } else if (this.filtroLeidas === 'no-leidas') {
+      this.notificacionesFiltradas = this.notificaciones.filter(n => n.leida === false || !n.leida);
+    } else {
+      // Por defecto, mostrar todas
+      this.notificacionesFiltradas = [...this.notificaciones];
+    }
+    
+    // Ordenar por fecha (más recientes primero)
+    this.notificacionesFiltradas.sort((a, b) => {
+      const fechaA = new Date(a.fecha || 0).getTime();
+      const fechaB = new Date(b.fecha || 0).getTime();
+      return fechaB - fechaA;
+    });
+    
+    console.log('🔍 Filtro aplicado:', this.filtroLeidas, '- Total filtradas:', this.notificacionesFiltradas.length);
   }
 
-  get notificacionesLeidas(): Notificacion[] {
-    return this.notificacionesService.obtenerLeidas();
+  cambiarFiltro(tipo: 'todas' | 'leidas' | 'no-leidas'): void {
+    this.filtroLeidas = tipo;
+    this.aplicarFiltro();
   }
+
+  // ==================== CREATE (Crear) ====================
 
   agregarAlerta(): void {
-    // Prevenir múltiples clics
-    if (this.isLoading || !this.nuevaAlerta.titulo?.trim() || !this.nuevaAlerta.mensaje?.trim()) {
+    if (!this.nuevaAlerta.titulo || !this.nuevaAlerta.mensaje) {
+      this.error = 'Por favor, completa todos los campos.';
+      alert('⚠️ Campos incompletos\n\nPor favor, completa el título y el mensaje.');
       return;
     }
 
-    this.isLoading = true;
-    
-    const fechaProgramada = this.nuevaAlerta.mesesProgramacion && this.nuevaAlerta.mesesProgramacion > 0
-      ? new Date(Date.now() + this.nuevaAlerta.mesesProgramacion * 30 * 24 * 60 * 60 * 1000)
-      : undefined;
+    this.cargando = true;
+    this.error = null;
+    this.errorDetalle = null;
 
-    const notificacion: Partial<Notificacion> = {
-      titulo: this.nuevaAlerta.titulo.trim(),
-      mensaje: this.nuevaAlerta.mensaje.trim(),
-      tipo: this.nuevaAlerta.tipo,
-      fechaProgramada: fechaProgramada,
-      mesesProgramacion: this.nuevaAlerta.mesesProgramacion && this.nuevaAlerta.mesesProgramacion > 0 
-        ? this.nuevaAlerta.mesesProgramacion 
-        : undefined
+    const datos: CrearNotificacionRequest = {
+      ...this.nuevaAlerta,
+      fechaProgramada: this.nuevaAlerta.fechaProgramada || undefined
     };
 
-    const subscription = this.notificacionesService.crearNotificacion(notificacion).subscribe({
-      next: (notificacionCreada) => {
-        console.log('✅ [NotificationsComponent] Notificación creada:', notificacionCreada);
-        // Resetear formulario
-        this.nuevaAlerta = { titulo: '', mensaje: '', tipo: 'recordatorio', mesesProgramacion: 0 };
-        this.isLoading = false;
-        // Recargar todas las notificaciones para asegurar que se muestren
-        this.cargarNotificaciones();
-        subscription.unsubscribe();
-      },
-      error: (err) => {
-        console.error('❌ [NotificationsComponent] Error al crear:', err);
-        console.error('❌ [NotificationsComponent] Status:', err?.status);
-        console.error('❌ [NotificationsComponent] Mensaje:', err?.message);
-        this.isLoading = false;
-        subscription.unsubscribe();
+    console.log('📤 Creando notificación con datos:', datos);
+
+    this.notificacionesService.crearNotificacion(datos).subscribe({
+      next: (response: any) => {
+        console.log('✅ Respuesta del backend:', response);
         
-        // Mensaje más específico según el error
-        let mensaje = 'Error al crear la notificación.';
-        if (err?.status === 404) {
-          mensaje = 'Error 404: El endpoint POST /api/notificaciones no existe en el backend. Verifica que la ruta esté configurada correctamente.';
-        } else if (err?.status === 0) {
-          mensaje = 'Error: No se pudo conectar con el backend. Asegúrate de que el servidor esté corriendo en el puerto 3000.';
-        } else if (err?.name === 'TimeoutError') {
-          mensaje = 'Error: La petición excedió el tiempo de espera. El backend podría estar tardando mucho en responder.';
+        // El backend puede devolver { success: true, data: {...} } o directamente el objeto
+        let notificacionData: any;
+        if (response && response.success && response.data) {
+          // Respuesta envuelta
+          notificacionData = response.data;
+          console.log('✅ Notificación creada (datos extraídos):', notificacionData);
+        } else {
+          // Respuesta directa
+          notificacionData = response;
+          console.log('✅ Notificación creada (respuesta directa):', notificacionData);
         }
         
-        alert(mensaje);
-        this.cdr.markForCheck();
-        this.cdr.detectChanges();
+        // Mostrar alerta de éxito
+        window.alert('✅ ¡Notificación creada exitosamente!');
+        
+        // Crear el objeto de notificación completo combinando datos del backend y del formulario
+        const nueva: Notificacion = {
+          id: notificacionData.idNotificacion || notificacionData.id,
+          titulo: datos.titulo,
+          mensaje: datos.mensaje,
+          tipo: datos.tipo,
+          fecha: new Date(),
+          leida: false,
+          fechaProgramada: datos.fechaProgramada ? new Date(datos.fechaProgramada) : undefined,
+          idUsuario: notificacionData.usuarioId || notificacionData.idUsuario,
+          idMascota: datos.idMascota
+        };
+        
+        console.log('✅ Notificación formateada para agregar:', nueva);
+        
+        // Agregar la nueva notificación al inicio de la lista
+        this.notificaciones.unshift(nueva);
+        this.aplicarFiltro();
+        
+        // Recargar la lista completa para asegurarse de tener todos los datos actualizados
+        setTimeout(() => {
+          this.cargarNotificaciones();
+        }, 500);
+        
+        // Limpiar formulario
+        this.nuevaAlerta = {
+          titulo: '',
+          mensaje: '',
+          tipo: 'recordatorio',
+          fechaProgramada: undefined
+        };
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('❌ Error al crear notificación:', err);
+        this.errorDetalle = err;
+        
+        let mensajeAlerta = '❌ Error al crear notificación\n\n';
+        
+        if (err.status === 0 || err.status === undefined) {
+          mensajeAlerta += 'No se puede conectar con el servidor.\n';
+          mensajeAlerta += 'Verifica que el backend esté corriendo.';
+        } else if (err.status === 404) {
+          mensajeAlerta += 'La ruta /notificaciones/crear no existe (404).';
+        } else if (err.status === 500) {
+          mensajeAlerta += `Error del servidor: ${err.error?.message || 'Error interno'}`;
+        } else {
+          mensajeAlerta += `Error ${err.status}: ${err.error?.message || err.message || 'Error desconocido'}`;
+        }
+        
+        this.error = 'Error al crear la notificación. Ver detalles en la consola.';
+        this.cargando = false;
+        alert(mensajeAlerta);
+        
+        console.error('Detalle completo del error:', err);
       }
     });
   }
 
+  // ==================== READ (Ver Detalle) ====================
+
   abrirModal(notificacion: Notificacion): void {
-    this.notificacionSeleccionada = notificacion;
+    console.log('📂 Abriendo modal para notificación:', notificacion);
+    console.log('📂 ID original:', notificacion.id);
+    console.log('📂 idNotificacion original:', notificacion.idNotificacion);
+    
+    // MAPEAR idNotificacion a id SIEMPRE - asegurar que ambos campos tengan el valor
+    const idFinal = notificacion.id || notificacion.idNotificacion;
+    this.notificacionSeleccionada = { 
+      ...notificacion,
+      id: idFinal,
+      idNotificacion: notificacion.idNotificacion || idFinal
+    };
+    
+    console.log('📂 Notificación seleccionada después del mapeo:', this.notificacionSeleccionada);
+    console.log('📂 ID final mapeado:', this.notificacionSeleccionada.id);
+    console.log('📂 idNotificacion final:', this.notificacionSeleccionada.idNotificacion);
+    
     this.mostrarModal = true;
   }
 
@@ -170,74 +426,258 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     this.notificacionSeleccionada = null;
   }
 
-  marcarComoLeida(): void {
-    if (!this.notificacionSeleccionada?.id) return;
+  // ==================== UPDATE (Actualizar) ====================
 
-    this.notificacionesService.marcarComoLeida(this.notificacionSeleccionada.id).subscribe({
-      next: () => {
-        // El servicio ya actualiza el estado automáticamente
-        this.cdr.markForCheck();
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al marcar como leída:', err);
-        this.cdr.markForCheck();
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  limpiarHistorial(): void {
-    if (!confirm('¿Estás seguro de que deseas limpiar todo el historial de notificaciones?')) {
+  marcarComoLeida(id?: number): void {
+    // Buscar ID en múltiples lugares - SIEMPRE incluir idNotificacion
+    const idNotificacion = id || 
+                          this.notificacionSeleccionada?.id || 
+                          this.notificacionSeleccionada?.idNotificacion;
+    
+    if (!idNotificacion) {
+      console.error('❌ No se pudo obtener el ID de la notificación');
+      console.error('ID recibido como parámetro:', id);
+      console.error('notificacionSeleccionada.id:', this.notificacionSeleccionada?.id);
+      console.error('notificacionSeleccionada.idNotificacion:', this.notificacionSeleccionada?.idNotificacion);
+      console.error('Notificación completa:', this.notificacionSeleccionada);
+      alert('❌ Error: No se pudo identificar la notificación');
       return;
     }
 
-    this.isLoading = true;
-    this.cdr.detectChanges();
-
-    this.notificacionesService.limpiarHistorial().subscribe({
+    this.cargando = true;
+    console.log('📤 Marcando notificación como leída con ID:', idNotificacion);
+    
+    this.notificacionesService.marcarComoLeida(idNotificacion).subscribe({
       next: () => {
-        this.isLoading = false;
-        this.backendError = false;
-        this.cerrarModal();
-        this.cdr.markForCheck();
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        this.isLoading = false;
-        if (err.name === 'TimeoutError' || (err as any).status === 404 || (err as any).status === 0) {
-          this.backendError = true;
+        console.log('✅ Notificación marcada como leída');
+        
+        // Actualizar en la lista local - buscar por id O idNotificacion
+        const noti = this.notificaciones.find(n => 
+          (n.id && n.id === idNotificacion) || 
+          (n.idNotificacion && n.idNotificacion === idNotificacion)
+        );
+        if (noti) {
+          noti.leida = true;
+          console.log('✅ Notificación actualizada en lista local');
+        } else {
+          console.warn('⚠️ No se encontró la notificación en la lista para actualizar');
         }
-        console.error('Error al limpiar historial:', err);
-        this.cdr.markForCheck();
+        
+        if (this.notificacionSeleccionada) {
+          const tieneIdCorrecto = (this.notificacionSeleccionada.id && this.notificacionSeleccionada.id === idNotificacion) ||
+                                  (this.notificacionSeleccionada.idNotificacion && this.notificacionSeleccionada.idNotificacion === idNotificacion);
+          if (tieneIdCorrecto) {
+            this.notificacionSeleccionada.leida = true;
+            console.log('✅ Notificación seleccionada actualizada');
+          }
+        }
+        
+        // Aplicar filtro para actualizar la lista filtrada
+        this.aplicarFiltro();
         this.cdr.detectChanges();
-      }
-    });
-  }
-
-  eliminarNotificacion(id: number): void {
-    if (!confirm('¿Estás seguro de que deseas eliminar esta notificación?')) {
-      return;
-    }
-
-    this.isLoading = true;
-    this.cdr.detectChanges();
-
-    this.notificacionesService.eliminarNotificacion(id).subscribe({
-      next: () => {
-        this.isLoading = false;
-        if (this.notificacionSeleccionada?.id === id) {
+        this.cargando = false;
+        
+        // Mostrar mensaje de éxito
+        window.alert('✅ Notificación marcada como leída');
+        
+        // Cerrar el modal si está abierto
+        if (this.mostrarModal) {
           this.cerrarModal();
         }
-        this.cdr.markForCheck();
-        this.cdr.detectChanges();
       },
       error: (err) => {
-        this.isLoading = false;
-        console.error('Error al eliminar notificación:', err);
-        this.cdr.markForCheck();
-        this.cdr.detectChanges();
+        console.error('❌ Error al marcar como leída:', err);
+        this.errorDetalle = err;
+        this.cargando = false;
+        
+        let mensajeAlerta = '❌ Error al marcar como leída\n\n';
+        if (err.status === 0 || err.status === undefined) {
+          mensajeAlerta += 'No se puede conectar con el servidor.';
+        } else {
+          mensajeAlerta += `Error ${err.status}: ${err.error?.message || err.message || 'Error desconocido'}`;
+        }
+        
+        this.error = 'Error al marcar como leída.';
+        alert(mensajeAlerta);
+        console.error('Detalle completo del error:', err);
       }
     });
+  }
+
+  // ==================== DELETE (Eliminar) ====================
+
+  limpiarHistorial(): void {
+    console.log('🔥🔥🔥 LIMPIAR HISTORIAL - INICIO 🔥🔥🔥');
+    
+    // Contar cuántas leídas hay
+    const cantidadLeidas = this.notificaciones.filter(n => n.leida).length;
+    console.log('🔥 Notificaciones leídas encontradas:', cantidadLeidas);
+    
+    if (cantidadLeidas === 0) {
+      console.log('ℹ️ No hay notificaciones leídas para limpiar');
+      return;
+    }
+
+    console.log('✅ Limpiando inmediatamente...');
+    console.log('🔥 Total antes:', this.notificaciones.length);
+    
+    // ELIMINAR INMEDIATAMENTE DE LA LISTA LOCAL
+    const antes = this.notificaciones.length;
+    this.notificaciones = this.notificaciones.filter(n => !n.leida);
+    const despues = this.notificaciones.length;
+    
+    console.log('🔥 Total después:', despues);
+    console.log('🔥 Eliminadas:', antes - despues);
+    
+    // Actualizar lista filtrada
+    this.aplicarFiltro();
+    console.log('🔥 Filtro aplicado');
+    
+    // Cerrar modal
+    this.cerrarModal();
+    console.log('🔥 Modal cerrado');
+    
+    // Forzar actualización de la vista
+    this.cdr.detectChanges();
+    console.log('🔥 Vista actualizada');
+    
+    // Intentar limpiar en el backend (en segundo plano)
+    this.notificacionesService.limpiarHistorial().subscribe({
+      next: () => {
+        console.log('✅ Historial limpiado en el backend');
+      },
+      error: (err) => {
+        console.error('⚠️ Error al limpiar en el backend:', err);
+        // Recargar desde backend para sincronizar
+        setTimeout(() => {
+          this.cargarNotificaciones();
+        }, 1000);
+      }
+    });
+    
+    console.log('✅✅✅ LIMPIAR HISTORIAL - COMPLETADO ✅✅✅');
+  }
+
+  eliminarNotificacion(id?: number): void {
+    console.log('🔥🔥🔥 ELIMINAR - INICIO 🔥🔥🔥');
+    
+    // Obtener ID de la notificación seleccionada
+    if (!this.notificacionSeleccionada) {
+      console.error('❌ No hay notificación seleccionada');
+      return;
+    }
+
+    // Buscar ID en múltiples lugares
+    const idNotificacion = id || 
+                          this.notificacionSeleccionada?.id || 
+                          this.notificacionSeleccionada?.idNotificacion;
+    
+    console.log('🔥 ID a eliminar:', idNotificacion);
+    
+    if (!idNotificacion) {
+      console.error('❌ No se pudo obtener el ID');
+      return;
+    }
+
+    console.log('✅ Eliminando inmediatamente...');
+    console.log('🔥 Total antes:', this.notificaciones.length);
+
+    // ELIMINAR INMEDIATAMENTE DE LA LISTA LOCAL
+    const antes = this.notificaciones.length;
+    this.notificaciones = this.notificaciones.filter(n => {
+      const coincideId = (n.id && n.id === idNotificacion);
+      const coincideIdNotif = (n.idNotificacion && n.idNotificacion === idNotificacion);
+      const mantener = !coincideId && !coincideIdNotif;
+      if (!mantener) {
+        console.log('🗑️ Eliminando notificación:', n);
+      }
+      return mantener;
+    });
+    const despues = this.notificaciones.length;
+    
+    console.log('🔥 Total después:', despues);
+    console.log('🔥 Eliminadas:', antes - despues);
+    
+    // Actualizar lista filtrada
+    this.aplicarFiltro();
+    console.log('🔥 Filtro aplicado');
+    
+    // Cerrar modal
+    this.cerrarModal();
+    console.log('🔥 Modal cerrado');
+    
+    // Forzar actualización de la vista
+    this.cdr.detectChanges();
+    console.log('🔥 Vista actualizada');
+    
+    // Intentar eliminar en el backend (en segundo plano)
+    this.notificacionesService.eliminarNotificacion(idNotificacion).subscribe({
+      next: () => {
+        console.log('✅ Notificación eliminada en el backend');
+      },
+      error: (err) => {
+        console.error('⚠️ Error al eliminar en el backend:', err);
+        // Recargar desde backend para sincronizar
+        setTimeout(() => {
+          this.cargarNotificaciones();
+        }, 1000);
+      }
+    });
+    
+    console.log('✅✅✅ ELIMINAR - COMPLETADO ✅✅✅');
+  }
+
+  // ==================== UTILIDADES ====================
+
+  formatearFecha(fecha: Date | string | undefined): string {
+    if (!fecha) return 'Sin fecha';
+    
+    try {
+      // Intentar crear la fecha
+      let date: Date;
+      if (typeof fecha === 'string') {
+        // Si es string, intentar parsearlo
+        date = new Date(fecha);
+      } else if (fecha instanceof Date) {
+        date = fecha;
+      } else {
+        return 'Sin fecha';
+      }
+      
+      // Verificar si la fecha es válida
+      if (isNaN(date.getTime())) {
+        console.warn('⚠️ Fecha inválida recibida:', fecha);
+        return 'Fecha inválida';
+      }
+      
+      // Formatear la fecha
+      return date.toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      console.error('❌ Error al formatear fecha:', error, 'Fecha original:', fecha);
+      return 'Fecha inválida';
+    }
+  }
+
+  obtenerTipoLabel(tipo: string | undefined): string {
+    if (!tipo) return 'General';
+    const tipoEncontrado = this.tiposNotificacion.find(t => t.value === tipo);
+    return tipoEncontrado ? tipoEncontrado.label : tipo;
+  }
+
+  contarNoLeidas(): number {
+    return this.notificaciones.filter(n => !n.leida).length;
+  }
+
+  mostrarDetalleError(): void {
+    if (this.errorDetalle) {
+      const detalle = JSON.stringify(this.errorDetalle, null, 2);
+      window.alert(`Detalle del error:\n\n${detalle}`);
+    }
   }
 }

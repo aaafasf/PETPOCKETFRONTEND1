@@ -136,6 +136,6 @@ export const routes: Routes = [
     import('./modules/admin/agenda/agenda')
       .then(m => m.Agenda),
 }
-
+  
 
 ];

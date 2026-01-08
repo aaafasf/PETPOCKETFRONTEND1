@@ -1,9 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-import { ServicioService } from '../../core/services/servicio.service';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CitasService } from '../../core/services/citas.service';
 import { CrearCitaRequest, Mascota, Servicio, Veterinario } from '../../interfaces/cita.interface';
 
@@ -12,15 +10,14 @@ import { CrearCitaRequest, Mascota, Servicio, Veterinario } from '../../interfac
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './appointments.component.html',
-  styleUrls: ['./appointments.component.css'],
+  styleUrl: './appointments.component.css',
 })
 export class AppointmentsComponent implements OnInit {
   private citasService = inject(CitasService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private servicioService = inject(ServicioService);
 
-  // Mock de ID del cliente - reemplazar por AuthService en producción
+  // Mock de ID del cliente - En producción deberías obtenerlo del AuthService
   idCliente: number = 1;
 
   // Listas para selects
@@ -35,7 +32,7 @@ export class AppointmentsComponent implements OnInit {
     idServicio: 0,
     fecha: '',
     hora: '',
-    userIdUser: undefined,
+    userIdUser: null,
     motivo: '',
     sintomas: '',
     diagnosticoPrevio: '',
@@ -52,10 +49,10 @@ export class AppointmentsComponent implements OnInit {
   mensajeDisponibilidad: string = '';
   error: string = '';
 
-  // Fecha mínima
+  // Fecha mínima (hoy)
   fechaMinima: string = '';
 
-  // Para compatibilidad con diseño anterior
+  // Para compatibilidad con el diseño anterior
   servicioId: string | null = null;
   nombreServicio: string = 'Cargando servicio...';
 
@@ -63,7 +60,7 @@ export class AppointmentsComponent implements OnInit {
     this.setFechaMinima();
     this.cargarDatos();
 
-    // Capturar ?id= de la URL si viene desde Dashboard
+    // Capturamos el ?id= de la URL si viene desde el Dashboard
     this.route.queryParamMap.subscribe((params) => {
       this.servicioId = params.get('id');
       if (this.servicioId) {
@@ -73,58 +70,47 @@ export class AppointmentsComponent implements OnInit {
     });
   }
 
-  // ==================== FECHA ====================
   setFechaMinima() {
     const hoy = new Date();
     this.fechaMinima = hoy.toISOString().split('T')[0];
     this.cita.fecha = this.fechaMinima;
   }
 
-  // ==================== SERVICIO ====================
   definirServicio() {
-    if (!this.servicioId) {
-      this.nombreServicio = 'Servicio Especializado';
-      return;
-    }
+    // Diccionario actualizado según los datos reales de la Base de Datos
+    const servicios: { [key: string]: string } = {
+      '41': 'Vacunación',
+      '42': 'Desparasitación',
+      '43': 'Corte de Pelo',
+      '44': 'Consulta General',
+    };
 
-    this.servicioService.listarAdmin().subscribe({
-      next: (servicios: Servicio[]) => {
-        const encontrado = servicios.find(
-          (s) => String(s.idServicio) === String(this.servicioId)
-        );
-        this.nombreServicio = encontrado ? encontrado.nombre : 'Servicio Especializado';
-      },
-      error: () => {
-        this.nombreServicio = 'Servicio Especializado';
-      },
-    });
+    this.nombreServicio = servicios[this.servicioId || ''] || 'Servicio Especializado';
+    console.log('Agendando cita para:', this.nombreServicio, '(ID:', this.servicioId, ')');
   }
 
-  // ==================== CARGAR DATOS ====================
   cargarDatos() {
     this.cargando = true;
 
-    // Mascotas
-    this.citasService.obtenerMascotasCliente(this.idCliente).subscribe({
-      next: (res: Mascota[]) => (this.mascotas = res || []),
-      error: (err: any) => console.error('Error cargando mascotas:', err),
-    });
+    // Usar datos mock temporalmente hasta tener los endpoints correctos
+    console.warn('Usando datos mock para mascotas, servicios y veterinarios');
 
-    // Servicios
-    this.servicioService.listarAdmin().subscribe({
-      next: (res: Servicio[]) => (this.servicios = res || []),
-      error: (err: any) => console.error('Error cargando servicios:', err),
-    });
+    this.mascotas = [{ idMascota: 1, nombre: 'Firulais', especie: 'Perro', raza: 'Mestizo' }];
 
-    // Veterinarios
-    this.citasService.obtenerVeterinarios().subscribe({
-      next: (res: Veterinario[]) => (this.veterinarios = res || []),
-      error: (err: any) => console.error('Error cargando veterinarios:', err),
-      complete: () => (this.cargando = false),
-    });
+    this.servicios = [
+      { idServicio: 41, nombre: 'Vacunación', duracion: 30, precio: 50 },
+      { idServicio: 42, nombre: 'Desparasitación', duracion: 15, precio: 30 },
+      { idServicio: 43, nombre: 'Corte de Pelo', duracion: 60, precio: 35 },
+      { idServicio: 44, nombre: 'Consulta General', duracion: 30, precio: 40 },
+    ];
+
+    this.veterinarios = [
+      { idUser: 53, nombre: 'Veterinario Principal', especialidad: 'Medicina General' },
+    ];
+
+    this.cargando = false;
   }
 
-  // ==================== DISPONIBILIDAD ====================
   verificarDisponibilidad() {
     if (!this.cita.fecha || !this.cita.hora) return;
 
@@ -132,23 +118,26 @@ export class AppointmentsComponent implements OnInit {
     this.citasService
       .verificarDisponibilidad(this.cita.fecha, this.cita.hora, this.cita.userIdUser)
       .subscribe({
-        next: (res) => {
-          this.disponible = res.disponible;
+        next: (response) => {
+          this.disponible = response.disponible;
           this.mensajeDisponibilidad =
-            res.mensaje || (res.disponible ? 'Horario disponible' : 'Horario no disponible');
+            response.mensaje ||
+            (response.disponible ? 'Horario disponible' : 'Horario no disponible');
           this.verificandoDisponibilidad = false;
         },
-        error: () => {
-          this.disponible = true;
+        error: (error) => {
+          console.error('Error al verificar disponibilidad:', error);
+          this.disponible = true; // Asumir disponible si falla
           this.verificandoDisponibilidad = false;
         },
       });
   }
 
-  // ==================== TRATAMIENTOS ====================
   agregarTratamiento() {
     if (this.tratamiento.trim()) {
-      this.cita.tratamientosAnteriores = this.cita.tratamientosAnteriores || [];
+      if (!this.cita.tratamientosAnteriores) {
+        this.cita.tratamientosAnteriores = [];
+      }
       this.cita.tratamientosAnteriores.push(this.tratamiento);
       this.tratamiento = '';
     }
@@ -158,7 +147,6 @@ export class AppointmentsComponent implements OnInit {
     this.cita.tratamientosAnteriores?.splice(index, 1);
   }
 
-  // ==================== VALIDACIÓN FORMULARIO ====================
   validarFormulario(): boolean {
     if (!this.cita.idMascota) {
       this.error = 'Debes seleccionar una mascota';
@@ -184,37 +172,44 @@ export class AppointmentsComponent implements OnInit {
     return true;
   }
 
-  // ==================== AGENDAR CITA ====================
   agendarCita() {
-    if (!this.validarFormulario()) return;
+  if (!this.validarFormulario()) return;
 
-    this.cargando = true;
+  this.cargando = true;
 
-    const citaLimpia: CrearCitaRequest = {
-      ...this.cita,
-      userIdUser: this.cita.userIdUser && this.cita.userIdUser > 0 ? this.cita.userIdUser : undefined,
-    };
+  // Forzamos que userIdUser sea null si no es un número válido
+  const userId = this.cita.userIdUser && Number(this.cita.userIdUser) > 0 ? this.cita.userIdUser : null;
 
-    this.citasService.crearCita(citaLimpia).subscribe({
-      next: () => {
-        alert('¡Cita agendada exitosamente!');
-        this.router.navigate(['/appointments/mis-citas']);
-      },
-      error: (err: any) => {
-        console.error('Error al agendar cita:', err);
-        this.error = err.error?.message || 'No se pudo agendar la cita';
-        this.cargando = false;
-      },
-    });
-  }
+  // Creamos copia limpia del objeto cita
+  const citaLimpia: CrearCitaRequest = {
+    ...this.cita,
+    userIdUser: userId, // null si no hay veterinario
+  };
 
-  // ==================== CANCELAR / IR A DASHBOARD ====================
+  console.log('📤 Datos a enviar:', citaLimpia);
+
+  this.citasService.crearCita(citaLimpia).subscribe({
+    next: (response) => {
+      console.log('✅ Cita agendada exitosamente:', response);
+      alert('¡Cita agendada exitosamente!');
+      this.router.navigate(['/appointments/mis-citas']);
+    },
+    error: (error) => {
+      console.error('❌ Error al agendar cita:', error);
+      this.error = error.error?.message || 'No se pudo agendar la cita. Intenta nuevamente.';
+      this.cargando = false;
+    },
+  });
+}
+
+
   cancelar() {
     if (confirm('¿Estás seguro de cancelar? Se perderán los datos ingresados.')) {
       this.router.navigate(['/dashboard']);
     }
   }
 
+  // Función para el botón "Cancelar y volver" (compatibilidad con diseño anterior)
   irAlInicio(): void {
     this.router.navigate(['/dashboard']);
   }

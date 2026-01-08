@@ -1,9 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router'; 
 import { ServicioVeterinarioService } from '../../core/services/servicio-veterinario';
 import { NotificacionesService, Notificacion } from '../../core/services/notificaciones.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit {
   
   servicios: any[] = [];
   isLoading: boolean = true;
@@ -22,8 +21,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   notificacionSeleccionada: Notificacion | null = null;
   mostrarModalDetalle = false;
   isLoadingNotificaciones = false;
-  
-  private subscription: Subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -35,16 +32,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargarServiciosDesdeBackend();
     this.cargarNotificaciones();
-    
-    const sub = this.notificacionesService.notificaciones$.subscribe(notificaciones => {
-      this.notificaciones = notificaciones;
-      this.cdr.detectChanges();
-    });
-    this.subscription.add(sub);
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   @HostListener('document:click', ['$event'])
@@ -81,36 +68,35 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   cargarNotificaciones(): void {
     this.isLoadingNotificaciones = true;
-    
-    // Timeout de seguridad
+
     const timeoutId = setTimeout(() => {
       if (this.isLoadingNotificaciones) {
         this.isLoadingNotificaciones = false;
       }
     }, 6000);
 
-    this.notificacionesService.obtenerTodas().subscribe({
-      next: () => {
+    this.notificacionesService.obtenerTodasNotificaciones().subscribe({
+      next: (notificaciones: Notificacion[]) => {
         clearTimeout(timeoutId);
+        this.notificaciones = notificaciones;
         this.isLoadingNotificaciones = false;
+        this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         clearTimeout(timeoutId);
         this.isLoadingNotificaciones = false;
-        // Solo log si no es un error esperado (timeout, 404 o 0)
-        if (err.name !== 'TimeoutError' && err.status !== 404 && err.status !== 0) {
-          console.error('Error al cargar notificaciones en dashboard:', err);
-        }
+        console.error('Error al cargar notificaciones en dashboard:', err);
       }
     });
   }
 
+  // Getters para trabajar con el array cargado
   get notificacionesNoLeidas(): Notificacion[] {
-    return this.notificacionesService.obtenerNoLeidas();
+    return this.notificaciones.filter(n => !n.leida);
   }
 
   get notificacionesLeidas(): Notificacion[] {
-    return this.notificacionesService.obtenerLeidas().slice(0, 3);
+    return this.notificaciones.filter(n => n.leida).slice(0, 3);
   }
 
   toggleNotificaciones(): void {

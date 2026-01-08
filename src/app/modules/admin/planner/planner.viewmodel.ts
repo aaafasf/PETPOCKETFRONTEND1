@@ -1,4 +1,5 @@
 import { AppointmentStatus } from "../../../core/models/appointment.model";
+import { mapAppointmentToPlannerVM } from "./planner.mapper";
 
 export interface PlannerAppointmentVM {
 

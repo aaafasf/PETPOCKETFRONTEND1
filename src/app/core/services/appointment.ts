@@ -30,16 +30,25 @@ export class AppointmentService {
      ===================================================== */
   getAppointmentsByDate(date: string | Date): void {
 
-    this.http.get<any[]>(`${this.apiUrl}/lista`).pipe(
+  const fecha =
+    typeof date === 'string'
+      ? date
+      : date.toISOString().split('T')[0];
+
+  console.log('📡 Llamando agenda por fecha:', fecha);
+
+  this.http
+    .get<any[]>(`${this.apiUrl}/agenda/${fecha}`)
+    .pipe(
       map(data => this.mapBackendAppointments(data)),
-      tap(data => console.log('📦 CITAS RAW BACKEND →', data))
-    ).subscribe({
-      next: appointments => 
-        
-        this.appointmentsSubject.next(appointments),
-      error: err => console.error('❌ Error cargando citas:', err)
+      tap(data => console.log('📥 AGENDA BACKEND →', data))
+    )
+    .subscribe({
+      next: appointments => this.appointmentsSubject.next(appointments),
+      error: err => console.error('❌ Error agenda:', err)
     });
-  }
+}
+
 
   /* =====================================================
      2️⃣ CREATE – Crear cita

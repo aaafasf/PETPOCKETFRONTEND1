@@ -8,6 +8,8 @@ import { AppointmentService } from '../../../core/services/appointment';
 import { map } from 'rxjs';
 import { ClienteService, ClienteDto } from '../../../core/services/cliente.service';
 import { MascotaService, MascotaDto } from '../../../core/services/mascota.service';
+import { ClinicService } from '../../../core/services/clinic-service';
+
 
 /**
  MODELO LOCAL SOLO PARA EL FORMULARIO
@@ -48,48 +50,69 @@ export class FormManual implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Input() appointmentId: number | null = null;
 
-  constructor(private fb: FormBuilder, private appointmentService: AppointmentService) { }
+  constructor(
+  private fb: FormBuilder,
+  private appointmentService: AppointmentService,
+  private clienteService: ClienteService,
+  private mascotaService: MascotaService,
+  private clinicService: ClinicService
+) {}
 
   ngOnInit(): void {
-    this.initForm();
+  this.initForm();
 
-    if (this.appointmentId) {
-      this.appointmentService.appointments$
-        .pipe(
-          map(list => list.find(a => a.idCita === this.appointmentId))
-        )
-        .subscribe(appt => {
-          if (!appt) return;
+  // 👤 CLIENTES
+  this.clienteService.getAll().subscribe(data => {
+    console.log('👤 Clientes cargados:', data);
+      this.clientes = data;
+  });
 
-          this.appointmentForm.patchValue({
-            idCita: appt.idCita,
-            idCliente: appt.idCliente,
-            idMascota: appt.idMascota,
-            idServicio: appt.idServicio,
-            userIdUser: appt.userIdUser,
+  // 🐶 MASCOTAS (todas por ahora)
+  this.mascotaService.getAll().subscribe(data => {
+    console.log('🐶 Mascotas cargadas:', data);
+    this.mascotas = data;
+  });
+
+  this.clinicService.getVeterinarians().subscribe(data => {
+  console.log('🧑‍⚕️ Veterinarios cargados:', data);
+  this.veterinarians = data; // ya está mapeado {id, name, specialty}
+  
+});
 
 
-            fecha: appt.fecha,
-            hora: appt.hora,
-            estadoCita: appt.estadoCita,
-            motivo: appt.motivo
-          });
+  // ✏️ EDICIÓN (esto ya lo tenías, se queda igual)
+  if (this.appointmentId) {
+    this.appointmentService.appointments$
+      .pipe(map(list => list.find(a => a.idCita === this.appointmentId)))
+      .subscribe(appt => {
+        if (!appt) return;
+
+        this.appointmentForm.patchValue({
+          idCita: appt.idCita,
+          idCliente: appt.idCliente,
+          idMascota: appt.idMascota,
+          idServicio: appt.idServicio,
+          userIdUser: appt.userIdUser,
+          fecha: appt.fecha,
+          hora: appt.hora,
+          estadoCita: appt.estadoCita,
+          motivo: appt.motivo
         });
-    }
+      });
   }
+}
 
   private initForm(): void {
     this.appointmentForm = this.fb.group({
-      idCita: [null],
-      idCliente: [null, Validators.required],
-      idMascota: [null, Validators.required],
-      idServicio: [null, Validators.required],
-      userIdUser: [null, Validators.required],
-      fecha: ['', Validators.required],
-      hora: ['', Validators.required],
-      estadoCita: ['programada', Validators.required],
-      motivo: ['']
-    });
+  idCliente: [null, Validators.required],
+  idMascota: [null, Validators.required],
+  userIdUser: [null, Validators.required],  // veterinario
+  idServicio: [null, Validators.required],
+  fecha: [new Date().toISOString().substring(0,10), Validators.required],
+  hora: [null, Validators.required],
+  estadoCita: ['programada', Validators.required],
+  motivo: ['']
+});
 
   }
 
