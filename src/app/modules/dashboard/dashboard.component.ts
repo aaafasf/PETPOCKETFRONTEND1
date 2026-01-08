@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, RouterLink } from '@angular/router'; 
+import { Router, RouterModule } from '@angular/router'; 
 import { ServicioVeterinarioService } from '../../core/services/servicio-veterinario';
 import { NotificacionesService, Notificacion } from '../../core/services/notificaciones.service';
 import { Subscription } from 'rxjs';
@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink], 
+  imports: [CommonModule, RouterModule], 
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -16,11 +16,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   
   servicios: any[] = [];
   isLoading: boolean = true;
+  
+  notificaciones: Notificacion[] = [];
   mostrarNotificaciones = false;
   notificacionSeleccionada: Notificacion | null = null;
   mostrarModalDetalle = false;
-  notificaciones: Notificacion[] = [];
-  private subscription?: Subscription;
+  isLoadingNotificaciones = false;
+  
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -31,16 +34,75 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.cargarServiciosDesdeBackend();
-    // Suscribirse a las actualizaciones del servicio
-    this.subscription = this.notificacionesService.notificaciones$.subscribe(
-      notificaciones => {
-        this.notificaciones = notificaciones;
-      }
-    );
+    this.cargarNotificaciones();
+    
+    const sub = this.notificacionesService.notificaciones$.subscribe(notificaciones => {
+      this.notificaciones = notificaciones;
+      this.cdr.detectChanges();
+    });
+    this.subscription.add(sub);
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.subscription.unsubscribe();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.notification-dropdown') && !target.closest('.notification-button')) {
+      this.mostrarNotificaciones = false;
+    }
+  }
+
+  cargarServiciosDesdeBackend(): void {
+    this.isLoading = true;
+    this.apiService.getServicios().subscribe({
+      next: (data: any) => {
+        this.servicios = data.map((s: any) => ({
+          idServicio: s.idServicio,
+          nombreServicio: s.nombreServicio,
+          descripcionServicio: s.descripcionServicio,
+          precioServicio: s.precioServicio,
+          imagen: s.imagen ? 'servicios/' + s.imagen : null,
+          color: s.color || 'border-blue-400',
+          icon: s.icon || '🩺'
+        }));
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        this.isLoading = false;
+        console.error('Error al conectar con el servidor:', err);
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  cargarNotificaciones(): void {
+    this.isLoadingNotificaciones = true;
+    
+    // Timeout de seguridad
+    const timeoutId = setTimeout(() => {
+      if (this.isLoadingNotificaciones) {
+        this.isLoadingNotificaciones = false;
+      }
+    }, 6000);
+
+    this.notificacionesService.obtenerTodas().subscribe({
+      next: () => {
+        clearTimeout(timeoutId);
+        this.isLoadingNotificaciones = false;
+      },
+      error: (err) => {
+        clearTimeout(timeoutId);
+        this.isLoadingNotificaciones = false;
+        // Solo log si no es un error esperado (timeout, 404 o 0)
+        if (err.name !== 'TimeoutError' && err.status !== 404 && err.status !== 0) {
+          console.error('Error al cargar notificaciones en dashboard:', err);
+        }
+      }
+    });
   }
 
   get notificacionesNoLeidas(): Notificacion[] {
@@ -48,68 +110,45 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   get notificacionesLeidas(): Notificacion[] {
-    return this.notificacionesService.obtenerLeidas();
+    return this.notificacionesService.obtenerLeidas().slice(0, 3);
   }
 
-  toggleNotificaciones() {
+  toggleNotificaciones(): void {
     this.mostrarNotificaciones = !this.mostrarNotificaciones;
-  }
-
-  // Cerrar dropdown al hacer clic fuera
-  onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.relative')) {
-      this.mostrarNotificaciones = false;
+    if (this.mostrarNotificaciones && this.notificaciones.length === 0) {
+      this.cargarNotificaciones();
     }
   }
 
-  verDetalle(notificacion: Notificacion) {
+  verDetalle(notificacion: Notificacion): void {
     this.notificacionSeleccionada = notificacion;
     this.mostrarModalDetalle = true;
     this.mostrarNotificaciones = false;
   }
 
-  cerrarModalDetalle() {
+  cerrarModalDetalle(): void {
     this.mostrarModalDetalle = false;
     this.notificacionSeleccionada = null;
   }
 
-  marcarComoLeida() {
-    if (this.notificacionSeleccionada) {
-      this.notificacionesService.marcarComoLeida(this.notificacionSeleccionada.id);
-    }
+  marcarComoLeida(): void {
+    if (!this.notificacionSeleccionada?.id) return;
+
+    this.notificacionesService.marcarComoLeida(this.notificacionSeleccionada.id).subscribe({
+      next: () => {
+        // El servicio ya actualiza el estado automáticamente
+      },
+      error: (err) => {
+        console.error('Error al marcar como leída:', err);
+        alert('⚠️ No se pudo marcar como leída. Por favor, intenta nuevamente.');
+      }
+    });
   }
 
-  verTodasLasNotificaciones() {
+  verTodasLasNotificaciones(): void {
     this.router.navigate(['/notifications']);
     this.mostrarNotificaciones = false;
   }
-
-  cargarServiciosDesdeBackend(): void {
-  this.isLoading = true;
-  this.apiService.getServicios().subscribe({
-    next: (data: any) => {
-      // Mapeo correcto para que HTML funcione
-      this.servicios = data.map((s: any) => ({
-        idServicio: s.idServicio,
-        nombreServicio: s.nombreServicio,
-        descripcionServicio: s.descripcionServicio,
-        precioServicio: s.precioServicio,
-        imagen: s.imagen ? 'servicios/' + s.imagen : null,
-        color: s.color || 'border-blue-400',
-        icon: s.icon || '🩺'
-      }));
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    },
-    error: (err: any) => {
-      this.isLoading = false;
-      console.error('Error al conectar con el servidor:', err);
-      this.cdr.detectChanges();
-    }
-  });
-}
-
 
   agendarCita(servicioId: number): void {
     if (!servicioId) return;
@@ -117,5 +156,3 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/appointments'], { queryParams: { id: servicioId } });
   }
 }
-
-  

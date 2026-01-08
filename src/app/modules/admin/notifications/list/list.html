@@ -1,0 +1,104 @@
+<div class="p-6 bg-gray-50 min-h-screen">
+  <div class="max-w-7xl mx-auto">
+    <!-- HEADER -->
+    <div class="bg-white h-20 border-b flex items-center justify-between px-8 mb-6 rounded-lg shadow-sm">
+      <div>
+        <h2 class="text-xl font-black text-gray-800">Gestión de Notificaciones</h2>
+        <p class="text-sm text-gray-500">Admin > Notificaciones > Lista</p>
+      </div>
+      <button class="p-2 text-gray-400 hover:text-[#F27438] transition-colors" routerLink="/admin/dashboard">
+        <span class="text-2xl">🏠</span>
+      </button>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Gestión de Notificaciones</h1>
+        <div class="space-x-2">
+          <p-button
+            label="Crear Notificación"
+            icon="pi pi-plus"
+            (onClick)="createNotification()"
+            styleClass="p-button-primary">
+          </p-button>
+          <p-button
+            label="Enviar Campaña"
+            icon="pi pi-send"
+            (onClick)="sendCampaign()"
+            styleClass="p-button-success">
+          </p-button>
+        </div>
+      </div>
+
+      <p-table
+        [value]="notificaciones"
+        [loading]="loading"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} notificaciones"
+        [rowsPerPageOptions]="[5, 10, 25]"
+        styleClass="p-datatable-striped"
+        responsiveLayout="scroll">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Título</th>
+            <th>Mensaje</th>
+            <th>Tipo</th>
+            <th>Fecha Programada</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-notificacion>
+          <tr class="hover:bg-gray-50 transition-colors duration-200">
+            <td class="font-medium">{{ notificacion.titulo }}</td>
+            <td class="max-w-xs truncate" title="{{ notificacion.mensaje }}">{{ notificacion.mensaje }}</td>
+            <td>
+              <p-tag
+                [value]="notificacion.tipo"
+                [severity]="getSeverity(notificacion.tipo)">
+              </p-tag>
+            </td>
+            <td>{{ notificacion.fechaProgramada | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              <p-tag
+                [value]="notificacion.leida ? 'Enviada' : 'Pendiente'"
+                [severity]="notificacion.leida ? 'success' : 'warn'">
+              </p-tag>
+            </td>
+            <td>
+              <div class="flex space-x-2">
+                <p-button
+                  icon="pi pi-pencil"
+                  styleClass="p-button-rounded p-button-warning p-button-text"
+                  (onClick)="editNotification(notificacion)"
+                  pTooltip="Editar">
+                </p-button>
+                <p-button
+                  icon="pi pi-trash"
+                  styleClass="p-button-rounded p-button-danger p-button-text"
+                  (onClick)="deleteNotification(notificacion)"
+                  pTooltip="Eliminar">
+                </p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6" class="text-center py-8 text-gray-500">
+              No hay notificaciones disponibles
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>

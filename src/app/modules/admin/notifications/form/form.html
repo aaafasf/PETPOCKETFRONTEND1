@@ -1,0 +1,110 @@
+<div class="p-6 bg-gray-50 min-h-screen">
+  <div class="max-w-4xl mx-auto">
+    <!-- HEADER -->
+    <div class="bg-white h-20 border-b flex items-center justify-between px-8 mb-6 rounded-lg shadow-sm">
+      <div>
+        <h2 class="text-xl font-black text-gray-800">{{ isEdit ? 'Editar Notificación' : 'Crear Notificación' }}</h2>
+        <p class="text-sm text-gray-500">Admin > Notificaciones > {{ isEdit ? 'Editar' : 'Crear' }}</p>
+      </div>
+      <button class="p-2 text-gray-400 hover:text-[#F27438] transition-colors" routerLink="/admin/notifications/list">
+        <span class="text-2xl">⬅️</span>
+      </button>
+    </div>
+
+    <p-card header="{{ isEdit ? 'Editar Notificación' : 'Crear Nueva Notificación' }}" styleClass="shadow-lg">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="md:col-span-2">
+            <label for="titulo" class="block text-sm font-medium text-gray-700 mb-2">Título *</label>
+            <input
+              pInputText
+              id="titulo"
+              formControlName="titulo"
+              placeholder="Ej: Recordatorio de vacuna anual"
+              class="w-full"
+              [class.ng-invalid]="form.get('titulo')?.invalid && form.get('titulo')?.touched">
+            <small class="text-red-500" *ngIf="form.get('titulo')?.invalid && form.get('titulo')?.touched">
+              El título es requerido y debe tener al menos 3 caracteres
+            </small>
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="mensaje" class="block text-sm font-medium text-gray-700 mb-2">Mensaje *</label>
+            <textarea
+              pInputTextarea
+              id="mensaje"
+              formControlName="mensaje"
+              rows="4"
+              placeholder="Describe el contenido de la notificación..."
+              class="w-full"
+              [class.ng-invalid]="form.get('mensaje')?.invalid && form.get('mensaje')?.touched">
+            </textarea>
+            <small class="text-red-500" *ngIf="form.get('mensaje')?.invalid && form.get('mensaje')?.touched">
+              El mensaje es requerido y debe tener al menos 10 caracteres
+            </small>
+          </div>
+
+          <div>
+            <label for="tipo" class="block text-sm font-medium text-gray-700 mb-2">Tipo *</label>
+            <p-select
+              id="tipo"
+              formControlName="tipo"
+              [options]="tipos"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Selecciona el tipo"
+              class="w-full">
+            </p-select>
+          </div>
+
+          <div>
+            <label for="fechaProgramada" class="block text-sm font-medium text-gray-700 mb-2">Fecha Programada</label>
+            <p-datepicker
+              id="fechaProgramada"
+              formControlName="fechaProgramada"
+              dateFormat="dd/mm/yy"
+              [showTime]="true"
+              hourFormat="24"
+              placeholder="Selecciona fecha y hora"
+              class="w-full">
+            </p-datepicker>
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="mesesProgramacion" class="block text-sm font-medium text-gray-700 mb-2">
+              Meses de Programación (opcional)
+            </label>
+            <input
+              pInputText
+              id="mesesProgramacion"
+              type="number"
+              formControlName="mesesProgramacion"
+              placeholder="Ej: 12 para anual"
+              class="w-full">
+            <small class="text-gray-500">Número de meses para repetir la notificación automáticamente</small>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-4 pt-6 border-t">
+          <p-button
+            label="Cancelar"
+            icon="pi pi-times"
+            type="button"
+            styleClass="p-button-secondary"
+            (onClick)="cancel()">
+          </p-button>
+          <p-button
+            label="{{ isEdit ? 'Actualizar' : 'Crear' }} Notificación"
+            icon="pi pi-check"
+            type="submit"
+            styleClass="p-button-primary"
+            [loading]="loading"
+            [disabled]="form.invalid">
+          </p-button>
+        </div>
+      </form>
+    </p-card>
+  </div>
+</div>
+
+<p-toast></p-toast>

@@ -11,6 +11,8 @@ import { LoginComponent } from './modules/auth/login/login.component';
 import { RegisterComponent } from './modules/auth/register/register.component';
 import { AppointmentsComponent } from './modules/appointments/appointments.component';
 import { NotificationsComponent } from './modules/notifications/notifications.component';
+import { Planner } from './modules/admin/planner/planner';
+import { Agenda } from './modules/admin/agenda/agenda';
 
 // ===================
 // ADMIN - USER (CLEAN)
@@ -18,7 +20,7 @@ import { NotificationsComponent } from './modules/notifications/notifications.co
 import { CreateUserPage } from './modules/admin/user/pages/create-user/create-user';
 import { UserListPage } from './modules/admin/user/pages/user-list/user-list.page';
 import { ResetPasswordPage } from './modules/admin/user/pages/reset-password/reset-password.page';
-import { NOTIFICATIONS_ROUTES } from './modules/notification/notifications/notification.routes';
+
 
 export const routes: Routes = [
 
@@ -70,7 +72,7 @@ export const routes: Routes = [
     component: NotificationsComponent,
   },
 
-  { path: 'notificaciones', children: NOTIFICATIONS_ROUTES },
+  
 
 
   // ===================
@@ -103,15 +105,15 @@ export const routes: Routes = [
   {
     path: 'admin/configuracion',
     loadComponent: () =>
-      import('./modules/admin/configuracion/configuracion.component')
-        .then(m => m.ConfiguracionComponent),
+        import('./modules/admin/configuracion/configuracion.component')
+            .then(m => m.ConfiguracionComponent),
+    runGuardsAndResolvers: 'always'
+  },
+  {
+    path: 'admin/notifications',
+    loadChildren: () =>
+      import('./modules/admin/notifications/notifications-module')
+        .then(m => m.NotificationsModule)
   },
 
-  // ===================
-  // FALLBACK
-  // ===================
-  {
-    path: '**',
-    redirectTo: 'dashboard',
-  },
 ];

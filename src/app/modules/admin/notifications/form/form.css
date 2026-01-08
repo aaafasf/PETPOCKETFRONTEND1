@@ -1,0 +1,44 @@
+/* Animaciones para el formulario */
+.p-card {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Estilos para inputs */
+.p-inputtext, .p-inputtextarea, .p-calendar, .p-dropdown {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.p-inputtext:focus, .p-inputtextarea:focus, .p-calendar:focus, .p-dropdown:focus {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+}
+
+/* Animación para botones */
+.p-button {
+  transition: all 0.2s ease;
+}
+
+.p-button:hover:not(.p-disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para validación */
+.ng-invalid.ng-touched {
+  border-color: #ef4444 !important;
+}
+
+.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+}

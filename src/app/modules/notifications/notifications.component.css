@@ -1,62 +1,40 @@
-/* Animaciones para la modal */
 .modal-backdrop {
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.3s ease-in-out;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.2s ease-out;
 }
 
 .modal-content {
-  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideUp 0.3s ease-out;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    backdrop-filter: blur(0px);
   }
   to {
     opacity: 1;
-    backdrop-filter: blur(4px);
   }
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-/* Hover effects para las notificaciones */
-.notification-card {
-  transition: all 0.2s ease-in-out;
-}
-
-.notification-card:hover {
-  transform: translateY(-2px);
-}
-
-/* Animación para el badge de tipo */
-.tipo-badge {
-  transition: all 0.2s ease-in-out;
-}
-
-/* Smooth scroll */
-.overflow-y-auto {
-  scrollbar-width: thin;
-  scrollbar-color: #F27438 #f3f4f6;
-}
-
+/* Scrollbar personalizado */
 .overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: #f3f4f6;
+  background: #f1f1f1;
   border-radius: 10px;
 }
 
@@ -66,10 +44,9 @@
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #e55a1f;
+  background: #e0632e;
 }
 
-/* Line clamp utility */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -77,3 +54,39 @@
   overflow: hidden;
 }
 
+/* Animaciones mejoradas para las tarjetas */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bg-gradient-to-r {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Efectos hover mejorados */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Estilos para el estado vacío */
+.bg-gray-100 {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .8;
+  }
+}

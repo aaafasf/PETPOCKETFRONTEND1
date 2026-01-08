@@ -1,0 +1,34 @@
+/* Animaciones para la tabla */
+.p-datatable-tbody > tr {
+  transition: all 0.3s ease;
+}
+
+.p-datatable-tbody > tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Animación para botones */
+.p-button {
+  transition: all 0.2s ease;
+}
+
+.p-button:hover {
+  transform: scale(1.05);
+}
+
+/* Estilos para el header */
+.bg-white {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

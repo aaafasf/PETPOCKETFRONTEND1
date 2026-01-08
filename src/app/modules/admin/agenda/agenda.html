@@ -1,0 +1,162 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <div class="p-6">
+      <img src="assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
+      <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
+    </div>
+
+    <nav class="flex-1 px-4 space-y-2">
+      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📊</span> Dashboard
+      </a>
+      <a routerLink="/admin/agenda" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📅</span> Agenda
+      </a>
+      <a routerLink="/admin/planner" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📋</span> Panel
+      </a>
+      <a routerLink="/admin/servicios" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">🩺</span> Servicios
+      </a>
+      <a routerLink="/admin/configuracion" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">⚙️</span> Configuración
+      </a>
+    </nav>
+
+    <div class="p-6">
+      <img src="assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
+    </div>
+  </aside>
+
+  <main class="flex-1 flex flex-col overflow-hidden">
+
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
+      <h2 class="text-xl font-black text-gray-800">Agenda Médica</h2>
+      <div class="flex items-center space-x-6">
+        <div class="flex items-center space-x-3">
+          <span class="text-sm font-bold text-gray-600">Admin</span>
+          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">A
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
+
+      <div class="agenda-view">
+
+        <header class="agenda-header mb-8 flex items-center justify-between">
+          <div class="title-section">
+            <p class="date-subtitle text-gray-500 font-bold text-lg capitalize">
+              {{ todayStr | date:'EEEE, d MMMM, y' }}
+            </p>
+          </div>
+
+          <div class="summary-badge bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-100 flex items-center gap-2">
+            <span class="badge-count text-[#F27438] font-black text-xl">
+              {{ (appointments$ | async)?.length ?? 0 }}
+            </span>
+            <span class="badge-label text-xs font-bold text-gray-400 uppercase">Pacientes Hoy</span>
+          </div>
+        </header>
+
+        <main class="timeline-container">
+
+          @let appointments = (appointments$ | async);
+
+          @if (appointments) {
+
+            @for (appt of appointments; track appt.idCita) {
+
+              <div class="timeline-item mb-6" [ngClass]="appt.estadoCita">
+
+                <div class="time-marker">
+                  <span class="start-time">{{ appt.hora }}</span>
+                  <div class="line"></div>
+                </div>
+
+                <div class="appointment-card" [ngClass]="'border-' + appt.estadoCita">
+
+                  <div class="card-content">
+
+                    <div class="patient-header">
+                      <div>
+                        <h3 class="patient-name">{{ appt.nombreMascota }}</h3>
+                        <span class="owner-name">
+                          Propietario: <strong>{{ appt.nombreCliente }}</strong>
+                        </span>
+                      </div>
+
+                      <span [class]="getStatusClass(appt.estadoCita) + ' status-pill'">
+                        {{ appt.estadoLabel }}
+                      </span>
+                    </div>
+
+                    <div class="service-detail">
+                      <div class="service-tag">
+                        <span class="icon">🩺</span>
+                        <span>{{ appt.serviceName }}</span>
+                      </div>
+                      <p class="reason-text">
+                        "{{ appt.motivo || 'Sin motivo especificado' }}"
+                      </p>
+                    </div>
+
+                    <div class="card-footer">
+
+                      @if (appt.estadoCita === Status.PROGRAMADA) {
+                        <button class="btn-action btn-start" (click)="onChangeStatus(appt.idCita, Status.CONFIRMADA)">
+                          ▶ Iniciar Consulta
+                        </button>
+                      }
+
+                      @if (appt.estadoCita === Status.CONFIRMADA) {
+                        <button class="btn-action btn-complete"
+                          (click)="onChangeStatus(appt.idCita, Status.COMPLETADA)">
+                          ✓ Finalizar Consulta
+                        </button>
+                      }
+
+                      @if (appt.estadoCita === Status.COMPLETADA) {
+                        <div class="completed-info">
+                          <span class="check-icon">✅</span>
+                          <span class="completed-text">Consulta Finalizada</span>
+                        </div>
+                      }
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            @if (appointments.length === 0) {
+              <div class="empty-state text-center py-10">
+                <div class="empty-icon text-4xl mb-2">🗓️</div>
+                <p class="text-gray-400 font-bold">No tienes pacientes agendados para hoy.</p>
+              </div>
+            }
+
+          } @else {
+            <div class="loader-container text-center py-10">
+              <div class="spinner inline-block w-8 h-8 border-4 border-orange-200 border-t-[#F27438] rounded-full animate-spin mb-2"></div>
+              <p class="text-gray-400 font-bold">Cargando agenda...</p>
+            </div>
+          }
+
+        </main>
+      </div>
+    </div>
+  </main>
+</div>

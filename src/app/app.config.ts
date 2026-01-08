@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http'; // 1. Importamos el proveedor HTTP
 
@@ -6,7 +6,7 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 
 import { routes } from './app.routes';
-import { LOCALE_ID } from '@angular/core';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
