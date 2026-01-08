@@ -28,6 +28,16 @@ export class UserListPage implements OnInit {
     this.getUserUseCase = new GetUserUseCase(this.userRepository);
     this.deleteUserUseCase = new DeleteUserUseCase(this.userRepository);
   }
+  // Dentro de tu export class UserListPage
+
+toggleStatus(event: Event, user: any) {
+  event.stopPropagation(); // Evita que se dispare el click de la tarjeta
+  
+  // Cambiamos el estado (true/false)
+  user.desactivado = !user.desactivado;
+  
+  console.log(`Estado de ${user.nameUsers}: ${user.desactivado ? 'Inactivo' : 'Activo'}`);
+}
 
   ngOnInit(): void {
     this.loadUsers();
