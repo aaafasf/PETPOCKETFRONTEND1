@@ -27,6 +27,20 @@
        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
       <span class="mr-3">⚙️</span> Configuración
     </a>
+    
+    <a routerLink="/admin/users/create" 
+       routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
+       [routerLinkActiveOptions]="{ exact: true }" 
+       class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+      <span class="mr-3">➕</span> Registro de usuario
+    </a>
+      
+    <a routerLink="/admin/users" 
+       routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
+       [routerLinkActiveOptions]="{ exact: true }" 
+       class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+      <span class="mr-3">👥</span> Usuarios registrados
+    </a>
   </nav>
 
   <div class="p-6">

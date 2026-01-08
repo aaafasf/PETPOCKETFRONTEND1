@@ -1,0 +1,135 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+  <!-- SIDEBAR -->
+<aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+  <div class="p-6">
+    <img src="/assets/img/logo-circular.png" class="w-28 mx-auto" />
+    <p class="text-center text-xs font-bold text-gray-400 mt-2">
+      ADMIN PANEL
+    </p>
+  </div>
+
+  <nav class="flex-1 px-4 space-y-2">
+    <a
+      routerLink="/admin/dashboard"
+      routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+    >
+      <span class="mr-3">📊</span> Dashboard
+    </a>
+
+    <a
+      routerLink="/admin/servicios"
+      routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+    >
+      <span class="mr-3">🩺</span> Servicios
+    </a>
+
+    <a
+      routerLink="/admin/configuracion"
+      routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+    >
+      <span class="mr-3">⚙️</span> Configuración
+    </a>
+
+    <a
+      routerLink="/admin/users/create"
+      routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+    >
+      <span class="mr-3">➕</span> Registro de usuario
+    </a>
+
+    <a
+      routerLink="/admin/users"
+      routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+    >
+      <span class="mr-3">👥</span> Usuarios registrados
+    </a>
+  </nav>
+
+  <div class="p-6">
+    <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30" />
+  </div>
+</aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <!-- HEADER -->
+    <header
+      class="bg-white h-20 border-b flex items-center justify-between px-8"
+    >
+      <h2 class="text-xl font-black text-gray-800">
+        Usuarios Registrados
+      </h2>
+
+      <span class="text-sm font-bold text-gray-600">Admin</span>
+    </header>
+
+    <!-- CONTENT -->
+    <div class= "p-8">
+      <h1 class="text-2xl font-bold mb-6">Usuarios registrados</h1>
+
+      <p class="text-red-600 mb-4">
+        DEBUG: {{ users.length }} usuarios
+      </p>
+
+      <div class="grid gap-4">
+  <div
+    *ngFor="let user of users"
+    class="card p-4 border cursor-pointer"
+    (click)="selectUser(user)"
+    [class.selected]="selectedUser?.idUser === user.idUser"
+  >
+    <h3 class="font-bold">
+      {{ user.nameUsers }}
+    </h3>
+
+    <div
+      *ngIf="selectedUser?.idUser === user.idUser"
+      class="mt-3"
+    >
+     <p>
+        <strong>ID:</strong>
+        {{ user.adjustedId }} 
+      </p>
+
+      <p>
+        <strong>Email:</strong>
+        {{ user.emailUser || 'No registrado' }}
+      </p>
+
+      <p>
+        <strong>Cédula:</strong>
+        {{ user.userName || 'No registrado' }} <!-- Cédula -->
+      </p>
+
+      <p>
+        <strong>Contraseña:</strong>
+        {{ getAsterisks(user.passwordUser)|| 'No disponible' }} <!-- Contraseña -->
+      </p>
+     
+      <div class="mt-3 flex gap-2">
+        <button
+          class="btn-primary" 
+          (click)="goToResetPassword($event, user.idUser)">
+          Restablecer contraseña
+        </button>
+
+        <button
+          class="btn-danger"
+          (click)="onDeleteClick($event, user)"
+        >
+          Eliminar usuario
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
