@@ -105,6 +105,18 @@ export const routes: Routes = [
             .then(m => m.ConfiguracionComponent),
     runGuardsAndResolvers: 'always'
 },
+{
+  path: 'admin/planner',
+  loadComponent: () =>
+    import('./modules/admin/planner/planner')
+      .then(m => m.Planner),
+},
+{
+  path: 'admin/agenda',
+  loadComponent: () =>
+    import('./modules/admin/agenda/agenda')
+      .then(m => m.Agenda),
+}
 
 
 ];
