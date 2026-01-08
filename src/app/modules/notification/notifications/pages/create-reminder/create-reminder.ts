@@ -4,11 +4,12 @@ import { ScheduleReminderUseCase } from '../../../../../core/use-cases/schedule-
 import { NotificationForm } from '../../components/notification-form/notification-form';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-create-reminder',
-  imports: [NotificationForm, ToastModule],
+  imports: [NotificationForm, ToastModule, RouterLink],
   providers: [MessageService],
   templateUrl: './create-reminder.html',
   styleUrl: './create-reminder.css',

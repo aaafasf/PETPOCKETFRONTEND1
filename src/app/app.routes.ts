@@ -18,6 +18,7 @@ import { NotificationsComponent } from './modules/notifications/notifications.co
 import { CreateUserPage } from './modules/admin/user/pages/create-user/create-user';
 import { UserListPage } from './modules/admin/user/pages/user-list/user-list.page';
 import { ResetPasswordPage } from './modules/admin/user/pages/reset-password/reset-password.page';
+import { NOTIFICATIONS_ROUTES } from './modules/notification/notifications/notification.routes';
 
 export const routes: Routes = [
 
@@ -68,6 +69,9 @@ export const routes: Routes = [
     path: 'notifications',
     component: NotificationsComponent,
   },
+
+  { path: 'notificaciones', children: NOTIFICATIONS_ROUTES },
+
 
   // ===================
   // ADMIN - USERS ✅ (AQUÍ VA EL SIDEBAR)

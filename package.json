@@ -39,17 +39,10 @@
     "@angular/build": "^21.0.4",
     "@angular/cli": "^21.0.4",
     "@angular/compiler-cli": "^21.0.0",
-<<<<<<< HEAD
     "@tailwindcss/postcss": "^4.1.18",
     "autoprefixer": "^10.4.23",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.6",
-=======
-    "autoprefixer": "^10.4.23",
-    "jsdom": "^27.1.0",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17",
->>>>>>> 53b0b6643eab30609ccf83984531211c1c02a9ca
     "typescript": "~5.9.2",
     "vite": "^7.0.0",
     "vitest": "^4.0.8"

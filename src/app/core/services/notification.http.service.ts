@@ -14,11 +14,15 @@ export class NotificationHttpService implements NotificationRepository {
 
   // Obtener todas las notificaciones
   async getAll(): Promise<AppNotification[]> {
-    const res = await firstValueFrom(
-      this.http.get<AppNotification[]>(`${this.base}/lista`)
-    );
-    return res ?? [];
-  }
+  const res = await firstValueFrom(
+    this.http.get<any>(`${this.base}/lista`) // Usamos any para inspeccionar
+  );
+  console.log('Datos recibidos del servidor:', res); // <--- MIRA ESTO EN LA CONSOLA F12
+  
+  // Si el backend envía { success: true, data: [...] }, 
+  // entonces debes retornar res.data en lugar de res.
+  return Array.isArray(res) ? res : (res.data ?? []); 
+}
 
   // Obtener notificaciones por usuario (con estado opcional)
   async getByUser(idUsuario: number, estado?: string): Promise<AppNotification[]> {
@@ -87,4 +91,6 @@ export class NotificationHttpService implements NotificationRepository {
       this.http.put(`${this.base}/actualizar/${id}`, data)
     );
   }
+
+  
 }

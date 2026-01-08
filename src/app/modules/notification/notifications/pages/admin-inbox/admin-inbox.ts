@@ -9,13 +9,14 @@ import { AppNotification } from '../../../../../core/interfaces/notification.int
 import { ChangeDetectorRef } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-admin-inbox',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NotificationTable, ToastModule],
+  imports: [NotificationTable, ToastModule, RouterLink],
   providers: [MessageService],
   templateUrl: './admin-inbox.html',
   styleUrl: './admin-inbox.css',
