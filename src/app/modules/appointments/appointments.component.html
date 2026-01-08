@@ -1,16 +1,26 @@
 <div class="flex h-screen bg-gray-100 font-sans">
   <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
     <div class="p-6">
-      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-32 mx-auto">
+      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-32 mx-auto" />
     </div>
     <nav class="flex-1 px-4 space-y-2">
-      <a routerLink="/dashboard" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+      <a
+        routerLink="/dashboard"
+        class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition"
+      >
         <span class="mr-3">🏠</span> Inicio
       </a>
-      <a routerLink="/pets/register" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+      <a
+        routerLink="/pets/register"
+        class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition"
+      >
         <span class="mr-3">➕</span> Registrar Mascota
       </a>
-      <a routerLink="/appointments" routerLinkActive="bg-gray-100" class="flex items-center p-3 text-[#F27438] rounded-xl font-bold">
+      <a
+        routerLink="/appointments"
+        routerLinkActive="bg-gray-100"
+        class="flex items-center p-3 text-[#F27438] rounded-xl font-bold"
+      >
         <span class="mr-3">📅</span> Citas
       </a>
     </nav>
@@ -20,60 +30,273 @@
     <header class="bg-white h-20 border-b flex items-center justify-between px-8">
       <h2 class="text-xl font-bold text-gray-800">Agendar Cita Médica</h2>
       <div class="flex items-center space-x-4">
-        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600 border border-gray-300">J</div>
+        <div
+          class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600 border border-gray-300"
+        >
+          J
+        </div>
       </div>
     </header>
 
     <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
       <div class="max-w-2xl mx-auto bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
-        
-        <div class="mb-8 p-6 bg-orange-50 rounded-2xl border-l-8 border-[#F27438]">
-          <h3 class="text-sm font-bold text-[#F27438] uppercase tracking-wider">Servicio Seleccionado</h3>
-          <p class="text-2xl font-black text-gray-800">{{ nombreServicio }}</p>
-          <p class="text-gray-500 text-sm mt-1">ID de seguimiento: #0{{ servicioId }}</p>
+        <!-- Loader -->
+        <div *ngIf="cargando && mascotas.length === 0" class="text-center py-10">
+          <p class="text-gray-600">Cargando información...</p>
         </div>
 
-        <form class="space-y-6">
-          <div class="space-y-2">
-            <label class="block text-sm font-bold text-gray-600">Selecciona tu Mascota *</label>
-            <select class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition appearance-none">
-              <option value="">Selecciona una mascota</option>
-              <option value="1">Pelusa (Gato)</option>
-              <option value="2">Max (Perro)</option>
-            </select>
+        <!-- Formulario -->
+        <form *ngIf="!cargando || mascotas.length > 0" (ngSubmit)="agendarCita()" class="space-y-6">
+          <!-- Error general -->
+          <div
+            *ngIf="error"
+            class="p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg"
+          >
+            {{ error }}
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Servicio seleccionado (si viene desde el Dashboard) -->
+          <div
+            *ngIf="servicioId"
+            class="mb-8 p-6 bg-orange-50 rounded-2xl border-l-8 border-[#F27438]"
+          >
+            <h3 class="text-sm font-bold text-[#F27438] uppercase tracking-wider">
+              Servicio Seleccionado
+            </h3>
+            <p class="text-2xl font-black text-gray-800">{{ nombreServicio }}</p>
+            <p class="text-gray-500 text-sm mt-1">ID de seguimiento: #0{{ servicioId }}</p>
+          </div>
+
+          <!-- Sección 1: Información Básica -->
+          <div class="space-y-6">
+            <h3 class="text-lg font-bold text-gray-700 pb-2 border-b-2 border-[#F27438]">
+              Información Básica
+            </h3>
+
             <div class="space-y-2">
-              <label class="block text-sm font-bold text-gray-600">Fecha de la Cita *</label>
-              <input type="date" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition">
+              <label for="mascota" class="block text-sm font-bold text-gray-600">Mascota *</label>
+              <select
+                id="mascota"
+                [(ngModel)]="cita.idMascota"
+                name="mascota"
+                class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition appearance-none"
+                required
+              >
+                <option [value]="0">Selecciona una mascota</option>
+                <option *ngFor="let mascota of mascotas" [value]="mascota.idMascota">
+                  {{ mascota.nombre }} - {{ mascota.especie }}
+                  {{ mascota.raza ? '(' + mascota.raza + ')' : '' }}
+                </option>
+              </select>
             </div>
+
             <div class="space-y-2">
-              <label class="block text-sm font-bold text-gray-600">Hora preferida *</label>
-              <input type="time" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition">
+              <label for="servicio" class="block text-sm font-bold text-gray-600">Servicio *</label>
+              <select
+                id="servicio"
+                [(ngModel)]="cita.idServicio"
+                name="servicio"
+                class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition appearance-none"
+                required
+              >
+                <option [value]="0">Selecciona un servicio</option>
+                <option *ngFor="let servicio of servicios" [value]="servicio.idServicio">
+                  {{ servicio.nombre }}
+                  <span *ngIf="servicio.duracion"> - {{ servicio.duracion }} min</span>
+                </option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label for="fecha" class="block text-sm font-bold text-gray-600"
+                  >Fecha de la Cita *</label
+                >
+                <input
+                  type="date"
+                  id="fecha"
+                  [(ngModel)]="cita.fecha"
+                  name="fecha"
+                  [min]="fechaMinima"
+                  (change)="verificarDisponibilidad()"
+                  class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition"
+                  required
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label for="hora" class="block text-sm font-bold text-gray-600"
+                  >Hora preferida *</label
+                >
+                <input
+                  type="time"
+                  id="hora"
+                  [(ngModel)]="cita.hora"
+                  name="hora"
+                  (change)="verificarDisponibilidad()"
+                  class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Mensaje de disponibilidad -->
+            <div
+              *ngIf="verificandoDisponibilidad"
+              class="p-3 bg-orange-50 border border-orange-200 text-orange-700 rounded-xl text-sm"
+            >
+              Verificando disponibilidad...
+            </div>
+            <div
+              *ngIf="!verificandoDisponibilidad && mensajeDisponibilidad"
+              [class.bg-green-50]="disponible"
+              [class.border-green-200]="disponible"
+              [class.text-green-700]="disponible"
+              [class.bg-red-50]="!disponible"
+              [class.border-red-200]="!disponible"
+              [class.text-red-700]="!disponible"
+              class="p-3 border rounded-xl text-sm"
+            >
+              {{ mensajeDisponibilidad }}
+            </div>
+
+            <div class="space-y-2">
+              <label for="veterinario" class="block text-sm font-bold text-gray-600"
+                >Veterinario (opcional)</label
+              >
+              <select
+                id="veterinario"
+                [(ngModel)]="cita.userIdUser"
+                name="veterinario"
+                (change)="verificarDisponibilidad()"
+                class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition appearance-none"
+              >
+                <option [ngValue]="null">Sin preferencia</option>
+                <option *ngFor="let vet of veterinarios" [ngValue]="vet.idUser">
+                  {{ vet.nombre }}
+                  <span *ngIf="vet.especialidad"> - {{ vet.especialidad }}</span>
+                </option>
+              </select>
             </div>
           </div>
 
-          <div class="space-y-2">
-            <label class="block text-sm font-bold text-gray-600">Observaciones (Opcional)</label>
-            <textarea placeholder="Ej: Mi mascota está un poco nerviosa o tiene alergias..." 
-                      class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl h-32 outline-none focus:border-[#F27438] transition resize-none"></textarea>
+          <!-- Sección 2: Detalles Médicos -->
+          <div class="space-y-6 pt-4">
+            <h3 class="text-lg font-bold text-gray-700 pb-2 border-b-2 border-[#F27438]">
+              Detalles Médicos
+            </h3>
+
+            <div class="space-y-2">
+              <label for="motivo" class="block text-sm font-bold text-gray-600"
+                >Motivo de la Consulta</label
+              >
+              <textarea
+                id="motivo"
+                [(ngModel)]="cita.motivo"
+                name="motivo"
+                rows="3"
+                class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition resize-none"
+                placeholder="Describe brevemente el motivo de la consulta..."
+              ></textarea>
+            </div>
+
+            <div class="space-y-2">
+              <label for="sintomas" class="block text-sm font-bold text-gray-600">Síntomas</label>
+              <textarea
+                id="sintomas"
+                [(ngModel)]="cita.sintomas"
+                name="sintomas"
+                rows="3"
+                class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition resize-none"
+                placeholder="¿Qué síntomas presenta la mascota?"
+              ></textarea>
+            </div>
+
+            <div class="space-y-2">
+              <label for="diagnosticoPrevio" class="block text-sm font-bold text-gray-600"
+                >Diagnóstico Previo</label
+              >
+              <textarea
+                id="diagnosticoPrevio"
+                [(ngModel)]="cita.diagnosticoPrevio"
+                name="diagnosticoPrevio"
+                rows="2"
+                class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition resize-none"
+                placeholder="Si ya tiene un diagnóstico previo..."
+              ></textarea>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-600">Tratamientos Anteriores</label>
+              <div class="space-y-2 mb-3">
+                <div
+                  *ngFor="let trat of cita.tratamientosAnteriores; let i = index"
+                  class="flex justify-between items-center p-3 bg-gray-50 rounded-xl"
+                >
+                  <span class="text-gray-700">{{ trat }}</span>
+                  <button
+                    type="button"
+                    (click)="eliminarTratamiento(i)"
+                    class="text-[#F27438] hover:text-[#e96a10] font-bold text-lg"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <input
+                  type="text"
+                  [(ngModel)]="tratamiento"
+                  name="tratamiento"
+                  class="flex-1 p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition"
+                  placeholder="Agregar tratamiento anterior..."
+                  (keyup.enter)="agregarTratamiento()"
+                />
+                <button
+                  type="button"
+                  (click)="agregarTratamiento()"
+                  class="px-6 bg-[#F27438] hover:bg-[#e96a10] text-white font-bold rounded-2xl transition"
+                >
+                  + Agregar
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="notasAdicionales" class="block text-sm font-bold text-gray-600"
+                >Observaciones (Opcional)</label
+              >
+              <textarea
+                id="notasAdicionales"
+                [(ngModel)]="cita.notasAdicionales"
+                name="notasAdicionales"
+                rows="3"
+                placeholder="Ej: Mi mascota está un poco nerviosa o tiene alergias..."
+                class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition resize-none"
+              ></textarea>
+            </div>
           </div>
 
+          <!-- Botones de acción -->
           <div class="pt-4 flex flex-col items-center">
-            <button type="submit" 
-                    class="w-full bg-[#56C57F] hover:bg-[#45a067] text-white font-black py-4 rounded-2xl text-lg shadow-lg transition-all transform active:scale-95">
-              Confirmar Cita
+            <button
+              type="submit"
+              [disabled]="cargando || !disponible"
+              class="w-full bg-[#56C57F] hover:bg-[#45a067] text-white font-black py-4 rounded-2xl text-lg shadow-lg transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {{ cargando ? 'Agendando...' : 'Confirmar Cita' }}
             </button>
-            
-            <button type="button" 
-                    (click)="irAlInicio()" 
-                    class="mt-6 text-gray-400 font-bold hover:text-[#F27438] transition-colors cursor-pointer text-sm">
+
+            <button
+              type="button"
+              (click)="cancelar()"
+              [disabled]="cargando"
+              class="mt-6 text-gray-400 font-bold hover:text-[#F27438] transition-colors cursor-pointer text-sm disabled:opacity-50"
+            >
               ✕ Cancelar y volver al menú principal
             </button>
           </div>
         </form>
-
       </div>
     </div>
   </main>
