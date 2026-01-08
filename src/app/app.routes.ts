@@ -10,10 +10,56 @@ import { ResetPasswordComponent } from './modules/auth/reset-password/reset-pass
 import { LoginComponent } from './modules/auth/login/login.component';
 import { RegisterComponent } from './modules/auth/register/register.component';
 import { AppointmentsComponent } from './modules/appointments/appointments.component';
+import { MisCitasComponent } from './modules/appointments/mis-citas/mis-citas.component';
 import { NotificationsComponent } from './modules/notifications/notifications.component';
 import { Planner } from './modules/admin/planner/planner';
 import { Agenda } from './modules/admin/agenda/agenda';
 
+export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+  },
+  {
+    path: 'auth',
+    children: [
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'reset-password', component: ResetPasswordComponent },
+    ],
+  },
+  {
+    path: 'pets',
+    children: [{ path: 'register', component: RegisterPetComponent }],
+  },
+  {
+    path: 'appointments',
+    children: [
+      { path: '', component: AppointmentsComponent },
+      { path: 'mis-citas', component: MisCitasComponent },
+    ],
+  },
+  {
+    path: 'notifications',
+    component: NotificationsComponent,
+  },
+
+  // =====================
+  // ADMIN (AGREGADO)
+  // =====================
+  {
+    path: 'admin/dashboard',
+    loadComponent: () =>
+      import('./modules/admin/dashboard/dashboard-admin.component').then(
+        (m) => m.DashboardAdminComponent
+      ),
+    runGuardsAndResolvers: 'always', // <--- fuerza recarga siempre
 // ===================
 // ADMIN - USER (CLEAN)
 // ===================
@@ -95,6 +141,8 @@ export const routes: Routes = [
   {
     path: 'admin/servicios',
     loadComponent: () =>
+      import('./modules/admin/servicios/servicios.component').then((m) => m.ServiciosComponent),
+    runGuardsAndResolvers: 'always',
       import('./modules/admin/servicios/servicios.component')
         .then(m => m.ServiciosComponent),
   },
