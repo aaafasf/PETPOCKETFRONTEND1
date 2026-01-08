@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router'; // Añadido Router y RouterModule
+import { ServicioService } from '../../core/services/servicio.service';
 
 @Component({
   selector: 'app-appointments',
@@ -16,7 +17,8 @@ export class AppointmentsComponent implements OnInit {
   // Inyectamos Router para poder navegar programáticamente
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private servicioService: ServicioService
   ) {}
 
   ngOnInit(): void {
@@ -28,22 +30,35 @@ export class AppointmentsComponent implements OnInit {
   }
 
   definirServicio() {
-    // Diccionario actualizado según los datos de tu Backend y el nuevo icono de cirugía
-    const servicios: { [key: string]: string } = {
-      '1': 'Consulta General',
-      '2': 'Vacunación',
-      '3': 'Desparasitación',
-      '4': 'Baño y Peluquería',
-      '5': 'Esterilización' // ID 5 que acabamos de configurar con el icono ✂️
-    };
-
-    this.nombreServicio = servicios[this.servicioId || ''] || 'Servicio Especializado';
-    
-    console.log('Agendando cita para:', this.nombreServicio, '(ID:', this.servicioId, ')');
+  if (!this.servicioId) {
+    this.nombreServicio = 'Servicio Especializado';
+    return;
   }
+
+  // Intento real: backend
+  this.servicioService.listarAdmin().subscribe({
+    next: (servicios) => {
+      const encontrado = servicios.find(
+        (s: any) => String(s.idServicio) === String(this.servicioId)
+      );
+
+      this.nombreServicio = encontrado
+        ? encontrado.nombre
+        : 'Servicio Especializado';
+
+      console.log('Agendando cita para:', this.nombreServicio, '(ID:', this.servicioId, ')');
+    },
+    error: () => {
+      this.nombreServicio = 'Servicio Especializado';
+    }
+  });
+}
+
 
   // Función para el botón "Cancelar y volver"
   irAlInicio(): void {
     this.router.navigate(['/dashboard']);
   }
+
+  
 }

@@ -78,7 +78,8 @@
           <input [(ngModel)]="datosClinica.correo" placeholder="Correo" class="input-admin">
           <input [(ngModel)]="datosClinica.direccion" placeholder="Dirección" class="input-admin">
           <input [(ngModel)]="datosClinica.horarios" placeholder="Horarios de atención" class="input-admin">
-          <input type="file" (change)="cargarLogo($event)" class="input-admin">
+          <input type="text" [(ngModel)]="datosClinica.logo" placeholder="URL del logo o nombre del archivo" class="input-admin">
+
         </div>
 
         <!-- PARÁMETROS -->
