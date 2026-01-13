@@ -79,7 +79,7 @@ export class Planner implements OnInit {
           // ✅ CORRECCIÓN: Manejar NaN y null correctamente
           const matchVet = !filtroVetNum || 
                            (a.userIdUser != null && !isNaN(a.userIdUser) && Number(a.userIdUser) === filtroVetNum);
-
+        const matchFecha = !filtroFecha || citaFecha === filtroFecha;
       const filtroServNum = this.searchServiceId ? Number(this.searchServiceId) : null;
       const matchService = !filtroServNum || Number(a.idServicio) === filtroServNum;
 
