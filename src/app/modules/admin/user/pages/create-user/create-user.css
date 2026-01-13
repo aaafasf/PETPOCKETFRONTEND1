@@ -1,0 +1,681 @@
+/* ===== ANIMACIONES PARA EL SIDEBAR ===== */
+
+/* Patrón de agua sutil */
+.bg-water-pattern {
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(102, 126, 234, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(102, 126, 234, 0.03) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.07) 0%, transparent 30%);
+  animation: waterFloat 20s ease-in-out infinite;
+}
+
+@keyframes waterFloat {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(10px, -5px) rotate(1deg);
+  }
+  66% {
+    transform: translate(-5px, 8px) rotate(-1deg);
+  }
+}
+
+/* Animación de entrada del sidebar */
+.sidebar-animation {
+  animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Estilos para los items del menú */
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  color: #4b5563;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background: transparent;
+}
+
+.menu-item:hover {
+  transform: translateX(10px) scale(1.05);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  z-index: 20;
+}
+
+.menu-item:hover .menu-icon {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.menu-item:hover .menu-text {
+  color: #292828;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Efecto de resalte en hover */
+.menu-highlight {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(242, 116, 56, 0.1), 
+    transparent);
+  transition: left 0.6s ease;
+  z-index: -1;
+}
+
+.menu-item:hover .menu-highlight {
+  left: 100%;
+}
+
+/* Ícono del menú */
+.menu-icon {
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+  width: 24px;
+  text-align: center;
+}
+
+.menu-text {
+  flex: 1;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+/* Estado activo del menú */
+.active-menu {
+  background: linear-gradient(135deg, #F27438 0%, #cc4773 100%);
+  color: white !important;
+  font-weight: 700 !important;
+  transform: translateX(5px) scale(1.02);
+  box-shadow: 0 8px 20px -5px rgba(242, 116, 56, 0.3);
+  z-index: 10;
+}
+
+.active-menu .menu-icon {
+  transform: scale(1.1);
+  filter: brightness(0) invert(1);
+}
+
+.active-menu::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  background: white;
+  border-radius: 2px 0 0 2px;
+  animation: pulseActive 2s infinite;
+}
+
+@keyframes pulseActive {
+  0%, 100% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-50%) scale(1.1);
+  }
+}
+
+/* Animación secuencial para los items del menú */
+.menu-items .menu-item {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.menu-items .menu-item:nth-child(1) { animation-delay: 0.1s; }
+.menu-items .menu-item:nth-child(2) { animation-delay: 0.2s; }
+.menu-items .menu-item:nth-child(3) { animation-delay: 0.3s; }
+.menu-items .menu-item:nth-child(4) { animation-delay: 0.4s; }
+.menu-items .menu-item:nth-child(5) { animation-delay: 0.5s; }
+.menu-items .menu-item:nth-child(6) { animation-delay: 0.6s; }
+.menu-items .menu-item:nth-child(7) { animation-delay: 0.7s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== ANIMACIONES PARA EL FORMULARIO ===== */
+
+/* Animación de entrada de la tarjeta */
+.card-animation {
+  animation: cardAppear 0.8s 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes cardAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animación secuencial para grupos del formulario */
+.form-group-animation {
+  opacity: 0;
+  animation: formFieldAppear 0.5s ease forwards;
+}
+
+.form-group-animation:nth-child(1) { animation-delay: 0.4s; }
+.form-group-animation:nth-child(2) { animation-delay: 0.5s; }
+.form-group-animation:nth-child(3) { animation-delay: 0.6s; }
+.form-group-animation:nth-child(4) { animation-delay: 0.7s; }
+.form-group-animation:nth-child(5) { animation-delay: 0.8s; }
+.form-group-animation:nth-child(6) { animation-delay: 0.9s; }
+
+@keyframes formFieldAppear {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animación para el botón */
+.button-animation {
+  position: relative;
+  overflow: hidden;
+}
+
+.button-animation::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.button-animation:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Efecto de brillo en hover del botón */
+.button-animation::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  animation: shine 3s infinite linear;
+  opacity: 0;
+}
+
+.button-animation:hover::after {
+  opacity: 1;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* ===== EFECTOS DE FOCUS MEJORADOS ===== */
+input:focus, select:focus {
+  animation: inputFocus 0.3s ease;
+}
+
+@keyframes inputFocus {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .sidebar-animation {
+    animation: slideInTop 0.6s ease;
+  }
+  
+  @keyframes slideInTop {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .menu-item:hover {
+    transform: translateY(-2px) scale(1.02);
+  }
+  /* Agrega esto al final de tu create-user.css */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/assets/img/logo-circular.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 300px;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatWatermark 20s ease-in-out infinite;
+}
+
+@keyframes floatWatermark {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(10px, -10px) scale(1.02);
+  }
+  66% {
+    transform: translate(-10px, 10px) scale(0.98);
+  }
+}
+/* ===== BOTÓN CON ICONO ANIMADO (Opción 3) ===== */
+.icon-button {
+  position: relative;
+  overflow: hidden;
+  transform: translateY(0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto de elevación en hover */
+.icon-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px -5px rgba(242, 116, 56, 0.4);
+}
+
+/* Efecto al hacer clic */
+.icon-button:active {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 5px 15px -3px rgba(242, 116, 56, 0.3);
+}
+
+/* Animación del icono de flecha */
+.icon-arrow {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Efecto hover en el icono */
+.icon-button:hover .icon-arrow {
+  transform: translateX(4px) scale(1.2);
+  animation: arrowPulse 0.6s ease-in-out;
+}
+
+@keyframes arrowPulse {
+  0%, 100% {
+    transform: translateX(4px) scale(1.2);
+  }
+  50% {
+    transform: translateX(6px) scale(1.3);
+  }
+}
+
+/* Efecto de brillo en el texto */
+.icon-button span {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.icon-button:hover span {
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Efecto de gradiente animado */
+.icon-button {
+  background-size: 200% 100%;
+  background-position: left center;
+}
+
+.icon-button:hover {
+  background-position: right center;
+}
+
+/* Efecto de onda al hacer clic */
+.icon-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.icon-button:active::after {
+  animation: iconClickWave 0.6s ease-out;
+}
+
+@keyframes iconClickWave {
+  0% {
+    width: 5px;
+    height: 5px;
+    opacity: 1;
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+}
+
+/* Efecto de línea brillante que sigue al icono */
+.icon-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+.icon-button:hover::before {
+  left: 100%;
+}
+
+/* Animación de latido para el icono */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: translateX(4px) scale(1.2);
+  }
+  25% {
+    transform: translateX(6px) scale(1.3);
+  }
+  50% {
+    transform: translateX(4px) scale(1.2);
+  }
+  75% {
+    transform: translateX(6px) scale(1.3);
+  }
+}
+
+.icon-button:hover .icon-arrow {
+  animation: 
+    arrowPulse 0.6s ease-in-out,
+    heartbeat 1.5s 0.6s infinite;
+}
+
+/* Efecto de borde luminoso */
+.icon-button {
+  border: 2px solid transparent;
+}
+
+.icon-button:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Animación de partículas alrededor del icono */
+.icon-button:hover .icon-arrow::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: particleFloat 1s ease-out infinite;
+}
+
+.icon-button:hover .icon-arrow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: particleFloat 1s 0.3s ease-out infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + 20px), calc(-50% - 20px)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Efecto de brillo en el contenedor del icono */
+.icon-button .icon-arrow {
+  position: relative;
+  overflow: visible;
+}
+
+/* Responsive para móviles */
+@media (max-width: 640px) {
+  .icon-button {
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+  
+  .icon-button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .icon-button:hover span {
+    letter-spacing: 0.3px;
+  }
+  
+  .icon-button:hover .icon-arrow {
+    transform: translateX(3px) scale(1.1);
+  }
+  
+  @keyframes arrowPulse {
+    0%, 100% {
+      transform: translateX(3px) scale(1.1);
+    }
+    50% {
+      transform: translateX(5px) scale(1.2);
+    }
+  }
+}
+
+/* Variante: Icono de check cuando se envía (opcional) */
+.icon-button.sending .icon-arrow {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+.icon-button.sending::after {
+  content: '✓';
+  position: absolute;
+  right: 1.5rem;
+  font-size: 1.2rem;
+  animation: checkAppear 0.5s ease forwards;
+}
+
+@keyframes checkAppear {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+/* ===== EFECTOS PARA EL NAVBAR SIMPLIFICADO ===== */
+
+/* Contenedor del navbar */
+.navbar-container {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Efecto de brillo que se desliza en el navbar */
+.navbar-shine {
+  transition: transform 0.8s ease;
+}
+
+.navbar-container:hover .navbar-shine {
+  transform: translateX(100%);
+}
+
+/* Título del navbar con efectos */
+.navbar-title {
+  padding-bottom: 4px;
+  position: relative;
+  cursor: default;
+}
+
+/* Efecto de tracking (espaciado de letras) en hover */
+.navbar-title span:first-child {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar-title:hover span:first-child {
+  letter-spacing: 2px;
+  color: #F27438;
+  text-shadow: 0 0 10px rgba(242, 116, 56, 0.2);
+}
+
+/* Subrayado animado */
+.navbar-title span:last-child {
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar-title:hover span:last-child {
+  width: 100%;
+}
+
+/* Efecto de elevación en hover del navbar completo */
+.navbar-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Efecto de borde sutil en hover del navbar */
+.navbar-container::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    #F27438, 
+    transparent);
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+}
+
+.navbar-container:hover::before {
+  transform: scaleX(1);
+}
+
+/* Efecto de partículas sutiles (opcional) */
+.navbar-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(242, 116, 56, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(242, 116, 56, 0.03) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.navbar-container:hover::after {
+  opacity: 1;
+}
+
+/* Responsive para navbar */
+@media (max-width: 640px) {
+  .navbar-title span:first-child {
+    font-size: 1.125rem;
+  }
+  
+  .navbar-container:hover span:first-child {
+    letter-spacing: 1px;
+  }
+  
+  .navbar-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+}

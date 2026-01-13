@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Location } from '@angular/common';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule], // 👈 CLAVE
+  imports: [CommonModule, FormsModule, RouterModule], 
   templateUrl: './reset-password.page.html',
 })
 export class ResetPasswordPage {
@@ -25,11 +24,12 @@ export class ResetPasswordPage {
   }
 
   actualizarContrasena() {
-    // AQUÍ: En el futuro pondrás la llamada a tu servicio para guardar en la BD
+    // Aquí se conectará con el servicio en el futuro
     console.log('Contraseña actualizada con éxito');
   }
 
   resetPassword() {
+    // 1. Validaciones básicas
     if (!this.password || !this.confirmPassword) {
       alert('Todos los campos son obligatorios');
       return;
@@ -40,12 +40,25 @@ export class ResetPasswordPage {
       return;
     }
 
+    // 2. Ejecutar la lógica de guardado
+    this.actualizarContrasena();
+
+    // 3. Redirigir y confirmar
     alert('Contraseña restablecida correctamente');
-    this.router.navigate(['/admin/users']);  // Redirigir a la lista de usuarios después de restablecer la contraseña
+  
+    /** * CAMBIO IMPORTANTE: 
+     * En tu captura de pantalla la URL es /admin/users/...
+     * Por lo tanto, la ruta debe ser 'admin/users' (en plural)
+     */
+    this.router.navigate(['/admin/users']).then(nav => {
+      if (!nav) {
+        // Si falla con 'users', intenta con 'user' o revisa app.routes.ts
+        console.error('La navegación falló. Verifica la ruta en app.routes.ts');
+      }
+    }); 
   }
 
   goBack() {
-    this.router.navigate(['/admin/users']); // Redirigir a la lista de usuarios si se cancela
-    this.location.back();  
+    this.location.back();
   }
 }

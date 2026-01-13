@@ -1,171 +1,197 @@
-<div class="flex h-screen bg-gray-100 font-sans">
-  <!-- SIDEBAR -->
-  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-    <div class="p-6">
-      <img
-        src="/assets/img/logo-circular.png"
-        alt="PetPocket Logo"
-        class="w-28 mx-auto"
-      />
-      <p class="text-center text-xs font-bold text-gray-400 mt-2">
-        ADMIN PANEL
-      </p>
-    </div>
-
-  <nav class="flex-1 px-4 space-y-2">
-    <a
-      routerLink="/admin/dashboard"
-      routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
-    >
-      <span class="mr-3">📊</span> Dashboard
-    </a>
-
-    <a
-      routerLink="/admin/servicios"
-      routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
-    >
-      <span class="mr-3">🩺</span> Servicios
-    </a>
-
-    <a
-      routerLink="/admin/configuracion"
-      routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
-    >
-      <span class="mr-3">⚙️</span> Configuración
-    </a>
-
-    <a
-      routerLink="/admin/users/create"
-      routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
-    >
-      <span class="mr-3">➕</span> Registro de usuario
-    </a>
-
-    <a
-      routerLink="/admin/users"
-      routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
-    >
-      <span class="mr-3">👥</span> Usuarios registrados
-    </a>
-  </nav>
-
-  <div class="p-6">
-    <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30" />
+<div class="flex h-screen bg-gray-50 font-sans relative overflow-hidden">
+  <!-- Fondo animado de agua/ondas -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-30"></div>
+  <div class="absolute inset-0 bg-water-pattern opacity-5"></div>
+  
+  <!-- IMAGEN DE FONDO DESVANECIDA CON ANIMACIÓN -->
+  <div class="absolute inset-0 background-image-container">
+    <!-- Asegúrate de que la ruta a tu imagen sea correcta -->
+    <div class="background-image" 
+         style="background-image: url('/assets/img/banner-horizontal.jpg');"></div>
   </div>
-</aside>
+  
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col relative z-10 sidebar-animation">
+    <div class="p-6 text-center">
+      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto transform transition-transform duration-300 hover:scale-110" />
+      <p class="text-xs font-bold text-gray-400 mt-2 tracking-wider">ADMIN PANEL</p>
+    </div>
+    <nav class="flex-1 px-4 space-y-2 menu-items">
+      <a routerLink="/admin/dashboard" 
+         routerLinkActive="active-menu" 
+         class="menu-item">
+        <span class="menu-icon">📊</span>
+        <span class="menu-text">Dashboard</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
+      <a routerLink="/admin/agenda" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">📅</span>
+        <span class="menu-text">Agenda</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
+      <a routerLink="/admin/planner" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">📋</span>
+        <span class="menu-text">Panel</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
+      <a routerLink="/admin/servicios" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">🩺</span>
+        <span class="menu-text">Servicios</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
+      <a routerLink="/admin/configuracion" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">⚙️</span>
+        <span class="menu-text">Configuración</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
+      <a routerLink="/admin/users/create" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item">
+        <span class="menu-icon">➕</span>
+        <span class="menu-text">Registro de usuario</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
+      <a routerLink="/admin/users" 
+         routerLinkActive="active-menu"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item">
+        <span class="menu-icon">👥</span>
+        <span class="menu-text">Usuarios registrados</span>
+        <span class="menu-highlight"></span>
+      </a>
+    </nav>
+  </aside>
 
-  <!-- MAIN -->
-  <main class="flex-1 flex flex-col overflow-hidden">
-    <!-- HEADER -->
-    <header
-      class="bg-white h-20 border-b flex items-center justify-between px-8"
-    >
-      <h2 class="text-xl font-black text-gray-800">
-        Registro de Usuario
+  <main class="flex-1 flex flex-col overflow-hidden relative z-10">
+    <!-- NAVBAR SIMPLIFICADO (sin campanita ni avatar) -->
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8 shadow-sm relative overflow-hidden navbar-container">
+      <!-- Efecto de fondo animado -->
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#F27438]/5 to-transparent -translate-x-full navbar-shine"></div>
+      
+      <h2 class="text-xl font-black text-gray-800 tracking-tight relative z-10 navbar-title group">
+        <span class="inline-block transition-all duration-300 group-hover:tracking-wider group-hover:text-[#F27438]">
+          Registro de Usuario
+        </span>
+        <!-- Subrayado animado -->
+        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F27438] group-hover:w-full transition-all duration-500"></span>
       </h2>
+      
+      <!-- Espacio vacío para mantener la alineación -->
+      <div class="w-8"></div>
     </header>
 
-    <!-- CONTENT -->
-    <div class="flex justify-center">
-    <div class="w-full max-w-lg">
-      <h2 class="text-xl font-semibold mb-4">Registro de Usuario</h2>
+    <div class="flex-1 overflow-y-auto bg-gradient-to-b from-white/90 to-gray-50/90 p-8 md:p-10">
+      <div class="flex justify-center">
+        <!-- Contenedor del formulario con efecto hover naranja -->
+        <div class="w-full max-w-xl bg-gray-100/95 p-8 rounded-2xl shadow-sm border-2 border-transparent hover:border-[#F27438] hover:shadow-lg transition-all duration-300 card-animation form-container">
+          <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center tracking-tight">Registro de Usuario</h2>
 
-      <form class="container max-w-lg">
-        <!-- Cédula -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Cédula</label>
-          <input
-            type="text"
-            class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-            placeholder="Ingrese la cédula"
-            [(ngModel)]="cedulaCliente"
-            name="cedulaCliente"
-          />
+          <form class="space-y-4 form-fields">
+            <div class="form-group-animation">
+              <label class="block text-sm font-semibold text-gray-700 mb-1">Cédula</label>
+              <input
+                type="text"
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F27438] outline-none bg-white/90 transition"
+                placeholder="Ingrese la cédula"
+                [(ngModel)]="cedulaCliente"
+                name="cedulaCliente"
+              />
+            </div>
+
+            <div class="form-group-animation">
+              <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre completo</label>
+              <input
+                type="text"
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F27438] outline-none bg-white/90 transition"
+                placeholder="Ingrese el nombre"
+                [(ngModel)]="nombreCliente"
+                name="nombreCliente"
+              />
+            </div>
+
+            <div class="form-group-animation">
+              <label class="block text-sm font-semibold text-gray-700 mb-1">Correo Electrónico</label>
+              <input
+                type="email"
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F27438] outline-none bg-white/90 transition"
+                placeholder="ejemplo@correo.com"
+                [(ngModel)]="emailCliente"
+                name="emailCliente"
+              />
+            </div>
+
+            <div class="form-group-animation">
+              <label class="block text-sm font-semibold text-gray-700 mb-1">Rol de Usuario</label>
+              <select
+                [(ngModel)]="rolSeleccionado"
+                name="rol"
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F27438] outline-none bg-white/90 transition cursor-pointer"
+              >
+                <option value="" disabled selected>Seleccione un rol</option>
+                <option value="Admin">Administrador</option>
+                <option value="Usuario">Cliente</option>
+                <option value="Empleado">Empleado</option>
+                <option value="Veterinario">Veterinario</option>
+              </select>
+            </div>
+
+            <div class="form-group-animation">
+              <label class="block text-sm font-semibold text-gray-700 mb-1">Contraseña</label>
+              <input
+                type="password"
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F27438] outline-none bg-white/90 transition"
+                placeholder="••••••••"
+                [(ngModel)]="passwordCliente"
+                name="passwordCliente"
+              />
+            </div>
+
+            <div class="mb-6 form-group-animation">
+              <label class="block text-sm font-semibold text-gray-700 mb-1">Confirmar contraseña</label>
+              <input
+                type="password"
+                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F27438] outline-none bg-white/90 transition"
+                placeholder="••••••••"
+                [(ngModel)]="confirmPassword"
+                name="confirmPassword"
+              />
+            </div>
+
+            <div class="pt-4">
+              <!-- BOTÓN CON ICONO ANIMADO (Opción 3) -->
+              <button
+                type="button"
+                class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-[#F27438] to-[#FF8C42] hover:from-[#FF8C42] hover:to-[#F27438] text-white font-bold py-3.5 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:gap-3 group active:scale-95 icon-button"
+                (click)="createUser()"
+              >
+                <span>Registrar Usuario</span>
+                <!-- Icono de flecha animado -->
+                <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform icon-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+              </button>
+            </div>
+          </form>
         </div>
-
-        <!-- Nombre -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-          <input
-            type="text"
-            class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-            placeholder="Ingrese el nombre"
-            [(ngModel)]="nombreCliente"
-            name="nombreCliente"
-          />
-        </div>
-
-        <!-- Email -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input
-            type="email"
-            class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-            placeholder="Ingrese el email"
-            [(ngModel)]="emailCliente"
-            name="emailCliente"
-          />
-        </div>
-
-       <!-- Rol -->
-        <div class="mb-4"> 
-         <label class="block text-sm font-medium text-gray-700 mb-1">
-          Rol
-        </label>
-        <select
-          [(ngModel)]="rolSeleccionado"
-          name="rol"
-          class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-        >
-          <option value="" disabled selected>Seleccione un rol</option>
-          <option value="Admin">Administrador</option>
-          <option value="Usuario">Cliente</option>
-          <option value="Empleado">Empleado</option>
-          <option value="Veterinario">Veterinario</option>
-        </select>
       </div>
-
-        <!-- Contraseña -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-          <input
-            type="password"
-            class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-            placeholder="Ingrese la contraseña"
-            [(ngModel)]="passwordCliente"
-            name="passwordCliente"
-          />
-        </div>
-
-        <!-- Confirmar contraseña -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Confirmar contraseña</label>
-          <input
-            type="password"
-            class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-            placeholder="Confirme la contraseña"
-            [(ngModel)]="confirmPassword"
-            name="confirmPassword"
-          />
-        </div>
-
-        <button
-          type="button"
-          class="bg-orange-500 hover:bg-orange-600 text-white font-medium px-6 py-2 rounded-lg transition duration-200 shadow-sm"
-          (click)="createUser()"
-        >
-          Registrar Usuario
-        </button>
-      </form>
     </div>
+  </main>
 </div>

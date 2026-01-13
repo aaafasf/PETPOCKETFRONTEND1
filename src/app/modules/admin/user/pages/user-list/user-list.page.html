@@ -6,38 +6,31 @@
     </div>
 
     <nav class="flex-1 px-4 space-y-2">
-      <a routerLink="/admin/dashboard" 
-        routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"><span 
-        class="mr-3">📊</span> 
-        Dashboard
+      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📊</span> Dashboard
       </a>
-
-      <a routerLink="/admin/servicios" 
-        routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"><span 
-        class="mr-3">🩺</span> 
-        Servicios
+      <a routerLink="/admin/agenda" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📅</span> Agenda
       </a>
-
-      <a routerLink="/admin/configuracion" 
-        routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"><span 
-        class="mr-3">⚙️</span> 
-        Configuración
+      <a routerLink="/admin/planner" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">📋</span> Panel
       </a>
-      <a routerLink="/admin/users/create" 
-        routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"><span 
-        class="mr-3">➕</span> 
-        Registro de usuario
+      <a routerLink="/admin/servicios" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">🩺</span> Servicios
       </a>
-      <a routerLink="/admin/users" 
-      routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"><span 
-      class="mr-3">👥</span> 
-      Usuarios registrados
-    </a>
+      <a routerLink="/admin/configuracion" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">⚙️</span> Configuración
+      </a>
+      <a routerLink="/admin/users/create" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">➕</span> Registro de usuario
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="mr-3">👥</span> Usuarios registrados
+      </a>
     </nav>
   </aside>
 
@@ -57,16 +50,16 @@
           class="p-4 border rounded-xl transition-all duration-300"
           (click)="selectUser(user)"
           [ngClass]="{
-            'bg-gray-200 border-gray-400 grayscale opacity-80': user.desactivado,
-            'bg-white border-gray-200 shadow-sm hover:shadow-md': !user.desactivado && selectedUser?.idUser !== user.idUser,
-            'ring-2 ring-[#F27438] bg-white': selectedUser?.idUser === user.idUser && !user.desactivado
+            'bg-gray-200 border-gray-400 grayscale opacity-80': user['desactivado'],
+            'bg-white border-gray-200 shadow-sm': !user['desactivado'],
+            'ring-2 ring-[#F27438]': selectedUser?.idUser === user.idUser && !user['desactivado']
           }"
         >
           <div class="flex justify-between items-center">
-            <h3 class="font-bold text-lg" [class.text-gray-500]="user.desactivado">
+            <h3 class="font-bold text-lg" [ngClass]="user['desactivado'] ? 'text-gray-500' : 'text-gray-800'">
               {{ user.nameUsers }}
             </h3>
-            <span *ngIf="user.desactivado" class="text-[10px] bg-gray-500 text-white px-2 py-1 rounded-full font-black uppercase">Inactivo</span>
+            <span *ngIf="user['desactivado']" class="text-[10px] bg-gray-500 text-white px-2 py-1 rounded-full font-black uppercase">Inactivo</span>
           </div>
 
           <div *ngIf="selectedUser?.idUser === user.idUser" class="mt-4 border-t pt-4 space-y-2 animate-fade-in">
@@ -77,6 +70,7 @@
 
             <div class="mt-4 flex flex-wrap gap-2">
               <button
+                *ngIf="!user['desactivado']"
                 class="bg-[#F27438] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-orange-600 transition"
                 (click)="goToResetPassword($event, user.idUser)"
               >
@@ -86,9 +80,9 @@
               <button
                 (click)="toggleStatus($event, user)"
                 class="px-4 py-2 rounded-lg text-xs font-bold text-white transition-colors"
-                [ngClass]="user.desactivado ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600 hover:bg-gray-700'"
+                [ngClass]="user['desactivado'] ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600 hover:bg-gray-700'"
               >
-                {{ user.desactivado ? 'Activar Usuario' : 'Desactivar Usuario' }}
+                {{ user['desactivado'] ? 'Activar Usuario' : 'Desactivar Usuario' }}
               </button>
 
               <button
