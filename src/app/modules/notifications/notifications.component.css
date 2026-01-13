@@ -1,121 +1,66 @@
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+/* --- 1. ESTADO: NO LEÍDAS (Vibrantes y con Energía) --- */
+/* Identificamos por la clase de gradiente naranja que ya tienes */
+main .lg\:col-span-2 div[class*="from-orange-50"] {
+  border-left: 5px solid #F27438 !important;
+  background: linear-gradient(90deg, #fff7ed 0%, #ffffff 100%) !important;
+  position: relative;
 }
 
-/* Animaciones */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* Hover específico para No Leídas: Efecto de "Iluminación" */
+main .lg\:col-span-2 div[class*="from-orange-50"]:hover {
+  border-left-width: 10px !important;
+  background: #ffffff !important;
+  box-shadow: 0 15px 30px -5px rgba(242, 116, 56, 0.2) !important;
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* El punto pulsante naranja se hace más grande en el hover */
+main .lg\:col-span-2 div[class*="from-orange-50"]:hover span[class*="bg-[#F27438]"] {
+  transform: scale(1.5);
+  box-shadow: 0 0 10px #F27438;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* --- 2. ESTADO: LEÍDAS (Elegancia en Reposo) --- */
+/* Identificamos por la clase de borde gris */
+main .lg\:col-span-2 div[class*="border-gray-300"] {
+  opacity: 0.7; /* Se ven "apagadas" para dar prioridad a las nuevas */
+  filter: grayscale(0.5);
+  border-left: 4px solid #d1d5db !important;
+  background-color: #f9fafb !important;
+  transition: all 0.4s ease !important;
 }
 
-@keyframes modalSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+/* Hover específico para Leídas: "Despertar" la tarjeta */
+main .lg\:col-span-2 div[class*="border-gray-300"]:hover {
+  opacity: 1 !important;
+  filter: grayscale(0);
+  border-left-color: #9ca3af !important;
+  background-color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.2s ease-out;
+/* --- 3. MEJORA DE LOS TEXTOS SEGÚN ESTADO --- */
+/* Título de No Leídas: Más pesado y oscuro */
+main .lg\:col-span-2 div[class*="from-orange-50"] h4 {
+  font-weight: 900 !important;
+  color: #1a1a1a !important;
 }
 
-.animate-slideDown {
-  animation: slideDown 0.3s ease-out;
+/* Título de Leídas: Más suave */
+main .lg\:col-span-2 div[class*="border-gray-300"] h4 {
+  font-weight: 600 !important;
+  color: #6b7280 !important;
 }
 
-.animate-fadeInUp {
-  animation: fadeInUp 0.4s ease-out forwards;
-  opacity: 0;
+/* --- 4. BOTÓN "MARCAR COMO LEÍDA" (Solo en No Leídas) --- */
+main .lg\:col-span-2 div[class*="from-orange-50"] button {
+  background-color: #F27438 !important;
+  color: white !important;
+  border: none !important;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }
 
-.animate-modalSlideUp {
-  animation: modalSlideUp 0.3s ease-out;
+main .lg\:col-span-2 div[class*="from-orange-50"] button:hover {
+  transform: scale(1.1) rotate(-2deg) !important;
+  box-shadow: 0 5px 15px rgba(242, 116, 56, 0.4) !important;
 }
-
-/* Estilo para scrollbar personalizada */
-.overflow-y-auto::-webkit-scrollbar {
-  width: 10px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-  margin: 8px 0;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #F27438, #ff8c42);
-  border-radius: 10px;
-  border: 2px solid #f1f1f1;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #d8602e, #F27438);
-}
-
-/* Mejoras adicionales */
-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  filter: invert(0.5) sepia(1) saturate(5) hue-rotate(0deg);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-}
-
-/* Efectos de hover mejorados */
-button:not(:disabled):hover {
-  transform: translateY(-2px);
-}
-
-/* Transiciones suaves */
-* {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* Sombra mejorada para cards */
-.shadow-lg {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-.shadow-xl {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
