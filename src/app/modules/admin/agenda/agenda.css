@@ -1,247 +1,609 @@
-.agenda-view {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f8fafc;
-  min-height: 100vh;
-  font-family: 'Inter', sans-serif;
+/* ============================================
+   🎨 SISTEMA DE DISEÑO MODERNO - AGENDA VETERINARIA
+   ============================================ */
+
+/* --- Variables CSS Modernas --- */
+:root {
+  /* Colores Base */
+  --color-bg-primary: #F9FAFB;
+  --color-bg-card: #FFFFFF;
+  --color-text-primary: #1F2937;
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+  
+  /* Estados de Cita - Colores Pastel Vibrantes */
+  --color-programada: #FDB462;
+  --color-programada-bg: #FEF3E2;
+  --color-programada-light: #FFF7ED;
+  
+  --color-confirmada: #64B5F6;
+  --color-confirmada-bg: #E3F2FD;
+  --color-confirmada-light: #EFF6FF;
+  
+  --color-completada: #81C784;
+  --color-completada-bg: #E8F5E9;
+  --color-completada-light: #F0FDF4;
+  
+  --color-cancelada: #EF9A9A;
+  --color-cancelada-bg: #FFEBEE;
+  --color-cancelada-light: #FEF2F2;
+  
+  /* Sombras Suaves */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.12);
+  
+  /* Animaciones */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
+/* --- Base Container --- */
+.agenda-view {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--color-bg-primary);
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* --- Header Mejorado --- */
 .agenda-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
   padding: 0 10px;
-}
-
-.title-section h1 {
-  font-size: 2rem;
-  color: #1e293b;
-  margin: 0;
-  font-weight: 800;
+  animation: slideInFromTop 0.6s var(--ease-smooth);
 }
 
 .date-subtitle {
-  color: #64748b;
-  font-size: 1.1rem;
-  margin-top: 5px;
+  color: var(--color-text-secondary);
+  font-size: 1.25rem;
+  font-weight: 700;
   text-transform: capitalize;
+  letter-spacing: -0.02em;
 }
 
+/* Badge Moderno con Efecto Glassmorphism */
 .summary-badge {
-  background: white;
-  padding: 15px 25px;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-  text-align: center;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+  backdrop-filter: blur(10px);
+  padding: 20px 30px;
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.4s var(--ease-smooth);
+}
+
+.summary-badge:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-xl);
 }
 
 .badge-count {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #4f46e5;
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #F27438, #F59E0B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .badge-label {
-  font-size: 0.8rem;
-  color: #94a3b8;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
-/* --- Estructura Timeline --- */
+/* --- Timeline Structure --- */
+.timeline-container {
+  position: relative;
+}
+
 .timeline-item {
   display: grid;
-  grid-template-columns: 80px 1fr; /* Ajustado un poco el ancho */
-  gap: 20px;
-  margin-bottom: 25px;
+  grid-template-columns: 90px 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+  animation: slideInUp 0.6s var(--ease-smooth) forwards;
+  animation-fill-mode: both;
 }
 
+/* --- Time Marker Mejorado --- */
 .time-marker {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10px;
+  padding-top: 12px;
 }
 
 .start-time {
   font-weight: 800;
-  color: #1e293b;
+  color: var(--color-text-primary);
   font-size: 1rem;
-  background: white;
-  padding: 6px 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  border: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #FFFFFF, #F9FAFB);
+  padding: 10px 16px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s var(--ease-smooth);
+  letter-spacing: -0.02em;
+}
+
+.timeline-item:hover .start-time {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+  background: #FFFFFF;
 }
 
 .line {
-  width: 2px;
+  width: 3px;
   flex-grow: 1;
-  background: #e2e8f0;
-  margin: 10px 0;
+  background: linear-gradient(180deg, #E5E7EB 0%, transparent 100%);
+  margin: 12px 0;
   min-height: 50px;
+  border-radius: 2px;
 }
 
-/* --- Tarjeta de Cita --- */
+/* --- Tarjeta de Cita Moderna (Bento Style) --- */
 .appointment-card {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid #f1f5f9;
-  border-left-width: 6px; /* Ancho del borde de color */
+  position: relative;
+  background: var(--color-bg-card);
+  border-radius: 24px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.4s var(--ease-smooth);
+  border: 1px solid #F1F5F9;
+  border-left-width: 5px;
   border-left-style: solid;
+  overflow: hidden;
+}
+
+.appointment-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(242, 116, 56, 0.1), transparent);
 }
 
 .appointment-card:hover {
-  transform: translateX(5px);
-  box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1);
+  transform: translateX(8px) translateY(-2px) scale(1.01);
+  box-shadow: var(--shadow-xl);
+  border-left-width: 6px;
+}
+
+/* Glassmorphism Overlay */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-smooth);
+  pointer-events: none;
+  border-radius: 24px;
+}
+
+.appointment-card:hover .card-overlay {
+  opacity: 1;
 }
 
 .card-content {
-  padding: 20px;
+  padding: 24px;
+  position: relative;
+  z-index: 1;
 }
 
+/* --- Patient Header --- */
 .patient-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .patient-name {
-  font-size: 1.3rem;
-  margin: 0 0 4px 0;
-  color: #0f172a;
+  font-size: 1.4rem;
+  margin: 0 0 6px 0;
+  color: var(--color-text-primary);
   font-weight: 800;
   text-transform: capitalize;
+  letter-spacing: -0.03em;
 }
 
 .owner-name {
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
   display: block;
+  font-weight: 500;
 }
 
-/* Pills de estado (Badge superior derecha) */
+.owner-name strong {
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* --- Status Pills Modernos --- */
 .status-pill {
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 20px;
   font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  transition: all 0.3s var(--ease-smooth);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Colores específicos para los Pills */
-.status-pill.programada { background: #fffbeb; color: #d97706; }
-.status-pill.confirmada { background: #cffafe; color: #0891b2; }
-.status-pill.completada { background: #dcfce7; color: #16a34a; }
-.status-pill.cancelada  { background: #fee2e2; color: #dc2626; }
+.status-pill:hover {
+  transform: scale(1.05);
+}
 
-/* --- Detalles --- */
+.status-pill.programada { 
+  background: var(--color-programada-bg); 
+  color: #D97706;
+  border: 1px solid var(--color-programada);
+}
+
+.status-pill.confirmada { 
+  background: var(--color-confirmada-bg); 
+  color: #1E40AF;
+  border: 1px solid var(--color-confirmada);
+}
+
+.status-pill.completada { 
+  background: var(--color-completada-bg); 
+  color: #15803D;
+  border: 1px solid var(--color-completada);
+}
+
+.status-pill.cancelada { 
+  background: var(--color-cancelada-bg); 
+  color: #B91C1C;
+  border: 1px solid var(--color-cancelada);
+}
+
+/* --- Service Detail (Bento Box interno) --- */
 .service-detail {
-  background: #f8fafc;
-  padding: 15px;
-  border-radius: 12px;
+  background: linear-gradient(135deg, #F9FAFB, #F3F4F6);
+  padding: 18px;
+  border-radius: 18px;
   margin-bottom: 20px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s var(--ease-smooth);
+}
+
+.appointment-card:hover .service-detail {
+  background: linear-gradient(135deg, #FFFFFF, #F9FAFB);
+  transform: scale(1.01);
 }
 
 .service-tag {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-weight: 700;
-  color: #475569;
-  margin-bottom: 8px;
-  font-size: 0.9rem;
+  color: var(--color-text-primary);
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.service-tag .icon {
+  font-size: 1.1rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .reason-text {
   font-style: italic;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin: 0;
-  font-size: 0.95rem;
-  padding-left: 26px; /* Alineado con el texto del icono */
+  font-size: 0.9rem;
+  padding-left: 30px;
+  line-height: 1.6;
 }
 
-/* --- Acciones (Footer) --- */
+/* --- Card Footer & Actions --- */
 .card-footer {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 15px;
+  border-top: 1px solid #F1F5F9;
+  padding-top: 18px;
+  margin-top: 4px;
 }
 
+/* Botones con Efecto "Pop" */
 .btn-action {
-  padding: 10px 20px;
-  border-radius: 10px;
+  padding: 12px 24px;
+  border-radius: 16px;
   border: none;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s var(--ease-bounce);
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Botón Iniciar (Azul Indigo) */
+.btn-action::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-action:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-action:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-action:active {
+  transform: scale(0.98);
+}
+
+.btn-icon {
+  font-size: 1rem;
+  transition: transform 0.3s var(--ease-smooth);
+}
+
+.btn-action:hover .btn-icon {
+  transform: scale(1.2) rotate(10deg);
+}
+
+/* Botón Iniciar */
 .btn-start { 
-  background: #e0e7ff; 
-  color: #4338ca; 
+  background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+  color: #1E3A8A;
 }
-.btn-start:hover { background: #c7d2fe; }
+.btn-start:hover { 
+  background: linear-gradient(135deg, #BFDBFE, #93C5FD);
+}
 
-/* Botón Finalizar (Verde Esmeralda) */
+/* Botón Finalizar */
 .btn-complete { 
-  background: #d1fae5; 
-  color: #065f46; 
+  background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+  color: #065F46;
 }
-.btn-complete:hover { background: #a7f3d0; }
+.btn-complete:hover { 
+  background: linear-gradient(135deg, #A7F3D0, #6EE7B7);
+}
 
-/* Estado completado (Texto) */
+/* Estado Completado */
 .completed-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   color: #059669;
   font-weight: 700;
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  background: var(--color-completada-light);
+  border-radius: 12px;
+}
+
+.check-icon {
+  font-size: 1.2rem;
+  animation: bounceIn 0.6s var(--ease-bounce);
+}
+
+/* --- Colores de Borde por Estado --- */
+.border-programada { 
+  border-left-color: var(--color-programada);
+}
+
+.border-confirmada { 
+  border-left-color: var(--color-confirmada);
+}
+
+.border-completada { 
+  border-left-color: var(--color-completada);
+}
+
+.border-cancelada { 
+  border-left-color: var(--color-cancelada);
+}
+
+/* --- Empty State Mejorado --- */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  animation: fadeIn 0.8s var(--ease-smooth);
+}
+
+.empty-icon { 
+  font-size: 4rem; 
+  margin-bottom: 16px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.empty-text {
+  color: var(--color-text-secondary);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.empty-subtext {
+  color: var(--color-text-muted);
   font-size: 0.9rem;
 }
 
-/* --- COLORES DE BORDE (Adaptados al Español y Planner) --- */
-
-/* Programada -> Naranja (Igual que Planner) */
-.border-programada { 
-  border-left-color: #f59e0b; 
+/* --- Skeleton Loading con Shimmer --- */
+.skeleton-container {
+  animation: fadeIn 0.4s var(--ease-smooth);
 }
 
-/* Confirmada -> Azul Cian (Igual que Planner) */
-.border-confirmada { 
-  border-left-color: #0891b2; 
+.skeleton-item {
+  opacity: 1;
 }
 
-/* Completada -> Verde (Igual que Planner) */
-.border-completada { 
-  border-left-color: #10b981; 
+.skeleton-time,
+.skeleton-card {
+  background: linear-gradient(
+    90deg,
+    #F3F4F6 25%,
+    #E5E7EB 50%,
+    #F3F4F6 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 16px;
 }
 
-/* Cancelada -> Rojo */
-.border-cancelada { 
-  border-left-color: #ef4444; 
+.skeleton-time {
+  width: 70px;
+  height: 40px;
 }
 
-/* Estado Vacío */
-.empty-state {
-  text-align: center;
-  padding: 40px;
-  color: #94a3b8;
+.skeleton-card {
+  padding: 24px;
+  height: 200px;
+  box-shadow: var(--shadow-sm);
 }
-.empty-icon { font-size: 3rem; margin-bottom: 10px; }
+
+.skeleton-header,
+.skeleton-content,
+.skeleton-footer {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.skeleton-header {
+  height: 60px;
+}
+
+.skeleton-content {
+  height: 50px;
+}
+
+.skeleton-footer {
+  height: 40px;
+  width: 40%;
+  margin-left: auto;
+}
+
+/* ============================================
+   🎬 ANIMACIONES
+   ============================================ */
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ============================================
+   📱 RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .agenda-header {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  
+  .timeline-item {
+    grid-template-columns: 70px 1fr;
+    gap: 16px;
+  }
+  
+  .start-time {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+  
+  .patient-name {
+    font-size: 1.2rem;
+  }
+  
+  .appointment-card:hover {
+    transform: translateY(-2px) scale(1.01);
+  }
+}

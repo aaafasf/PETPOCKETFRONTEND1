@@ -54,18 +54,34 @@ export class ClinicService {
     const index = id % this.defaultColors.length;
     return this.defaultColors[index];
   }
-  getVeterinarians(): Observable<{ id: number; name: string }[]> {
+getVeterinarians(): Observable<{ id: number; name: string }[]> {
   return this.http.get<any>(`${this.apiUrl}/cita/veterinarios`).pipe(
     map(response => {
-      // Nos aseguramos que response.usuarios sea un array
-      const users = response?.usuarios ?? [];
+      console.log('📡 Respuesta REAL de la Base de Datos:', response); 
+
+      let users: any[] = [];
+
+      // Lógica robusta: Detecta si el backend manda un Array o un Objeto
+      if (Array.isArray(response)) {
+        users = response;
+      } 
+      else if (response?.usuarios) {
+        users = response.usuarios;
+      }
+      else if (response?.users) {
+        users = response.users;
+      }
+
+      // IMPORTANTE: Ya no hay "if users.length === 0" porque ahora SÍ vendrán datos reales.
+      
       return users.map((u: any) => ({
-        id: u.idUser,              // esto será el value del select
-        name: this.decryptData(u.nameUsers) // esto se mostrará en el select
+        id: u.idUser,
+        name: this.decryptData(u.nameUsers || u.nombre || u.name)
       }));
     })
   );
 }
+
 
 
   private decryptData(encryptedData: string): string {

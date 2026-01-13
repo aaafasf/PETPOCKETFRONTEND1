@@ -97,12 +97,14 @@
        
                 <ng-container *ngIf="plannerAppointments$ | async as allAppts">
                   
+                  <!-- ✅ CORRECCIÓN CRÍTICA: Usar [ngClass] en lugar de [class] -->
                   <div *ngFor="let appt of getAppointmentsForVet(vet.id, allAppts)" 
                        class="appointment-card"
-                       [class]="(appt.estadoCita | lowercase)" 
+                       [ngClass]="appt.estadoCita"
                        (click)="onAppointmentClick(appt.idCita)">
        
-                    <div class="card-header" [class]="(appt.estadoCita | lowercase)">
+                    <!-- ✅ CORRECCIÓN CRÍTICA: Usar [ngClass] en lugar de [class] -->
+                    <div class="card-header" [ngClass]="appt.estadoCita">
                       <div class="date-box">
                         <span class="day">{{ appt.fecha | date:'dd' }}</span>
                         <span class="month-year">{{ appt.fecha | date:'MMM' }}</span>
