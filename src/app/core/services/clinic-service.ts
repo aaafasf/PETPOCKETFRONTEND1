@@ -57,15 +57,15 @@ export class ClinicService {
   getVeterinarians(): Observable<{ id: number; name: string }[]> {
   return this.http.get<any>(`${this.apiUrl}/cita/veterinarios`).pipe(
     map(response => {
-      // Nos aseguramos que response.usuarios sea un array
       const users = response?.usuarios ?? [];
       return users.map((u: any) => ({
-        id: u.idUser,              // esto será el value del select
-        name: this.decryptData(u.nameUsers) // esto se mostrará en el select
+        id: Number(u.idUser),
+        name: this.decryptData(u.nameUsers)
       }));
     })
   );
 }
+
 
 
   private decryptData(encryptedData: string): string {

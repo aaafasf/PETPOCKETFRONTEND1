@@ -57,63 +57,60 @@ export class Planner implements OnInit {
 
     // 2️⃣ ViewModel Reactivo
     this.plannerAppointments$ = combineLatest([
-      this.appointmentService.appointments$,
-      this.clinicService.getServices(),
-      this.clinicService.getVeterinarians(),
-      this.clienteService.getAll(), 
-      this.mascotaService.getAll()  
-    ]).pipe(
-      map(([appointments, services, vets, clientes, mascotas]) => {
-        
-        this.clientes = clientes;
-        this.mascotas = mascotas;
+  this.appointmentService.appointments$,
+  this.clinicService.getServices(),
+  this.clinicService.getVeterinarians(),
+  this.clienteService.getAll(),
+  this.mascotaService.getAll()
+]).pipe(
+  map(([appointments, services, vets, clientes, mascotas]) => {
 
-        // A. FILTRADO
-        const filtered = appointments.filter(a => {
-          const citaFecha = (a.fecha || '').substring(0, 10);
-          const filtroFecha = (this.selectedDate || '').substring(0, 10);
-          const matchFecha = citaFecha === filtroFecha;
+    this.clientes = clientes;
+    this.mascotas = mascotas;
+    this.clinicServices = services;
+    this.veterinarians = vets;
 
-          const filtroVetNum = this.searchVetId ? Number(this.searchVetId) : null;
-          const matchVet = !filtroVetNum || Number(a.userIdUser) === filtroVetNum;
+    const filtered = appointments.filter(a => {
+      const citaFecha = (a.fecha || '').substring(0, 10);
+      const filtroFecha = (this.selectedDate || '').substring(0, 10);
 
-          const filtroServNum = this.searchServiceId ? Number(this.searchServiceId) : null;
-          const matchService = !filtroServNum || Number(a.idServicio) === filtroServNum;
+      const filtroVetNum = this.searchVetId ? Number(this.searchVetId) : null;
+      const matchVet = !filtroVetNum || Number(a.userIdUser) === filtroVetNum;
 
-          return matchFecha && matchVet && matchService;
-        });
+      const filtroServNum = this.searchServiceId ? Number(this.searchServiceId) : null;
+      const matchService = !filtroServNum || Number(a.idServicio) === filtroServNum;
 
-        // B. MAPEO
-        return filtered.map(a => {
-          const vetObj = vets.find(v => Number(v.id) === Number(a.userIdUser));
-          const servObj = services.find(s => Number(s.idServicio) === Number(a.idServicio));
-          const clienteObj = clientes.find(c => Number(c.idClientes) === Number(a.idCliente));
-          const mascotaObj = mascotas.find(m => Number(m.idMascota) === Number(a.idMascota));
+      return citaFecha === filtroFecha && matchVet && matchService;
+    });
 
-          // ✅ CORRECCIÓN DE ESTADO: Forzamos minúsculas para que el CSS siempre funcione
-          const estadoNormalizado = (a.estadoCita || 'programada').toLowerCase();
+    return filtered.map(a => {
+      const vetObj = vets.find(v => Number(v.id) === Number(a.userIdUser));
+      const servObj = services.find(s => Number(s.idServicio) === Number(a.idServicio));
+      const clienteObj = clientes.find(c => Number(c.idClientes) === Number(a.idCliente));
+      const mascotaObj = mascotas.find(m => Number(m.idMascota) === Number(a.idMascota));
 
-          return {
-            idCita: a.idCita,
-            fecha: a.fecha,
-            hora: a.hora,
-            estadoCita: estadoNormalizado, // Usamos el estado normalizado
+      return {
+        idCita: a.idCita,
+        fecha: a.fecha,
+        hora: a.hora,
+        estadoCita: (a.estadoCita || 'programada').toLowerCase(),
 
-            veterinarioId: a.userIdUser,
-            veterinarioNombre: vetObj ? vetObj.name : 'Vet. no asignado', // Revisa si esto sale
+        veterinarioId: a.userIdUser,
+        veterinarioNombre: vetObj?.name || 'Vet. no asignado',
 
-            servicioId: a.idServicio,
-            servicioNombre: servObj ? servObj.nombreServicio : '...',
-            color: servObj ? servObj.color : '#ccc',
+        servicioId: a.idServicio,
+        servicioNombre: servObj?.nombreServicio || '...',
+        color: servObj?.color || '#ccc',
 
-            mascotaNombre: mascotaObj ? mascotaObj.nombreMascota : 'Desconocido',
-            clienteNombre: clienteObj ? clienteObj.nombreCliente : 'Desconocido',
+        mascotaNombre: mascotaObj?.nombreMascota || 'Desconocido',
+        clienteNombre: clienteObj?.nombreCliente || 'Desconocido',
 
-            motivo: a.motivo
-          } as PlannerAppointmentVM;
-        });
-      })
-    );
+        motivo: a.motivo
+      } as PlannerAppointmentVM;
+    });
+  })
+);
+
 
     this.refreshAppointments();
   }

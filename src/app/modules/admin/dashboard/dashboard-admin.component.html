@@ -1,112 +1,186 @@
-<div class="flex h-screen bg-gray-100 font-sans">
+<div class="flex h-screen bg-gradient-to-br from-[#ECEFF3] via-[#F5F7FA] to-[#E9EDF2] 
+            dark:from-[#020617] dark:via-[#020617] dark:to-[#020617]
+            font-sans transition-colors duration-300">
+
   <!-- SIDEBAR -->
-  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-    <div class="p-6">
-      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
-      <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
+<!-- SIDEBAR DARK LUXURY (NEGRO PURO) -->
+<aside class="w-72
+              bg-gradient-to-b from-[#050505] via-[#0B0B0F] to-[#000000]
+              text-zinc-300 flex flex-col
+              shadow-[0_25px_60px_rgba(0,0,0,0.9)]
+              relative transition-colors duration-300">
+
+  <!-- Accent top line -->
+  <div class="absolute top-0 left-0 w-full h-[2px]
+              bg-gradient-to-r from-[#F27438] via-orange-400 to-[#F27438]"></div>
+
+  <!-- Logo -->
+  <div class="px-8 pt-10 pb-8 text-center">
+    <img src="/assets/img/logo-circular.png"
+         class="w-20 mx-auto mb-6 opacity-90">
+    <p class="text-[10px] tracking-[0.45em] font-semibold text-zinc-500">
+      ADMIN SYSTEM
+    </p>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="flex-1 px-4 space-y-1 text-sm">
+
+    <a routerLink="/admin/dashboard"
+       routerLinkActive="bg-white/10 text-white shadow-inner"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="flex items-center gap-4 px-5 py-3 rounded-xl
+              hover:bg-white/5 transition">
+      <span class="text-xl">📊</span> Dashboard
+    </a>
+
+    <a routerLink="/admin/agenda"
+       routerLinkActive="bg-white/10 text-white shadow-inner"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="flex items-center gap-4 px-5 py-3 rounded-xl
+              hover:bg-white/5 transition">
+      <span class="text-xl">📅</span> Agenda
+    </a>
+
+    <a routerLink="/admin/planner"
+       routerLinkActive="bg-white/10 text-white shadow-inner"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="flex items-center gap-4 px-5 py-3 rounded-xl
+              hover:bg-white/5 transition">
+      <span class="text-xl">📋</span> Planner
+    </a>
+
+    <div class="my-6 border-t border-white/10"></div>
+
+    <a routerLink="/admin/servicios"
+       routerLinkActive="bg-white/10 text-white shadow-inner"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="flex items-center gap-4 px-5 py-3 rounded-xl
+              hover:bg-white/5 transition">
+      <span class="text-xl">🩺</span> Servicios
+    </a>
+
+    <a routerLink="/admin/configuracion"
+       routerLinkActive="bg-white/10 text-white shadow-inner"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="flex items-center gap-4 px-5 py-3 rounded-xl
+              hover:bg-white/5 transition">
+      <span class="text-xl">⚙️</span> Configuración
+    </a>
+
+  </nav>
+
+  <!-- Footer -->
+  <div class="px-6 py-6 border-t border-white/10">
+    <div class="flex items-center gap-4 bg-white/5 rounded-xl p-4">
+      <img src="/assets/img/pet-illustration.jpg" class="w-9 opacity-40">
+      <div class="text-xs">
+        <p class="text-zinc-300 font-medium">PetPocket</p>
+        <p class="text-zinc-500">Admin Console</p>
+      </div>
     </div>
+  </div>
 
-<nav class="flex-1 px-4 space-y-2">
-  
-  <a routerLink="/admin/dashboard" 
-     routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-     [routerLinkActiveOptions]="{ exact: true }" 
-     class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-    <span class="mr-3">📊</span> Dashboard
-  </a>
+</aside>
 
-  <a routerLink="/admin/agenda" 
-     routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-     [routerLinkActiveOptions]="{ exact: true }" 
-     class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-    <span class="mr-3">📅</span> Agenda
-  </a>
-
-  <a routerLink="/admin/planner" 
-     routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-     [routerLinkActiveOptions]="{ exact: true }" 
-     class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-    <span class="mr-3">📋</span> Panel
-  </a>
-
-  <a routerLink="/admin/servicios" 
-     routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-     [routerLinkActiveOptions]="{ exact: true }" 
-     class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-    <span class="mr-3">🩺</span> Servicios
-  </a>
-
-  <a routerLink="/admin/configuracion" 
-     routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-     [routerLinkActiveOptions]="{ exact: true }" 
-     class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-    <span class="mr-3">⚙️</span> Configuración
-  </a>
-
-</nav>
-
-    <div class="p-6">
-      <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
-    </div>
-  </aside>
 
   <!-- MAIN -->
   <main class="flex-1 flex flex-col overflow-hidden">
-    <!-- HEADER -->
-    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
-      <h2 class="text-xl font-black text-gray-800">Panel Administrativo</h2>
-      <div class="flex items-center space-x-6">
-        <button class="relative p-2 text-gray-400 hover:text-[#F27438] transition-colors">
-          <span class="text-2xl">🔔</span>
+
+    <!-- HEADER (AHORA SÍ COMBINA) -->
+    <header class="h-20 flex items-center justify-between px-12
+                   bg-white/70 dark:bg-[#020617]/80
+                   backdrop-blur-xl border-b border-gray-200 dark:border-white/10
+                   transition-colors duration-300">
+
+      <div>
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+          Panel Administrativo
+        </h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          Control general del sistema
+        </p>
+      </div>
+
+      <div class="flex items-center gap-4">
+
+        <!-- DARK MODE BUTTON -->
+        <button
+          onclick="document.documentElement.classList.toggle('dark')"
+          class="px-4 py-2 rounded-xl text-sm font-medium
+                 bg-gray-100 dark:bg-white/10
+                 text-gray-700 dark:text-gray-200
+                 hover:scale-105 transition">
+          🌙 / ☀️
         </button>
-        <div class="flex items-center space-x-3">
-          <span class="text-sm font-bold text-gray-600">Admin</span>
-          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">A</div>
+
+        <button class="relative p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/10 transition">
+          🔔
+          <span class="absolute -top-1 -right-1 w-2 h-2 bg-[#F27438] rounded-full"></span>
+        </button>
+
+        <div class="flex items-center gap-3 bg-black/5 dark:bg-white/10 px-4 py-2 rounded-xl">
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-200">Admin</span>
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#F27438] to-orange-300
+                      text-white flex items-center justify-center font-bold">
+            A
+          </div>
         </div>
+
       </div>
     </header>
 
     <!-- CONTENT -->
-    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
-      <!-- BANNER -->
-      <div class="relative w-full h-48 rounded-3xl overflow-hidden shadow-sm mb-10 border border-gray-100">
-        <div class="absolute inset-0 bg-gradient-to-r from-[#F27438] to-orange-300 flex items-center p-10">
-          <div class="text-white">
-            <h1 class="text-3xl font-black mb-2">Bienvenido, Administrador</h1>
-            <p class="font-bold opacity-90">Resumen general del sistema PetPocket</p>
-          </div>
-        </div>
-      </div>
+    <div class="flex-1 overflow-y-auto p-14 space-y-16">
 
-      <!-- KPI CARDS -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
-        <div class="bg-white rounded-3xl p-8 shadow-sm text-center">
-          <p class="text-gray-400 font-bold uppercase text-xs">Servicios Totales</p>
-          <p class="text-4xl font-black text-[#F27438] mt-2">{{ totalServicios }}</p>
-        </div>
-        <div class="bg-white rounded-3xl p-8 shadow-sm text-center">
-          <p class="text-gray-400 font-bold uppercase text-xs">Servicios Activos</p>
-          <p class="text-4xl font-black text-[#F27438] mt-2">{{ serviciosActivos }}</p>
-        </div>
-        <div class="bg-white rounded-3xl p-8 shadow-sm text-center">
-          <p class="text-gray-400 font-bold uppercase text-xs">Citas Totales</p>
-          <p class="text-4xl font-black text-[#F27438] mt-2">{{ totalCitas }}</p>
-        </div>
-      </div>
+      <section class="bg-white dark:bg-[#020617]/80 rounded-[2.5rem] p-14
+                      shadow-xl border border-gray-200 dark:border-white/10 transition">
 
-      <!-- CITAS POR SERVICIO -->
-      <div class="bg-white rounded-3xl p-8 shadow-sm">
-        <h3 class="text-lg font-black mb-6 text-gray-800">Citas por servicio</h3>
-        <ul class="space-y-4 font-bold text-gray-600">
-          <li *ngFor="let s of servicios" class="flex justify-between">
-            <span>{{ s.nombreServicio }}</span>
-            <span class="text-[#F27438]">{{ s.citas || 0 }}</span>
-          </li>
-        </ul>
-      </div>
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          Bienvenido, Administrador
+        </h1>
 
-      <!-- SPINNER -->
-      <div *ngIf="cargando" class="text-center text-gray-400 mt-10">Cargando servicios...</div>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl text-lg">
+          Supervisa citas, servicios y rendimiento general del sistema PetPocket.
+        </p>
+
+      </section>
+
+      <!-- KPI -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-12">
+
+        <div class="bg-white dark:bg-[#020617]/80 rounded-[2rem] p-10 shadow-xl
+                    border border-gray-200 dark:border-white/10 transition">
+          <p class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            Servicios Totales
+          </p>
+          <p class="text-6xl font-bold text-gray-900 dark:text-gray-100 mt-4">
+            {{ totalServicios }}
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-[#020617]/80 rounded-[2rem] p-10 shadow-xl
+                    border border-gray-200 dark:border-white/10 transition">
+          <p class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            Servicios Activos
+          </p>
+          <p class="text-6xl font-bold text-gray-900 dark:text-gray-100 mt-4">
+            {{ serviciosActivos }}
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-[#020617]/80 rounded-[2rem] p-10 shadow-xl
+                    border border-gray-200 dark:border-white/10 transition">
+          <p class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            Citas Totales
+          </p>
+          <p class="text-6xl font-bold text-gray-900 dark:text-gray-100 mt-4">
+            {{ totalCitas }}
+          </p>
+        </div>
+
+      </section>
+
     </div>
   </main>
 </div>

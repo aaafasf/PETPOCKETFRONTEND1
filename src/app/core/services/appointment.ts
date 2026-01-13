@@ -128,27 +128,28 @@ export class AppointmentService {
      🔁 Mapper Backend → Frontend (ÚNICO PUNTO)
      ===================================================== */
   private mapBackendAppointments(data: any[]): Appointment[] {
-    return data.map(item => ({
-      idCita: item.idCita,
-      idCliente: item.idCliente,
-      idMascota: item.idMascota,
-      idServicio: item.idServicio,
-      userIdUser: Number(item.userIdUser),
+  return data.map(item => ({
+    idCita: item.idCita,
+    idCliente: Number(item.idCliente),
+    idMascota: Number(item.idMascota),
+    idServicio: Number(item.idServicio),
+    userIdUser: Number(item.userIdUser),
 
-      fecha: item.fecha?.split('T')[0],
-      hora: item.hora,
-      estadoCita: item.estadoCita,
+    fecha: item.fecha?.split('T')[0],
+    hora: item.hora,
+    estadoCita: item.estadoCita,
 
-      nombreMascota: item.mascota?.nombre ?? item.nombreMascota ?? 'Sin nombre',
-      nombreCliente: item.cliente?.nombre ?? item.nombreCliente ?? 'Desconocido',
-      nombreServicio: item.servicio?.nombre ?? item.nombreServicio ?? 'General',
-      veterinario: item.veterinario ?? 'No asignado',
+    nombreMascota: item.mascota?.nombre ?? item.nombreMascota ?? 'Sin nombre',
+    nombreCliente: item.cliente?.nombre ?? item.nombreCliente ?? 'Desconocido',
+    nombreServicio: item.servicio?.nombre ?? item.nombreServicio ?? 'General',
+    veterinario: item.veterinario ?? 'No asignado',
 
-      motivo: item.detallesMongo?.motivo ?? item.motivo ?? '',
-      sintomas: item.detallesMongo?.sintomas ?? '',
-      notasAdicionales: item.detallesMongo?.notasAdicionales ?? ''
-    }));
-  }
+    motivo: item.detallesMongo?.motivo ?? item.motivo ?? '',
+    sintomas: item.detallesMongo?.sintomas ?? '',
+    notasAdicionales: item.detallesMongo?.notasAdicionales ?? ''
+  }));
+}
+
   getById(id: number): Observable<Appointment> {
     return this.http.get<Appointment>(`${this.apiUrl}/${id}`);
   }
