@@ -52,65 +52,90 @@ export class Planner implements OnInit {
     this.clinicService.getServices().subscribe(s => this.clinicServices = s);
     this.clinicService.getVeterinarians().subscribe(v => {
       this.veterinarians = v;
-      console.log('👨‍⚕️ Veterinarios cargados:', v); // Revisa si el ID 34 está aquí
+      console.log('👨‍⚕️ Veterinarios cargados:', v);
     });
 
     // 2️⃣ ViewModel Reactivo
     this.plannerAppointments$ = combineLatest([
-  this.appointmentService.appointments$,
-  this.clinicService.getServices(),
-  this.clinicService.getVeterinarians(),
-  this.clienteService.getAll(),
-  this.mascotaService.getAll()
-]).pipe(
-  map(([appointments, services, vets, clientes, mascotas]) => {
+      this.appointmentService.appointments$,
+      this.clinicService.getServices(),
+      this.clinicService.getVeterinarians(),
+      this.clienteService.getAll(), 
+      this.mascotaService.getAll()  
+    ]).pipe(
+      map(([appointments, services, vets, clientes, mascotas]) => {
+        
+        this.clientes = clientes;
+        this.mascotas = mascotas;
 
-    this.clientes = clientes;
-    this.mascotas = mascotas;
-    this.clinicServices = services;
-    this.veterinarians = vets;
+        console.log('📊 Total de citas recibidas:', appointments.length);
 
     const filtered = appointments.filter(a => {
       const citaFecha = (a.fecha || '').substring(0, 10);
       const filtroFecha = (this.selectedDate || '').substring(0, 10);
 
-      const filtroVetNum = this.searchVetId ? Number(this.searchVetId) : null;
-      const matchVet = !filtroVetNum || Number(a.userIdUser) === filtroVetNum;
+          const filtroVetNum = this.searchVetId ? Number(this.searchVetId) : null;
+          
+          // ✅ CORRECCIÓN: Manejar NaN y null correctamente
+          const matchVet = !filtroVetNum || 
+                           (a.userIdUser != null && !isNaN(a.userIdUser) && Number(a.userIdUser) === filtroVetNum);
 
       const filtroServNum = this.searchServiceId ? Number(this.searchServiceId) : null;
       const matchService = !filtroServNum || Number(a.idServicio) === filtroServNum;
 
-      return citaFecha === filtroFecha && matchVet && matchService;
-    });
+          return matchFecha && matchVet && matchService;
+        });
 
-    return filtered.map(a => {
-      const vetObj = vets.find(v => Number(v.id) === Number(a.userIdUser));
-      const servObj = services.find(s => Number(s.idServicio) === Number(a.idServicio));
-      const clienteObj = clientes.find(c => Number(c.idClientes) === Number(a.idCliente));
-      const mascotaObj = mascotas.find(m => Number(m.idMascota) === Number(a.idMascota));
+        console.log('✅ Citas después del filtro:', filtered.length);
 
-      return {
-        idCita: a.idCita,
-        fecha: a.fecha,
-        hora: a.hora,
-        estadoCita: (a.estadoCita || 'programada').toLowerCase(),
+        // B. MAPEO
+        return filtered.map(a => {
+          // ✅ CORRECCIÓN: Comparar solo si userIdUser es válido
+          const vetObj = vets.find(v => {
+            if (a.userIdUser == null || isNaN(a.userIdUser)) {
+              return false;
+            }
+            return Number(v.id) === Number(a.userIdUser);
+          });
+          
+          const servObj = services.find(s => Number(s.idServicio) === Number(a.idServicio));
+          const clienteObj = clientes.find(c => Number(c.idClientes) === Number(a.idCliente));
+          const mascotaObj = mascotas.find(m => Number(m.idMascota) === Number(a.idMascota));
 
-        veterinarioId: a.userIdUser,
-        veterinarioNombre: vetObj?.name || 'Vet. no asignado',
+          const estadoNormalizado = (a.estadoCita || 'programada').toLowerCase();
 
-        servicioId: a.idServicio,
-        servicioNombre: servObj?.nombreServicio || '...',
-        color: servObj?.color || '#ccc',
+          // ✅ CORRECCIÓN: Usar objetos anidados de tu modelo
+          const mascotaNombre = a.mascota?.nombre ?? mascotaObj?.nombreMascota ?? 'Desconocido';
+          const clienteNombre = a.cliente?.nombre ?? clienteObj?.nombreCliente ?? 'Desconocido';
 
-        mascotaNombre: mascotaObj?.nombreMascota || 'Desconocido',
-        clienteNombre: clienteObj?.nombreCliente || 'Desconocido',
+          const viewModel = {
+            idCita: a.idCita,
+            fecha: a.fecha,
+            hora: a.hora,
+            estadoCita: estadoNormalizado,
 
-        motivo: a.motivo
-      } as PlannerAppointmentVM;
-    });
-  })
-);
+            veterinarioId: a.userIdUser,
+            veterinarioNombre: vetObj ? vetObj.name : 'Sin Asignar',
 
+            servicioId: a.idServicio,
+            servicioNombre: servObj ? servObj.nombreServicio : a.nombreServicio ?? '...',
+            color: servObj ? servObj.color : '#ccc',
+
+            mascotaNombre: mascotaNombre,
+            clienteNombre: clienteNombre,
+
+            motivo: a.motivo ?? a.detallesMongo?.motivo
+          } as PlannerAppointmentVM;
+
+          // Debug para ver si encuentra veterinario
+          if (!vetObj) {
+            console.log(`⚠️ Cita ${a.idCita}: userIdUser=${a.userIdUser} - NO se encontró veterinario`);
+          }
+
+          return viewModel;
+        });
+      })
+    );
 
     this.refreshAppointments();
   }
@@ -146,13 +171,12 @@ export class Planner implements OnInit {
       idMascota: Number(data.idMascota),
       idServicio: Number(data.idServicio),
       
-      // Enviamos el ID tal cual lo manda el formulario (puede ser 34, 1, etc)
+      // ✅ CORRECCIÓN: Asegurar que el ID del veterinario sea válido
       userIdUser: data.userIdUser ? Number(data.userIdUser) : null,
       
       fecha: data.fecha,
       hora: data.hora,
       
-      // Aseguramos que el estado vaya en minúsculas al backend por convención
       estadoCita: (data.estadoCita || 'programada').toLowerCase(),
       
       motivo: data.motivo ?? null
@@ -166,14 +190,16 @@ export class Planner implements OnInit {
 
     request.subscribe({
       next: () => {
+        console.log('✅ Guardado exitoso, refrescando datos...');
         this.isModalOpen = false;
         
-        // 🕒 Pequeño truco: Esperar 200ms para asegurar que la DB guardó el cambio
-        // antes de volver a pedir los datos. Esto soluciona el "no se pinta el cambio".
+        // ✅ CORRECCIÓN: Primero cerrar modal, luego refrescar
+        this.refreshAppointments();
+        
+        // Mostrar confirmación después de un momento
         setTimeout(() => {
-          this.refreshAppointments();
           alert('Datos guardados y actualizados.');
-        }, 200);
+        }, 100);
       },
       error: (err) => {
         console.error('❌ Error API:', err);
@@ -199,7 +225,15 @@ export class Planner implements OnInit {
   }
 
   getAppointmentsForVet(vetId: number, appointments: PlannerAppointmentVM[]): PlannerAppointmentVM[] {
-    return appointments.filter(a => Number(a.veterinarioId) === Number(vetId));
+    const result = appointments.filter(a => {
+      // ✅ CORRECCIÓN: Filtrar solo citas con veterinario válido
+      if (a.veterinarioId == null || isNaN(a.veterinarioId)) {
+        return false;
+      }
+      return Number(a.veterinarioId) === Number(vetId);
+    });
+    
+    return result;
   }
 
   private getLocalDate(): string {
