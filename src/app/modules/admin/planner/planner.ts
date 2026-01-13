@@ -18,7 +18,7 @@ import { FormManual } from '../form-manual/form-manual';
   standalone: true,
   imports: [CommonModule, FormsModule, FormManual, RouterModule],
   templateUrl: './planner.html',
-  styleUrl: './planner.css',
+  styleUrl: './planner.css', // ← YA ESTÁ CORRECTO
 })
 export class Planner implements OnInit {
 
@@ -234,6 +234,34 @@ export class Planner implements OnInit {
     });
     
     return result;
+  }
+
+  // ==============================================
+  // MÉTODOS PARA MANEJAR CLASES DE ESTADO (AGREGADOS)
+  // ==============================================
+  
+  getEstadoClass(estado: string): string {
+    const estadoLower = estado?.toLowerCase() || '';
+    switch(estadoLower) {
+      case 'confirmada': return 'confirmada';
+      case 'pendiente': return 'pendiente';
+      case 'cancelada': return 'cancelada';
+      case 'completada': return 'completada';
+      case 'programada': return 'programada';
+      default: return 'programada'; // valor por defecto
+    }
+  }
+
+  getEstadoLabelClass(estado: string): string {
+    const estadoLower = estado?.toLowerCase() || '';
+    switch(estadoLower) {
+      case 'confirmada': return 'bg-green-500 text-white';
+      case 'pendiente': return 'bg-yellow-500 text-white';
+      case 'cancelada': return 'bg-red-500 text-white';
+      case 'completada': return 'bg-blue-500 text-white';
+      case 'programada': return 'bg-orange-500 text-white';
+      default: return 'bg-gray-500 text-white';
+    }
   }
 
   private getLocalDate(): string {

@@ -1,32 +1,81 @@
 <div class="flex h-screen bg-gray-100 font-sans">
   
-  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-    <div class="p-6">
-      <img src="assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
-      <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
+  <!-- SIDEBAR - AGREGAR CLASES DE CREATE-USER -->
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col relative z-10 sidebar-animation">
+    <div class="p-6 text-center">
+      <img src="assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto transform transition-transform duration-300 hover:scale-110">
+      <p class="text-center text-xs font-bold text-gray-400 mt-2 tracking-wider">ADMIN PANEL</p>
     </div>
 
-    <nav class="flex-1 px-4 space-y-2">
-      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">📊</span> Dashboard
+    <nav class="flex-1 px-4 space-y-2 menu-items">
+      <!-- Dashboard -->
+      <a routerLink="/admin/dashboard" 
+         routerLinkActive="active-menu bg-gray-100 text-[#F27438] font-bold" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">📊</span> 
+        <span class="menu-text">Dashboard</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/agenda" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">📅</span> Agenda
+      
+      <!-- Agenda -->
+      <a routerLink="/admin/agenda" 
+         routerLinkActive="active-menu bg-gray-100 text-[#F27438] font-bold" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">📅</span> 
+        <span class="menu-text">Agenda</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/planner" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">📋</span> Panel
+      
+      <!-- Panel (ACTIVO) -->
+      <a routerLink="/admin/planner" 
+         routerLinkActive="active-menu bg-gray-100 text-[#F27438] font-bold" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">📋</span> 
+        <span class="menu-text">Panel</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/servicios" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">🩺</span> Servicios
+      
+      <!-- Servicios -->
+      <a routerLink="/admin/servicios" 
+         routerLinkActive="active-menu bg-gray-100 text-[#F27438] font-bold" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">🩺</span> 
+        <span class="menu-text">Servicios</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/configuracion" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">⚙️</span> Configuración
+      
+      <!-- Configuración -->
+      <a routerLink="/admin/configuracion" 
+         routerLinkActive="active-menu bg-gray-100 text-[#F27438] font-bold" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">⚙️</span> 
+        <span class="menu-text">Configuración</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/users/create" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">➕</span> Registro de usuario
+      
+      <!-- Registro de usuario -->
+      <a routerLink="/admin/users/create" 
+         routerLinkActive="active-menu bg-gray-100 text-[#F27438] font-bold" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">➕</span> 
+        <span class="menu-text">Registro de usuario</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/users" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">👥</span> Usuarios registrados
+      
+      <!-- Usuarios registrados -->
+      <a routerLink="/admin/users" 
+         routerLinkActive="active-menu bg-gray-100 text-[#F27438] font-bold" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">👥</span> 
+        <span class="menu-text">Usuarios registrados</span>
+        <span class="menu-highlight"></span>
       </a>
     </nav>
 
@@ -37,23 +86,30 @@
 
   <main class="flex-1 flex flex-col overflow-hidden">
     
-    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
-      <h2 class="text-xl font-black text-gray-800">Panel Clínico</h2>
+    <!-- HEADER - AGREGAR CLASES DE NAVBAR -->
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8 navbar-container">
+      <h2 class="text-xl font-black text-gray-800 navbar-title group">
+        <span class="inline-block transition-all duration-300 group-hover:tracking-wider group-hover:text-[#F27438]">
+          Panel Clínico
+        </span>
+        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F27438] group-hover:w-full transition-all duration-500"></span>
+      </h2>
       <div class="flex items-center space-x-6">
-        
         <div class="flex items-center space-x-3">
           <span class="text-sm font-bold text-gray-600">Admin</span>
-          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">A</div>
+          <div class="w-10 h-10 bg-gradient-to-r from-[#F27438] to-orange-500 rounded-full flex items-center justify-center font-bold text-white">
+            A
+          </div>
         </div>
       </div>
     </header>
 
     <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
       
-      <div class="planner-wrapper">
+      <div class="planner-wrapper card-animation">
        
+        <!-- Sección de filtros -->
         <section class="search-filters">
-       
           <div class="filters-left">
             <div class="filter-group">
               <label>Fecha</label>
@@ -82,40 +138,36 @@
           </div>
        
           <div class="actions-right">
-            <button class="btn-add" (click)="openCreateModal()">
+            <button class="btn-add icon-button" (click)="openCreateModal()">
               <span class="icon">+</span> Nueva Cita
             </button>
           </div>
-       
         </section>
        
+        <!-- Contenedor del calendario -->
         <div class="calendar-container">
-       
           <div class="planner-grid" [style.grid-template-columns]="'repeat(' + veterinarians.length + ', 1fr)'">
-       
             <div *ngFor="let vet of veterinarians" class="vet-column">
-       
               <div class="header-cell">
                 <span class="vet-name">{{ vet.name }}</span>
               </div>
        
               <div class="slots-container">
-       
                 <ng-container *ngIf="plannerAppointments$ | async as allAppts">
-                  
-                  <!-- ✅ CORRECCIÓN CRÍTICA: Usar [ngClass] en lugar de [class] -->
+                  <!-- Tarjetas de citas -->
                   <div *ngFor="let appt of getAppointmentsForVet(vet.id, allAppts)" 
-                       class="appointment-card"
+                       class="appointment-card card-service"
                        [ngClass]="appt.estadoCita"
                        (click)="onAppointmentClick(appt.idCita)">
        
-                    <!-- ✅ CORRECCIÓN CRÍTICA: Usar [ngClass] en lugar de [class] -->
-                    <div class="card-header" [ngClass]="appt.estadoCita">
+                    <div class="card-header" [ngClass]="getEstadoClass(appt.estadoCita)">
                       <div class="date-box">
                         <span class="day">{{ appt.fecha | date:'dd' }}</span>
                         <span class="month-year">{{ appt.fecha | date:'MMM' }}</span>
                       </div>
-                      <span class="status-label">{{ appt.estadoCita | titlecase }}</span>
+                      <span class="status-label" [ngClass]="getEstadoLabelClass(appt.estadoCita)">
+                        {{ appt.estadoCita | titlecase }}
+                      </span>
                     </div>
        
                     <div class="card-body">
@@ -141,25 +193,24 @@
                   <div *ngIf="getAppointmentsForVet(vet.id, allAppts).length === 0" class="empty-col-msg">
                     Libre
                   </div>
-       
                 </ng-container>
-       
               </div>
             </div>
           </div>
         </div>
       </div>
        
+      <!-- Modal -->
       <app-form-manual 
-      *ngIf="isModalOpen" 
-      [veterinarians]="veterinarians" 
-      [clientes]="clientes" 
-      [mascotas]="mascotas"
-      [services]="clinicServices"
-      [appointmentId]="selectedAppointmentId" 
-      (save)="handleSaveAppointment($event)" 
-      (close)="isModalOpen = false">
+        *ngIf="isModalOpen" 
+        [veterinarians]="veterinarians" 
+        [clientes]="clientes" 
+        [mascotas]="mascotas"
+        [services]="clinicServices"
+        [appointmentId]="selectedAppointmentId" 
+        (save)="handleSaveAppointment($event)" 
+        (close)="isModalOpen = false">
       </app-form-manual>
-      </div>
+    </div>
   </main>
 </div>
