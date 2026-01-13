@@ -10,43 +10,44 @@
       <section class="form-grid">
 
         <div class="field">
-          <label>Cliente</label> <select formControlName="idCliente">
-  <option [ngValue]="null">Seleccione Cliente...</option>
-  <option *ngFor="let c of clientes" [ngValue]="c.idClientes">
-    {{ c.nombreCliente }}
-  </option>
-</select>
+          <label>Cliente</label>
+          <select formControlName="idCliente">
+            <option [ngValue]="null">Seleccione Cliente...</option>
+            <option *ngFor="let c of clientes" [ngValue]="c.idClientes">
+              {{ c.nombreCliente }}
+            </option>
+          </select>
         </div>
 
         <div class="field">
-          <label>Mascota</label> <select formControlName="idMascota">
-  <option [ngValue]="null">Seleccione Mascota...</option>
-  <option *ngFor="let m of mascotas" [ngValue]="m.idMascota">
-    {{ m.nombreMascota }}
-  </option>
-</select>
-
+          <label>Mascota</label>
+          <select formControlName="idMascota">
+            <option [ngValue]="null">Seleccione Mascota...</option>
+            <option *ngFor="let m of mascotas" [ngValue]="m.idMascota">
+              {{ m.nombreMascota }}
+            </option>
+          </select>
         </div>
 
       </section>
 
       <section class="form-grid">
         <div class="field">
-  <label>Veterinario</label>
-  <select formControlName="userIdUser">
-    <option [ngValue]="null">Seleccione Doctor...</option>
-    <option *ngFor="let vet of veterinarians" [ngValue]="vet.id">
-      {{ vet.name }}
-    </option>
-  </select>
-</div>
+          <label>Veterinario</label>
+          <select formControlName="userIdUser">
+            <option [ngValue]="null">Seleccione Doctor...</option>
+            <option *ngFor="let vet of veterinarians" [ngValue]="vet.id">
+              {{ vet.name }}
+            </option>
+          </select>
+        </div>
+        
         <div class="field">
           <label>Servicio</label>
           <select formControlName="idServicio">
             <option [ngValue]="null">Seleccione Servicio...</option>
             <option *ngFor="let s of services" [ngValue]="s.idServicio">
               {{ s.nombreServicio }}
-
             </option>
           </select>
         </div>
@@ -67,6 +68,7 @@
         <div class="field">
           <label>Estado Cita</label>
           <select formControlName="estadoCita">
+            <!-- ✅ CORRECCIÓN: value en minúsculas, display con capitalize -->
             <option *ngFor="let status of appointmentStatuses" [value]="status">
               {{ status | titlecase }}
             </option>
@@ -81,7 +83,7 @@
 
       <footer class="form-actions">
         <button type="button" (click)="close.emit()" class="btn-cancel">Cancelar</button>
-        <button type="submit"  class="btn-save">
+        <button type="submit" class="btn-save">
           {{ appointmentId ? 'Guardar Cambios' : 'Confirmar Cita' }}
         </button>
       </footer>
