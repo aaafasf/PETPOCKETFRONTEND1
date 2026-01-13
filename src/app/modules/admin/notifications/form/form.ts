@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { NotificacionesService, Notificacion } from '../../../../core/services/notificaciones.service';
+import { NotificacionesService, Notificacion, CrearNotificacionRequest } from '../../../../core/services/notificaciones.service';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { RouterModule } from '@angular/router';
@@ -56,8 +56,7 @@ export class FormComponent implements OnInit {
       titulo: ['', [Validators.required, Validators.minLength(3)]],
       mensaje: ['', [Validators.required, Validators.minLength(10)]],
       tipo: ['recordatorio', Validators.required],
-      fechaProgramada: [null],
-      mesesProgramacion: [null]
+      fechaProgramada: [null]
     });
   }
 
@@ -73,14 +72,13 @@ export class FormComponent implements OnInit {
 
   loadNotification(id: number) {
     this.loading = true;
-    this.notificacionesService.obtenerPorId(id).subscribe({
+    this.notificacionesService.obtenerDetalleNotificacion(id).subscribe({
       next: (notification: Notificacion) => {
         this.form.patchValue({
           titulo: notification.titulo,
           mensaje: notification.mensaje,
           tipo: notification.tipo,
-          fechaProgramada: notification.fechaProgramada ? new Date(notification.fechaProgramada) : null,
-          mesesProgramacion: notification.mesesProgramacion
+          fechaProgramada: notification.fechaProgramada ? new Date(notification.fechaProgramada) : null
         });
         this.loading = false;
       },
@@ -101,37 +99,61 @@ export class FormComponent implements OnInit {
       this.loading = true;
       const formValue = this.form.value;
 
-      const notificationData: Partial<Notificacion> = {
-        titulo: formValue.titulo,
-        mensaje: formValue.mensaje,
-        tipo: formValue.tipo,
-        fechaProgramada: formValue.fechaProgramada,
-        mesesProgramacion: formValue.mesesProgramacion
-      };
+      if (this.isEdit && this.notificationId) {
+        const notificationData: Partial<Notificacion> = {
+          titulo: formValue.titulo,
+          mensaje: formValue.mensaje,
+          tipo: formValue.tipo,
+          fechaProgramada: formValue.fechaProgramada
+        };
 
-      const operation = this.isEdit
-        ? this.notificacionesService.crearNotificacion(notificationData) // Para update, usar un método update si existe
-        : this.notificacionesService.crearNotificacion(notificationData);
+        this.notificacionesService.actualizarNotificacion(this.notificationId, notificationData).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Notificación actualizada correctamente'
+            });
+            this.router.navigate(['admin/notifications/list']);
+          },
+          error: (error: any) => {
+            console.error('Error updating notification:', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'No se pudo actualizar la notificación'
+            });
+            this.loading = false;
+          }
+        });
+      } else {
+        const notificationData: CrearNotificacionRequest = {
+          titulo: formValue.titulo,
+          mensaje: formValue.mensaje,
+          tipo: formValue.tipo,
+          fechaProgramada: formValue.fechaProgramada
+        };
 
-      operation.subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: `Notificación ${this.isEdit ? 'actualizada' : 'creada'} correctamente`
-          });
-          this.router.navigate(['admin/notifications/list']);
-        },
-        error: (error: any) => {
-          console.error('Error saving notification:', error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: `No se pudo ${this.isEdit ? 'actualizar' : 'crear'} la notificación`
-          });
-          this.loading = false;
-        }
-      });
+        this.notificacionesService.crearNotificacion(notificationData).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Notificación creada correctamente'
+            });
+            this.router.navigate(['admin/notifications/list']);
+          },
+          error: (error: any) => {
+            console.error('Error creating notification:', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'No se pudo crear la notificación'
+            });
+            this.loading = false;
+          }
+        });
+      }
     } else {
       this.messageService.add({
         severity: 'warn',

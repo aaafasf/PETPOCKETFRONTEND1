@@ -19,22 +19,7 @@
     </nav>
   </aside>
 
-<<<<<<< HEAD
-
-  <main class="flex-1 flex flex-col overflow-hidden p-8">
-    <div class="flex justify-between items-center mb-8">
-      <div class="flex items-center gap-4">
-        <button 
-          routerLink="/dashboard"
-          class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all hover:shadow-md">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-          </svg>
-          Regresar
-        </button>
-        <h2 class="text-3xl font-black text-gray-800">Alertas y Recordatorios</h2>
-=======
-  <main class="flex-1 flex flex-col overflow-hidden p-8 overflow-y-auto">
+ERROR RuntimeError: NG04002: Cannot match any routes. URL Segment: 'admin/notifications  <main class="flex-1 flex flex-col overflow-hidden p-8 overflow-y-auto">
     <!-- Header -->
     <div class="flex justify-between items-start mb-8">
       <div class="flex-1">
@@ -57,7 +42,6 @@
           </div>
           <span class="text-sm text-gray-500">Total: {{notificaciones.length}}</span>
         </div>
->>>>>>> 49ebe9ccad18ac960c461ecba2bff95629a0fee9
       </div>
     </div>
 
@@ -98,17 +82,6 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<<<<<<< HEAD
-      <!-- Create: Formulario para crear alerta programada -->
-      <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit">
-        <h3 class="font-bold text-gray-700 mb-4">Programar Nueva Alerta</h3>
-        <div class="space-y-4">
-          <input 
-            [(ngModel)]="nuevaAlerta.titulo" 
-            placeholder="Título (ej: Vacuna)" 
-            class="w-full p-3 bg-gray-50 border rounded-xl outline-none focus:border-[#F27438]"
-            [disabled]="isLoading">
-=======
       <!-- Panel de Crear Alerta -->
       <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-200 h-fit backdrop-blur-sm bg-opacity-95 sticky top-8">
         <div class="flex items-center gap-3 mb-6">
@@ -127,7 +100,6 @@
               placeholder="Ej: Vacuna en 6 meses" 
               class="w-full p-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl outline-none focus:border-[#F27438] focus:bg-white focus:shadow-md transition-all duration-200 placeholder:text-gray-400">
           </div>
->>>>>>> 49ebe9ccad18ac960c461ecba2bff95629a0fee9
           
           <div>
             <label class="block text-sm font-bold text-gray-700 mb-2">Tipo</label>

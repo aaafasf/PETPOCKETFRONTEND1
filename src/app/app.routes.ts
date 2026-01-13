@@ -74,18 +74,17 @@ export const routes: Routes = [
   },
 
   // ===================
-  // NOTIFICATIONS
+  // ADMIN NOTIFICATIONS
   // ===================
   {
-    path: 'notifications',
-    component: NotificationsComponent,
+    path: 'admin/notifications',
+    loadChildren: () =>
+      import('./modules/admin/notifications/notifications-module')
+        .then(m => m.NotificationsModule),
   },
 
-  
-
-
   // ===================
-  // ADMIN - USERS
+  // ADMIN DASHBOARD
   // ===================
   {
     path: 'admin/users',

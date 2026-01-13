@@ -39,7 +39,7 @@ export class ListComponent implements OnInit {
 
   loadNotificaciones() {
     this.loading = true;
-    this.notificacionesService.obtenerTodas().subscribe({
+    this.notificacionesService.obtenerTodasNotificaciones().subscribe({
       next: (data: Notificacion[]) => {
         this.notificaciones = data;
         this.loading = false;
