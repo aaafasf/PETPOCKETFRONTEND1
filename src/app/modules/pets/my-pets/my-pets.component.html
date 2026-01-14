@@ -1,0 +1,89 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <div class="p-6">
+      <img src="img/logo-circular.png" alt="PetPocket Logo" class="w-32 mx-auto">
+    </div>
+    <nav class="flex-1 px-4 space-y-2">
+      <a href="/dashboard" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">🏠</span> Inicio
+      </a>
+      <a routerLink="/pets/my" routerLinkActive="bg-orange-50 text-[#F27438] font-bold shadow-sm" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">🐾</span> Mis Mascotas
+      </a>
+      <a routerLink="/pets/register" routerLinkActive="bg-orange-50 text-[#F27438] font-bold shadow-sm" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">➕</span> Registrar Mascota
+      </a>
+      <a href="#" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">📅</span> Historial
+      </a>
+      <a href="#" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">🛒</span> Servicios
+      </a>
+    </nav>
+    <div class="p-6 text-center">
+        <img src="img/pet-illustration.jpg" alt="Icon" class="w-24 mx-auto opacity-40">
+    </div>
+  </aside>
+
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
+      <h1 class="text-3xl font-black text-gray-800 mb-8">Mis Mascotas</h1>
+    </header>
+    <div class="max-w-4xl mx-auto bg-white rounded-3xl p-10 shadow-sm border border-gray-100 mt-10">
+  @if (mascotas.length === 0) {
+    <div class="text-gray-400">No tienes mascotas registradas.</div>
+  }
+  @for (mascota of mascotas; let i = $index; track mascota.idMascota) {
+    <div class="mb-8 border-b pb-6">
+      @if (editIndex !== i) {
+        <div class="font-bold text-lg">{{ mascota.nombreMascota }}</div>
+        <div class="text-sm text-gray-500">Especie: {{ mascota.especie }} | Raza: {{ mascota.raza }} | Sexo: {{ mascota.sexo }} | Color: {{ mascota.color }}</div>
+        <button class="mt-2 px-4 py-2 bg-[#F27438] text-white rounded-lg font-bold" (click)="onEdit(i)">Editar</button>
+      }
+      @if (editIndex === i) {
+        <form class="space-y-4" (ngSubmit)="onSave()">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-bold text-gray-600 mb-2">Especie</label>
+              <select class="w-full p-2 border rounded" [(ngModel)]="mascotaEdit.idEspecie" name="especie{{i}}" (change)="onEspecieChange(mascotaEdit.idEspecie)">
+                @for (especie of especies; track especie.idEspecie) {
+                  <option [value]="especie.idEspecie">{{ especie.nombre }}</option>
+                }
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-600 mb-2">Raza</label>
+              <select class="w-full p-2 border rounded" [(ngModel)]="mascotaEdit.idRaza" name="raza{{i}}">
+                @for (raza of razas; track raza.idRaza) {
+                  <option [value]="raza.idRaza">{{ raza.nombre }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-bold text-gray-600 mb-2">Sexo</label>
+              <select class="w-full p-2 border rounded" [(ngModel)]="mascotaEdit.idSexo" name="sexo{{i}}">
+                @for (sexo of sexos; track sexo.idSexo) {
+                  <option [value]="sexo.idSexo">{{ sexo.nombre }}</option>
+                }
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-600 mb-2">Color</label>
+              <select class="w-full p-2 border rounded" [(ngModel)]="mascotaEdit.idColor" name="color{{i}}">
+                @for (color of colores; track color.idColor) {
+                  <option [value]="color.idColor">{{ color.nombre }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="flex gap-4 mt-4">
+            <button type="submit" class="bg-[#56C57F] text-white px-6 py-2 rounded font-bold">Guardar</button>
+            <button type="button" class="bg-gray-200 text-gray-700 px-6 py-2 rounded font-bold" (click)="onCancel()">Cancelar</button>
+          </div>
+        </form>
+      }
+    </div>
+  }
+</div>

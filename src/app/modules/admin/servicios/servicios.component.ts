@@ -9,6 +9,7 @@ import { ServicioService } from '../../../core/services/servicio.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './servicios.component.html',
+  styleUrls: ['./servicios.component.css']  // ← ESTA LÍNEA ES LO ÚNICO QUE AGREGAS
 })
 export class ServiciosComponent implements OnInit {
 
@@ -131,29 +132,29 @@ export class ServiciosComponent implements OnInit {
     this.editando = true;
     this.servicioEditando = { ...servicio };
   }
+  
   timestamp = new Date().getTime();
   
   guardarEdicion(): void {
-  const formData = new FormData();
-  formData.append('nombre', this.servicioEditando.nombreServicio);
-  formData.append('descripcion', this.servicioEditando.descripcionServicio);
-  formData.append('precio', this.servicioEditando.precioServicio.toString());
-  formData.append('estadoServicio', this.servicioEditando.estadoServicio);
+    const formData = new FormData();
+    formData.append('nombre', this.servicioEditando.nombreServicio);
+    formData.append('descripcion', this.servicioEditando.descripcionServicio);
+    formData.append('precio', this.servicioEditando.precioServicio.toString());
+    formData.append('estadoServicio', this.servicioEditando.estadoServicio);
 
-  if (this.imagenSeleccionadaEdit) {
-    formData.append('imagen', this.imagenSeleccionadaEdit);
+    if (this.imagenSeleccionadaEdit) {
+      formData.append('imagen', this.imagenSeleccionadaEdit);
+    }
+
+    this.servicioService.actualizar(this.servicioEditando.idServicio, formData)
+      .subscribe(() => {
+        this.timestamp = new Date().getTime(); // 🔹 fuerza recarga de imagen
+        this.cargarServicios();
+        this.cancelarEdicion();
+        this.imagenSeleccionadaEdit = null;
+        this.previewImagenEdit = null;
+      });
   }
-
-  this.servicioService.actualizar(this.servicioEditando.idServicio, formData)
-    .subscribe(() => {
-      this.timestamp = new Date().getTime(); // 🔹 fuerza recarga de imagen
-      this.cargarServicios();
-      this.cancelarEdicion();
-      this.imagenSeleccionadaEdit = null;
-      this.previewImagenEdit = null;
-    });
-}
-
 
   cancelarEdicion(): void {
     this.editando = false;

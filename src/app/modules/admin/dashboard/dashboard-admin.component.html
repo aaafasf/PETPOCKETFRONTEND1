@@ -2,85 +2,112 @@
             dark:from-[#020617] dark:via-[#020617] dark:to-[#020617]
             font-sans transition-colors duration-300">
 
-  <!-- SIDEBAR -->
-  <aside id="sidebar"
-    class="fixed md:static inset-y-0 left-0 z-40
-           w-72 transform -translate-x-full md:translate-x-0
-           transition-transform duration-300 ease-in-out
-           bg-gradient-to-b from-[#020617] via-[#020A1A] to-[#020617]
-           text-zinc-300 flex flex-col
-           shadow-[0_30px_80px_rgba(0,0,0,0.95)]
-           relative">
+  <!-- SIDEBAR - AGREGAR CLASES DE CREATE-USER -->
+  <aside class="w-72 sidebar-animation
+              bg-gradient-to-b from-[#050505] via-[#0B0B0F] to-[#000000]
+              text-zinc-300 flex flex-col
+              shadow-[0_25px_60px_rgba(0,0,0,0.9)]
+              relative transition-colors duration-300">
 
-    <!-- Accent line -->
+    <!-- Accent top line -->
     <div class="absolute top-0 left-0 w-full h-[2px]
-      bg-gradient-to-r from-[#F27438] via-orange-400 to-[#F27438]"></div>
+              bg-gradient-to-r from-[#F27438] via-orange-400 to-[#F27438]"></div>
 
     <!-- Logo -->
     <div class="px-8 pt-10 pb-8 text-center">
       <img src="/assets/img/logo-circular.png"
-           class="w-20 mx-auto mb-6 drop-shadow-lg">
+           class="w-20 mx-auto mb-6 opacity-90 transform transition-transform duration-300 hover:scale-110">
       <p class="text-[10px] tracking-[0.45em] font-semibold text-zinc-500">
         ADMIN SYSTEM
       </p>
     </div>
 
-    <!-- NAV -->
-    <nav class="flex-1 px-4 space-y-1 text-sm overflow-y-auto">
-
+    <!-- Navigation - AGREGAR CLASES DE CREATE-USER -->
+    <nav class="flex-1 px-4 space-y-1 text-sm menu-items">
+      <!-- Dashboard -->
       <a routerLink="/admin/dashboard"
-         routerLinkActive="bg-white/10 text-white shadow-inner"
-         class="flex items-center gap-4 px-5 py-3 rounded-xl hover:bg-white/5 transition">
-        📊 Dashboard
+         routerLinkActive="active-menu bg-white/10 text-white shadow-inner"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
+                hover:bg-white/5 transition">
+        <span class="menu-icon text-xl">📊</span> 
+        <span class="menu-text">Dashboard</span>
+        <span class="menu-highlight"></span>
       </a>
 
+      <!-- Agenda -->
       <a routerLink="/admin/agenda"
-         routerLinkActive="bg-white/10 text-white shadow-inner"
-         class="flex items-center gap-4 px-5 py-3 rounded-xl hover:bg-white/5 transition">
-        📅 Agenda
+         routerLinkActive="active-menu bg-white/10 text-white shadow-inner"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
+                hover:bg-white/5 transition">
+        <span class="menu-icon text-xl">📅</span> 
+        <span class="menu-text">Agenda</span>
+        <span class="menu-highlight"></span>
       </a>
 
+      <!-- Planner -->
       <a routerLink="/admin/planner"
-         routerLinkActive="bg-white/10 text-white shadow-inner"
-         class="flex items-center gap-4 px-5 py-3 rounded-xl hover:bg-white/5 transition">
-        📋 Planner
+         routerLinkActive="active-menu bg-white/10 text-white shadow-inner"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
+                hover:bg-white/5 transition">
+        <span class="menu-icon text-xl">📋</span> 
+        <span class="menu-text">Planner</span>
+        <span class="menu-highlight"></span>
       </a>
 
       <div class="my-6 border-t border-white/10"></div>
 
+      <!-- Servicios -->
       <a routerLink="/admin/servicios"
-         routerLinkActive="bg-white/10 text-white shadow-inner"
-         class="flex items-center gap-4 px-5 py-3 rounded-xl hover:bg-white/5 transition">
-        🩺 Servicios
+         routerLinkActive="active-menu bg-white/10 text-white shadow-inner"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
+                hover:bg-white/5 transition">
+        <span class="menu-icon text-xl">🩺</span> 
+        <span class="menu-text">Servicios</span>
+        <span class="menu-highlight"></span>
       </a>
 
+      <!-- Configuración -->
       <a routerLink="/admin/configuracion"
-         routerLinkActive="bg-white/10 text-white shadow-inner"
-         class="flex items-center gap-4 px-5 py-3 rounded-xl hover:bg-white/5 transition">
-        ⚙️ Configuración
+         routerLinkActive="active-menu bg-white/10 text-white shadow-inner"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
+                hover:bg-white/5 transition">
+        <span class="menu-icon text-xl">⚙️</span> 
+        <span class="menu-text">Configuración</span>
+        <span class="menu-highlight"></span>
       </a>
 
-      <div class="mt-6 mb-3 px-5 text-[10px] tracking-widest text-zinc-500">
-        GESTIÓN
-      </div>
-
-      <a routerLink="/admin/users/create"
-         routerLinkActive="bg-[#F27438]/15 text-[#F27438]"
-         class="flex items-center gap-4 px-5 py-3 rounded-xl hover:bg-[#F27438]/10 transition">
-        ➕ Registro de usuario
+      <!-- Registro de usuario -->
+      <a routerLink="/admin/users/create" 
+         routerLinkActive="active-menu bg-white/10 text-white shadow-inner"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
+                hover:bg-white/5 transition">
+        <span class="menu-icon text-xl">➕</span> 
+        <span class="menu-text">Registro de usuario</span>
+        <span class="menu-highlight"></span>
       </a>
 
-      <a routerLink="/admin/users"
-         routerLinkActive="bg-[#F27438]/15 text-[#F27438]"
-         class="flex items-center gap-4 px-5 py-3 rounded-xl hover:bg-[#F27438]/10 transition">
-        👥 Usuarios registrados
+      <!-- Usuarios registrados -->
+      <a routerLink="/admin/users" 
+         routerLinkActive="active-menu bg-white/10 text-white shadow-inner"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
+                hover:bg-white/5 transition">
+        <span class="menu-icon text-xl">👥</span> 
+        <span class="menu-text">Usuarios registrados</span>
+        <span class="menu-highlight"></span>
       </a>
     </nav>
 
-    <!-- FOOTER -->
+    <!-- Footer -->
     <div class="px-6 py-6 border-t border-white/10">
-      <div class="flex items-center gap-4 bg-white/5 rounded-xl p-4">
-        <img src="/assets/img/pet-illustration.jpg" class="w-9 opacity-50">
+      <div class="flex items-center gap-4 bg-white/5 rounded-xl p-4 card-animation">
+        <img src="/assets/img/pet-illustration.jpg" class="w-9 opacity-40">
         <div class="text-xs">
           <p class="text-zinc-300 font-medium">PetPocket</p>
           <p class="text-zinc-500">Admin Console</p>
@@ -90,51 +117,58 @@
   </aside>
 
   <!-- MAIN -->
-  <div class="flex-1 flex flex-col">
-
+  <main class="flex-1 flex flex-col overflow-hidden">
     <!-- HEADER -->
-    <header class="sticky top-0 z-30 h-20 flex items-center justify-between px-4 md:px-12
-      bg-white/80 dark:bg-[#020617]/85 backdrop-blur-xl
-      border-b border-gray-200 dark:border-white/10
-      shadow-sm dark:shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
+    <header class="h-20 flex items-center justify-between px-12
+                   bg-white/70 dark:bg-[#020617]/80
+                   backdrop-blur-xl border-b border-gray-200 dark:border-white/10
+                   transition-colors duration-300 navbar-container">
 
-      <div class="flex items-center gap-4">
-        <button
-          onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')"
-          class="md:hidden p-2 rounded-xl bg-black/10 dark:bg-white/10">
-          ☰
-        </button>
-
-        <div>
-          <h2 class="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-100">
+      <div>
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 navbar-title group">
+          <span class="inline-block transition-all duration-300 group-hover:tracking-wider group-hover:text-[#F27438]">
             Panel Administrativo
-          </h2>
-          <p class="text-xs text-gray-500 dark:text-gray-400">
-            Control general del sistema
-          </p>
-        </div>
+          </span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F27438] group-hover:w-full transition-all duration-500"></span>
+        </h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          Control general del sistema
+        </p>
       </div>
 
       <div class="flex items-center gap-4">
+        <!-- DARK MODE BUTTON -->
         <button
           onclick="document.documentElement.classList.toggle('dark')"
-          class="px-4 py-2 rounded-xl text-sm bg-gray-100 dark:bg-white/10">
+          class="px-4 py-2 rounded-xl text-sm font-medium
+                 bg-gray-100 dark:bg-white/10
+                 text-gray-700 dark:text-gray-200
+                 hover:scale-105 transition icon-button">
           🌙 / ☀️
         </button>
 
         <button class="relative p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/10">
           🔔
-          <span class="absolute -top-1 -right-1 w-2 h-2 bg-[#F27438] rounded-full"></span>
+          <span class="absolute -top-1 -right-1 w-2 h-2 bg-[#F27438] rounded-full animate-pulse"></span>
         </button>
+
+        <div class="flex items-center gap-3 bg-black/5 dark:bg-white/10 px-4 py-2 rounded-xl">
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-200">Admin</span>
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#F27438] to-orange-300
+                      text-white flex items-center justify-center font-bold">
+            A
+          </div>
+        </div>
       </div>
     </header>
 
-    <!-- CONTENT (AQUÍ VIVE EL SCROLL) -->
-    <main class="flex-1 overflow-y-auto p-4 md:p-14 space-y-8 md:space-y-16">
+    <!-- CONTENT -->
+    <div class="flex-1 overflow-y-auto p-14 space-y-16">
+      <!-- Sección principal -->
+      <section class="bg-white dark:bg-[#020617]/80 rounded-[2.5rem] p-14
+                      shadow-xl border border-gray-200 dark:border-white/10 transition card-animation form-container">
 
-      <section class="bg-white dark:bg-[#020617]/80 rounded-[2rem] p-8 md:p-14
-        shadow-xl border border-gray-200 dark:border-white/10">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
           Bienvenido, Administrador
         </h1>
         <p class="text-gray-600 dark:text-gray-400 max-w-2xl text-lg">
@@ -142,27 +176,41 @@
         </p>
       </section>
 
-      <section class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
-
-        <div class="bg-gradient-to-br from-[#F27438]/10 to-transparent
-          dark:from-[#F27438]/20 bg-white dark:bg-[#020617]/80
-          rounded-2xl p-10 shadow-xl border border-gray-200 dark:border-white/10">
-          <p class="text-sm uppercase text-gray-500">Servicios Totales</p>
-          <p class="text-5xl font-bold mt-4">{{ totalServicios }}</p>
+      <!-- KPI -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <!-- KPI 1 -->
+        <div class="bg-white dark:bg-[#020617]/80 rounded-[2rem] p-10 shadow-xl
+                    border border-gray-200 dark:border-white/10 transition card-service hover:-translate-y-1">
+          <p class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            Servicios Totales
+          </p>
+          <p class="text-6xl font-bold text-gray-900 dark:text-gray-100 mt-4">
+            {{ totalServicios }}
+          </p>
         </div>
 
-        <div class="bg-white dark:bg-[#020617]/80 rounded-2xl p-10 shadow-xl border">
-          <p class="text-sm uppercase text-gray-500">Servicios Activos</p>
-          <p class="text-5xl font-bold mt-4">{{ serviciosActivos }}</p>
+        <!-- KPI 2 -->
+        <div class="bg-white dark:bg-[#020617]/80 rounded-[2rem] p-10 shadow-xl
+                    border border-gray-200 dark:border-white/10 transition card-service hover:-translate-y-1">
+          <p class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            Servicios Activos
+          </p>
+          <p class="text-6xl font-bold text-gray-900 dark:text-gray-100 mt-4">
+            {{ serviciosActivos }}
+          </p>
         </div>
 
-        <div class="bg-white dark:bg-[#020617]/80 rounded-2xl p-10 shadow-xl border">
-          <p class="text-sm uppercase text-gray-500">Citas Totales</p>
-          <p class="text-5xl font-bold mt-4">{{ totalCitas }}</p>
+        <!-- KPI 3 -->
+        <div class="bg-white dark:bg-[#020617]/80 rounded-[2rem] p-10 shadow-xl
+                    border border-gray-200 dark:border-white/10 transition card-service hover:-translate-y-1">
+          <p class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            Citas Totales
+          </p>
+          <p class="text-6xl font-bold text-gray-900 dark:text-gray-100 mt-4">
+            {{ totalCitas }}
+          </p>
         </div>
-
       </section>
-
-    </main>
-  </div>
+    </div>
+  </main>
 </div>

@@ -1,154 +1,253 @@
-<div class="flex h-screen bg-gray-100 font-sans">
-
-  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-    <div class="p-6">
-      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
-      <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
+<div class="flex h-screen bg-gray-50 font-sans relative overflow-hidden">
+  <!-- Fondo animado de agua/ondas -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-30"></div>
+  
+  <!-- SIDEBAR IDÉNTICO AL CREATE-USER -->
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col relative z-10 sidebar-animation">
+    <div class="p-6 text-center">
+      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto transform transition-transform duration-300 hover:scale-110" />
+      <p class="text-xs font-bold text-gray-400 mt-2 tracking-wider">ADMIN PANEL</p>
     </div>
-
-    <nav class="flex-1 px-4 space-y-2">
-      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">📊</span> Dashboard
+    
+    <nav class="flex-1 px-4 space-y-2 menu-items">
+      <!-- Dashboard -->
+      <a routerLink="/admin/dashboard" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">📊</span>
+        <span class="menu-text">Dashboard</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/agenda" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">📅</span> Agenda
+      
+      <!-- Agenda -->
+      <a routerLink="/admin/agenda" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">📅</span>
+        <span class="menu-text">Agenda</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/planner" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">📋</span> Panel
+      
+      <!-- Panel -->
+      <a routerLink="/admin/planner" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">📋</span>
+        <span class="menu-text">Panel</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/servicios" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">🩺</span> Servicios
+      
+      <!-- Servicios -->
+      <a routerLink="/admin/servicios" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">🩺</span>
+        <span class="menu-text">Servicios</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/configuracion" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">⚙️</span> Configuración
+      
+      <!-- Configuración (ACTIVO) -->
+      <a routerLink="/admin/configuracion" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">⚙️</span>
+        <span class="menu-text">Configuración</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/users/create" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">➕</span> Registro de usuario
+      
+      <!-- Registro de usuario -->
+      <a routerLink="/admin/users/create" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">➕</span>
+        <span class="menu-text">Registro de usuario</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/users" routerLinkActive="bg-gray-100 text-[#F27438] font-bold" class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">👥</span> Usuarios registrados
+      
+      <!-- Usuarios registrados -->
+      <a routerLink="/admin/users" 
+         routerLinkActive="active-menu"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+        <span class="menu-icon mr-3">👥</span>
+        <span class="menu-text">Usuarios registrados</span>
+        <span class="menu-highlight"></span>
       </a>
     </nav>
-
+    
+    <!-- Pet illustration al final -->
     <div class="p-6">
-      <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
+      <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30" alt="Pet illustration">
     </div>
   </aside>
 
-  <main class="flex-1 flex flex-col overflow-hidden">
-
-    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
-      <h2 class="text-xl font-black text-gray-800">Configuración de la Clínica</h2>
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 flex flex-col overflow-hidden relative z-10">
+    <!-- HEADER con navbar mejorado -->
+    <header class="bg-white h-20 border-b border-gray-200 flex items-center justify-between px-8 shadow-sm navbar-container">
+      <h2 class="text-xl font-black text-gray-800 tracking-tight navbar-title group">
+        <span class="inline-block transition-all duration-300 group-hover:tracking-wider group-hover:text-[#F27438]">
+          Configuración de la Clínica
+        </span>
+        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F27438] group-hover:w-full transition-all duration-500"></span>
+      </h2>
       
       <div class="flex items-center space-x-6">
-        <button class="relative p-2 text-gray-400 hover:text-[#F27438] transition-colors">
+        <!-- Notificaciones -->
+        <button class="relative p-2 text-gray-400 hover:text-[#F27438] transition-colors group">
           <span class="text-2xl">🔔</span>
+          <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse group-hover:scale-125 transition-transform"></span>
         </button>
-        <div class="flex items-center space-x-3">
-          <span class="text-sm font-bold text-gray-600">Admin</span>
-          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">A</div>
+        
+        <!-- Perfil Admin -->
+        <div class="flex items-center space-x-3 group cursor-pointer">
+          <span class="text-sm font-bold text-gray-600 group-hover:text-[#F27438] transition-colors">Admin</span>
+          <div class="w-10 h-10 bg-gradient-to-r from-[#F27438] to-orange-500 rounded-full flex items-center justify-center font-bold text-white group-hover:shadow-lg transition-shadow">
+            A
+          </div>
         </div>
       </div>
     </header>
 
-    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
-
-      <div class="bg-white rounded-3xl p-10 shadow-sm max-w-4xl">
-
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="flex-1 overflow-y-auto bg-gradient-to-b from-white/90 to-gray-50/90 p-8">
+      <!-- Formulario de datos de la clínica -->
+      <div class="bg-white rounded-3xl p-10 shadow-lg max-w-4xl mx-auto card-animation border-2 border-transparent hover:border-[#F27438]/20 transition-all form-container">
         <h3 class="text-lg font-black text-[#F27438] mb-6">
           Datos de la clínica
         </h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          <input [(ngModel)]="datosClinica.nombre" placeholder="Nombre clínica" class="input-admin">
-          <input [(ngModel)]="datosClinica.telefono" placeholder="Teléfono" class="input-admin">
-          <input [(ngModel)]="datosClinica.correo" placeholder="Correo" class="input-admin">
-          <input [(ngModel)]="datosClinica.direccion" placeholder="Dirección" class="input-admin">
-          <input [(ngModel)]="datosClinica.horarios" placeholder="Horarios de atención" class="input-admin">
-          <input type="text" [(ngModel)]="datosClinica.logo" placeholder="URL del logo o nombre del archivo" class="input-admin">
-
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 form-fields">
+          <div class="form-group-animation">
+            <input [(ngModel)]="datosClinica.nombre" 
+                   placeholder="Nombre clínica" 
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+          </div>
+          
+          <div class="form-group-animation">
+            <input [(ngModel)]="datosClinica.telefono" 
+                   placeholder="Teléfono" 
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+          </div>
+          
+          <div class="form-group-animation">
+            <input [(ngModel)]="datosClinica.correo" 
+                   placeholder="Correo" 
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+          </div>
+          
+          <div class="form-group-animation">
+            <input [(ngModel)]="datosClinica.direccion" 
+                   placeholder="Dirección" 
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+          </div>
+          
+          <div class="form-group-animation">
+            <input [(ngModel)]="datosClinica.horarios" 
+                   placeholder="Horarios de atención" 
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+          </div>
+          
+          <div class="form-group-animation">
+            <input type="text" [(ngModel)]="datosClinica.logo" 
+                   placeholder="URL del logo o nombre del archivo" 
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+          </div>
         </div>
 
-        <h3 class="text-lg font-black text-[#F27438] mb-6">
+        <!-- Parámetros generales -->
+        <h3 class="text-lg font-black text-[#F27438] mb-6 mt-10">
           Parámetros generales
         </h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          <select [(ngModel)]="datosClinica.zonaHoraria" class="input-admin">
-            <option value="">Zona horaria</option>
-            <option value="America/Guayaquil">America/Guayaquil</option>
-            <option value="America/Bogota">America/Bogotá</option>
-          </select>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 form-fields">
+          <div class="form-group-animation">
+            <select [(ngModel)]="datosClinica.zonaHoraria" 
+                    class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90 cursor-pointer">
+              <option value="">Zona horaria</option>
+              <option value="America/Guayaquil">America/Guayaquil</option>
+              <option value="America/Bogota">America/Bogotá</option>
+            </select>
+          </div>
 
-          <select [(ngModel)]="datosClinica.idioma" class="input-admin">
-            <option value="">Idioma</option>
-            <option value="es">Español</option>
-            <option value="en">Inglés</option>
-          </select>
+          <div class="form-group-animation">
+            <select [(ngModel)]="datosClinica.idioma" 
+                    class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90 cursor-pointer">
+              <option value="">Idioma</option>
+              <option value="es">Español</option>
+              <option value="en">Inglés</option>
+            </select>
+          </div>
 
-          <select [(ngModel)]="datosClinica.formatoFecha" class="input-admin">
-            <option value="">Formato fecha</option>
-            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-          </select>
+          <div class="form-group-animation">
+            <select [(ngModel)]="datosClinica.formatoFecha" 
+                    class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90 cursor-pointer">
+              <option value="">Formato fecha</option>
+              <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+              <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+            </select>
+          </div>
         </div>
 
-        <textarea [(ngModel)]="datosClinica.politicas" placeholder="Políticas de la clínica"
-          class="w-full p-4 border rounded-2xl mb-6"></textarea>
+        <div class="form-group-animation mb-8">
+          <textarea [(ngModel)]="datosClinica.politicas" 
+                    placeholder="Políticas de la clínica"
+                    class="w-full p-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-[#F27438] outline-none transition min-h-[120px] bg-white/90"></textarea>
+        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          <input type="number" [(ngModel)]="datosClinica.horasMinimasCancelacion"
-            placeholder="Horas mínimas de cancelación" class="input-admin">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 form-fields">
+          <div class="form-group-animation">
+            <input type="number" [(ngModel)]="datosClinica.horasMinimasCancelacion"
+                   placeholder="Horas mínimas de cancelación" 
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+          </div>
 
-          <input type="number" [(ngModel)]="datosClinica.limiteMascotas" placeholder="Máximo de mascotas"
-            class="input-admin">
+          <div class="form-group-animation">
+            <input type="number" [(ngModel)]="datosClinica.limiteMascotas" 
+                   placeholder="Máximo de mascotas"
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+          </div>
         </div>
 
         <button (click)="guardarConfiguracion()"
-          class="bg-[#F27438] text-white px-10 py-4 rounded-2xl font-black text-lg">
-          Guardar configuración
+                class="w-full bg-gradient-to-r from-[#F27438] to-[#FF8C42] text-white px-10 py-4 rounded-2xl font-black text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 icon-button">
+          💾 Guardar configuración
         </button>
-
       </div>
 
-      <div class="bg-white rounded-3xl p-10 shadow-sm max-w-6xl mt-10">
-
+      <!-- Configuraciones Guardadas -->
+      <div class="bg-white rounded-3xl p-10 shadow-lg max-w-6xl mx-auto mt-10 card-animation border-2 border-transparent hover:border-[#F27438]/20 transition-all">
         <h3 class="text-lg font-black text-[#F27438] mb-6">
           Configuraciones Guardadas
         </h3>
 
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-
-          <div *ngFor="let c of configuraciones" class="bg-white p-6 rounded-3xl shadow border">
-
-            <h3 class="font-black text-lg">{{ c.nombre }}</h3>
-            <p class="text-gray-500 text-sm">{{ c.direccion }}</p>
-            <p class="text-gray-500 text-sm">{{ c.telefono }}</p>
-            <p class="text-gray-500 text-sm">{{ c.correo }}</p>
-            <p class="text-gray-500 text-sm">Horarios: {{ c.horarios }}</p>
-            <p class="text-gray-500 text-sm">Zona Horaria: {{ c.zonaHoraria }}</p>
-            <p class="text-gray-500 text-sm">Idioma: {{ c.idioma }}</p>
-            <p class="text-gray-500 text-sm">Formato Fecha: {{ c.formatoFecha }}</p>
-            <p class="text-gray-500 text-sm">Horas Cancelación: {{ c.horasMinimasCancelacion }}</p>
-            <p class="text-gray-500 text-sm">Límite Mascotas: {{ c.limiteMascotas }}</p>
-            <p class="text-gray-600 text-sm mt-2" *ngIf="c.politicas">Políticas: {{ c.politicas }}</p>
-
+          <div *ngFor="let c of configuraciones" 
+               class="bg-white p-6 rounded-3xl shadow border hover:shadow-xl transition-all duration-300 hover:-translate-y-1 card-service">
+            
+            <h3 class="font-black text-lg text-gray-800 mb-2">{{ c.nombre }}</h3>
+            <p class="text-gray-500 text-sm mb-1">{{ c.direccion }}</p>
+            <p class="text-gray-500 text-sm mb-1">{{ c.telefono }}</p>
+            <p class="text-gray-500 text-sm mb-1">{{ c.correo }}</p>
+            <p class="text-gray-500 text-sm mb-1">Horarios: {{ c.horarios }}</p>
+            <p class="text-gray-500 text-sm mb-1">Zona Horaria: {{ c.zonaHoraria }}</p>
+            <p class="text-gray-500 text-sm mb-1">Idioma: {{ c.idioma }}</p>
+            <p class="text-gray-500 text-sm mb-1">Formato Fecha: {{ c.formatoFecha }}</p>
+            <p class="text-gray-500 text-sm mb-1">Horas Cancelación: {{ c.horasMinimasCancelacion }}</p>
+            <p class="text-gray-500 text-sm mb-3">Límite Mascotas: {{ c.limiteMascotas }}</p>
+            
+            <p class="text-gray-600 text-xs mt-3 pt-3 border-t" *ngIf="c.politicas">
+              <strong>Políticas:</strong> {{ (c.politicas.length > 100) ? (c.politicas | slice:0:100) + '...' : c.politicas }}
+            </p>
           </div>
-
         </div>
-
       </div>
-
     </div>
   </main>
 </div>

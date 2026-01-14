@@ -7,9 +7,12 @@
       <a href="/dashboard" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
         <span class="mr-3">🏠</span> Inicio
       </a>
-      <a href="/register-pet" class="flex items-center p-3 bg-gray-100 text-[#F27438] rounded-xl font-bold">
-        <span class="mr-3">➕</span> Registrar Mascota
+      <a routerLink="/pets/my" routerLinkActive="bg-orange-50 text-[#F27438] font-bold shadow-sm" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <span class="mr-3">🐾</span> Mis Mascotas
       </a>
+        <a routerLink="/pets/register" routerLinkActive="bg-orange-50 text-[#F27438] font-bold shadow-sm" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
+          <span class="mr-3">➕</span> Registrar Mascota
+        </a>
       <a href="#" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
         <span class="mr-3">📅</span> Historial
       </a>
@@ -46,33 +49,36 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gray-50 p-6 rounded-2xl border-2 border-gray-100">
               <label class="block text-sm font-bold text-gray-600 mb-4">Especie *</label>
-              <div class="flex flex-wrap gap-4">
-                <label class="flex items-center space-x-2 cursor-pointer">
-                  <input type="radio" name="especie" class="accent-[#F27438]"> <span>Perros</span>
-                </label>
-                <label class="flex items-center space-x-2 cursor-pointer">
-                  <input type="radio" name="especie" class="accent-[#F27438]"> <span>Gatos</span>
-                </label>
-                <label class="flex items-center space-x-2 cursor-pointer">
-                  <input type="radio" name="especie" class="accent-[#F27438]"> <span>Aves</span>
-                </label>
-                <label class="flex items-center space-x-2 cursor-pointer">
-                  <input type="radio" name="especie" class="accent-[#F27438]"> <span>Otros</span>
-                </label>
-              </div>
+              <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer"
+                [(ngModel)]="idEspecie"
+                (ngModelChange)="onEspecieChange($event)"
+                name="especie"
+                required>
+                <option value="" disabled selected>Selecciona especie</option>
+                @for (especie of especies; track especie.idEspecie) {
+                  <option [value]="especie.idEspecie">{{ especie.nombre }}</option>
+                }
+              </select>
             </div>
             <div>
               <label class="block text-sm font-bold text-gray-600 mb-2">Raza *</label>
-              <input type="text" class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438]">
+              <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer" required [disabled]="!idEspecie">
+                <option value="" disabled selected>Selecciona raza</option>
+                @for (raza of razas; track raza.idRaza) {
+                  <option [value]="raza.idRaza">{{ raza.nombre }}</option>
+                }
+              </select>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-bold text-gray-600 mb-2">Sexo *</label>
-              <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer">
-                <option>Macho</option>
-                <option>Hembra</option>
+              <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer" required>
+                <option value="" disabled selected>Selecciona sexo</option>
+                @for (sexo of sexos; track sexo.idSexo) {
+                  <option [value]="sexo.idSexo">{{ sexo.nombre }}</option>
+                }
               </select>
             </div>
             <div>
@@ -88,7 +94,12 @@
             </div>
             <div>
               <label class="block text-sm font-bold text-gray-600 mb-2">Color</label>
-              <input type="text" class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438]">
+              <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer">
+                <option value="" disabled selected>Selecciona color</option>
+                @for (color of colores; track color.idColor) {
+                  <option [value]="color.idColor">{{ color.nombre }}</option>
+                }
+              </select>
             </div>
           </div>
 

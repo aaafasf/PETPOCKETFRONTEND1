@@ -8,6 +8,7 @@ import { Router, ActivatedRoute, RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule], 
   templateUrl: './reset-password.page.html',
+  styleUrls: ['./reset-password.page.css']  // ← AGREGAR ESTA LÍNEA
 })
 export class ResetPasswordPage {
   password = '';
