@@ -1,3 +1,171 @@
+/* ===== ANIMACIONES PARA EL SIDEBAR (DE CREATE-USER) ===== */
+
+/* Patrón de agua sutil */
+.bg-water-pattern {
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(102, 126, 234, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(102, 126, 234, 0.03) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.07) 0%, transparent 30%);
+  animation: waterFloat 20s ease-in-out infinite;
+}
+
+@keyframes waterFloat {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(10px, -5px) rotate(1deg);
+  }
+  66% {
+    transform: translate(-5px, 8px) rotate(-1deg);
+  }
+}
+
+/* Animación de entrada del sidebar */
+.sidebar-animation {
+  animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Estilos para los items del menú */
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  color: #4b5563;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background: transparent;
+}
+
+.menu-item:hover {
+  transform: translateX(10px) scale(1.05);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  z-index: 20;
+}
+
+.menu-item:hover .menu-icon {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.menu-item:hover .menu-text {
+  color: #292828;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Efecto de resalte en hover */
+.menu-highlight {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(242, 116, 56, 0.1), 
+    transparent);
+  transition: left 0.6s ease;
+  z-index: -1;
+}
+
+.menu-item:hover .menu-highlight {
+  left: 100%;
+}
+
+/* Ícono del menú */
+.menu-icon {
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+  width: 24px;
+  text-align: center;
+}
+
+.menu-text {
+  flex: 1;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+/* Estado activo del menú */
+.active-menu {
+  background: linear-gradient(135deg, #F27438 0%, #cc4773 100%);
+  color: white !important;
+  font-weight: 700 !important;
+  transform: translateX(5px) scale(1.02);
+  box-shadow: 0 8px 20px -5px rgba(242, 116, 56, 0.3);
+  z-index: 10;
+}
+
+.active-menu .menu-icon {
+  transform: scale(1.1);
+  filter: brightness(0) invert(1);
+}
+
+.active-menu::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  background: white;
+  border-radius: 2px 0 0 2px;
+  animation: pulseActive 2s infinite;
+}
+
+@keyframes pulseActive {
+  0%, 100% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-50%) scale(1.1);
+  }
+}
+
+/* Animación secuencial para los items del menú */
+.menu-items .menu-item {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.menu-items .menu-item:nth-child(1) { animation-delay: 0.1s; }
+.menu-items .menu-item:nth-child(2) { animation-delay: 0.2s; }
+.menu-items .menu-item:nth-child(3) { animation-delay: 0.3s; }
+.menu-items .menu-item:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== TU CSS ORIGINAL (MANTENIDO INTACTO) ===== */
+
 .modal-backdrop {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(5px);
