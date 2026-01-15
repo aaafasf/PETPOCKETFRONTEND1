@@ -73,16 +73,15 @@
         <span class="menu-highlight"></span>
       </a>
 
-      <!-- Configuración -->
-      <a routerLink="/admin/configuracion"
-         routerLinkActive="active-menu bg-white/10 text-white shadow-inner"
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
-                hover:bg-white/5 transition">
-        <span class="menu-icon text-xl">⚙️</span> 
-        <span class="menu-text">Configuración</span>
-        <span class="menu-highlight"></span>
-      </a>
+  <a routerLink="/admin/notifications" 
+     routerLinkActive="active-menu bg-white/10 text-white shadow-inner" 
+     [routerLinkActiveOptions]="{ exact: true }" 
+     class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
+            hover:bg-white/5 transition">
+    <span class="menu-icon text-xl">🔔</span> 
+    <span class="menu-text">Notificaciones</span>
+    <span class="menu-highlight"></span>
+  </a>
 
       <!-- Registro de usuario -->
       <a routerLink="/admin/users/create" 

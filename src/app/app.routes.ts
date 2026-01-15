@@ -22,6 +22,7 @@ import { CreateUserPage } from './modules/admin/user/pages/create-user/create-us
 import { UserListPage } from './modules/admin/user/pages/user-list/user-list.page';
 import { ResetPasswordPage } from './modules/admin/user/pages/reset-password/reset-password.page';
 
+
 export const routes: Routes = [
   // ===================
   // REDIRECCIÓN INICIAL
@@ -54,12 +55,12 @@ export const routes: Routes = [
   { path: 'appointments/mis-citas', component: MisCitasComponent },
 
   // ===================
-  // NOTIFICATIONS
+  // ADMIN NOTIFICATIONS
   // ===================
   { path: 'notifications', component: NotificationsComponent },
 
   // ===================
-  // ADMIN - USERS
+  // ADMIN DASHBOARD
   // ===================
   { path: 'admin/users', component: UserListPage },
   { path: 'admin/users/create', component: CreateUserPage },

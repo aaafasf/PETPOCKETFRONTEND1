@@ -1,40 +1,51 @@
-<div class="flex h-screen bg-gray-100 font-sans">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-    <div class="p-6">
-      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-32 mx-auto" />
+<div class="flex h-screen bg-gray-50 font-sans relative overflow-hidden">
+  <!-- Fondo animado de agua/ondas -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-30"></div>
+  <div class="absolute inset-0 bg-water-pattern opacity-5"></div>
+  
+  <!-- Sidebar de create-user -->
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col relative z-10 sidebar-animation">
+    <div class="p-6 text-center">
+      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto transform transition-transform duration-300 hover:scale-110" />
+      <p class="text-xs font-bold text-gray-400 mt-2 tracking-wider">ADMIN PANEL</p>
     </div>
-    <nav class="flex-1 px-4 space-y-2">
-      <a
-        routerLink="/dashboard"
-        class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition"
-      >
-        <span class="mr-3">🏠</span> Inicio
+    <nav class="flex-1 px-4 space-y-2 menu-items">
+      <a routerLink="/dashboard" 
+         routerLinkActive="active-menu" 
+         class="menu-item">
+        <span class="menu-icon">🏠</span>
+        <span class="menu-text">Inicio</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a
-        routerLink="/pets/register"
-        class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition"
-      >
-        <span class="mr-3">➕</span> Registrar Mascota
+      
+      <a routerLink="/pets/register" 
+         routerLinkActive="active-menu" 
+         class="menu-item">
+        <span class="menu-icon">➕</span>
+        <span class="menu-text">Registrar Mascota</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a
-        routerLink="/appointments"
-        class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition"
-      >
-        <span class="mr-3">📅</span> Agendar Cita
+      
+      <a routerLink="/appointments" 
+         routerLinkActive="active-menu" 
+         class="menu-item">
+        <span class="menu-icon">📅</span>
+        <span class="menu-text">Agendar Cita</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a
-        routerLink="/appointments/mis-citas"
-        routerLinkActive="bg-gray-100"
-        class="flex items-center p-3 text-[#F27438] rounded-xl font-bold"
-      >
-        <span class="mr-3">📋</span> Mis Citas
+      
+      <a routerLink="/appointments/mis-citas" 
+         routerLinkActive="active-menu" 
+         class="menu-item">
+        <span class="menu-icon">📋</span>
+        <span class="menu-text">Mis Citas</span>
+        <span class="menu-highlight"></span>
       </a>
     </nav>
   </aside>
 
-  <!-- Main Content -->
-  <main class="flex-1 flex flex-col overflow-hidden">
+  <!-- Main Content (TODO EL CONTENIDO PRINCIPAL MANTENIDO INTACTO) -->
+  <main class="flex-1 flex flex-col overflow-hidden relative z-10">
     <!-- Header -->
     <header class="bg-white h-20 border-b flex items-center justify-between px-8">
       <div>

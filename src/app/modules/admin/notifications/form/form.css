@@ -1,4 +1,4 @@
-/* ===== ANIMACIONES PARA EL SIDEBAR (DE CREATE-USER) ===== */
+/* ===== ANIMACIONES PARA EL SIDEBAR ===== */
 
 /* Patrón de agua sutil */
 .bg-water-pattern {
@@ -98,98 +98,28 @@
 }
 
 .menu-text {
-  flex: 1;
-  font-size: 0.95rem;
   transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 /* Estado activo del menú */
 .active-menu {
-  background: linear-gradient(135deg, #F27438 0%, #cc4773 100%);
-  color: white !important;
-  font-weight: 700 !important;
-  transform: translateX(5px) scale(1.02);
-  box-shadow: 0 8px 20px -5px rgba(242, 116, 56, 0.3);
-  z-index: 10;
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.active-menu .menu-icon {
-  transform: scale(1.1);
-  filter: brightness(0) invert(1);
+.active-menu .menu-text {
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
-.active-menu::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 60%;
-  background: white;
-  border-radius: 2px 0 0 2px;
-  animation: pulseActive 2s infinite;
+/* Animación de entrada del formulario */
+.form-container {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-@keyframes pulseActive {
-  0%, 100% {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: translateY(-50%) scale(1.1);
-  }
-}
-
-/* Animación secuencial para los items del menú */
-.menu-items .menu-item {
-  opacity: 0;
-  animation: fadeInUp 0.5s ease forwards;
-}
-
-.menu-items .menu-item:nth-child(1) { animation-delay: 0.1s; }
-.menu-items .menu-item:nth-child(2) { animation-delay: 0.2s; }
-.menu-items .menu-item:nth-child(3) { animation-delay: 0.3s; }
-.menu-items .menu-item:nth-child(4) { animation-delay: 0.4s; }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===== TU CSS ORIGINAL (MANTENIDO INTACTO) ===== */
-
-.modal-backdrop {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
-  animation: fadeIn 0.2s ease-out;
-}
-
-.modal-content {
-  animation: slideUp 0.3s ease-out;
-}
-
-.notification-dropdown {
-  animation: slideDown 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -200,7 +130,12 @@
   }
 }
 
-@keyframes slideDown {
+/* Card animation */
+.card-animation {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateY(-10px);
@@ -211,29 +146,105 @@
   }
 }
 
-/* Scrollbar personalizado para el dropdown */
-.notification-dropdown .overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
+/* Navbar container */
+.navbar-container {
+  animation: slideInDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.notification-dropdown .overflow-y-auto::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-.notification-dropdown .overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #F27438;
-  border-radius: 10px;
+/* Navbar title hover effect */
+.navbar-title {
+  position: relative;
+  cursor: pointer;
 }
 
-.notification-dropdown .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #e0632e;
+.navbar-title span {
+  display: inline-block;
+  position: relative;
 }
 
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.navbar-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #F27438, #FF9656);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar-title:hover::after {
+  width: 100%;
+}
+
+/* Icon button hover effect */
+.icon-button {
+  transition: all 0.3s ease;
+}
+
+.icon-button:hover {
+  transform: scale(1.1);
+  background: rgba(242, 116, 56, 0.1) !important;
+}
+
+/* Animaciones para el formulario */
+.p-card {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Estilos para inputs */
+.p-inputtext, 
+.p-inputtextarea, 
+.p-calendar, 
+.p-dropdown {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.p-inputtext:focus, 
+.p-inputtextarea:focus, 
+.p-calendar:focus, 
+.p-dropdown:focus {
+  box-shadow: 0 0 0 2px rgba(242, 116, 56, 0.2) !important;
+  border-color: #F27438 !important;
+}
+
+/* Animación para botones */
+.p-button {
+  transition: all 0.2s ease;
+}
+
+.p-button:hover:not(.p-disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para validación */
+.ng-invalid.ng-touched {
+  border-color: #ef4444 !important;
+}
+
+.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
 }

@@ -4,30 +4,36 @@ import { Observable } from 'rxjs';
 
 export interface Notificacion {
   id?: number;
-  idNotificacion?: number; // Campo que viene del backend
+  idNotificacion?: number;
   titulo?: string;
   mensaje: string;
   fecha?: Date | string;
-  leida: boolean;
+  leida?: boolean;
   tipo?: 'vacuna' | 'control' | 'recordatorio' | 'general';
   fechaProgramada?: Date | string;
   idUsuario?: number;
   idMascota?: number;
-  // Campos adicionales que puede devolver el backend
+  // Campos adicionales del backend
   estadoNotificacion?: string;
   createNotificacion?: string;
   updateNotificacion?: string;
   nameUsers?: string;
   emailUser?: string;
+  nameMascota?: string;
   noLeida?: boolean;
+  enviada?: boolean;
+  usuarioEnvia?: string;
+  emailEnvia?: string;
 }
 
 export interface CrearNotificacionRequest {
   titulo: string;
   mensaje: string;
   tipo: 'vacuna' | 'control' | 'recordatorio' | 'general';
-  fechaProgramada?: string;
+  idUsuario?: number;
   idMascota?: number;
+  fechaProgramada?: string;
+  tipoRecordatorio?: string;
 }
 
 @Injectable({
@@ -42,9 +48,15 @@ export class NotificacionesService {
   // Obtener todas las notificaciones
   obtenerTodasNotificaciones(): Observable<Notificacion[]> {
     const params = new HttpParams().set('t', Date.now().toString());
+    return this.http.get<Notificacion[]>(`${this.apiUrl}/lista-completa`, {
+      params
+    });
+  }
+
+  // Obtener todas las notificaciones (sin caché)
+  obtenerTodasNotificacionesFrescas(): Observable<Notificacion[]> {
     return this.http.get<Notificacion[]>(`${this.apiUrl}/lista`, {
-      params,
-      headers: { 'Cache-Control': 'no-cache' },
+      params: new HttpParams().set('_t', Date.now().toString())
     });
   }
 
@@ -56,14 +68,13 @@ export class NotificacionesService {
     }
     params = params.set('t', Date.now().toString());
     return this.http.get<Notificacion[]>(`${this.apiUrl}/usuario/${idUsuario}`, {
-      params,
-      headers: { 'Cache-Control': 'no-cache' },
+      params
     });
   }
 
   // Obtener detalle de una notificación
   obtenerDetalleNotificacion(idNotificacion: number): Observable<Notificacion> {
-    return this.http.get<Notificacion>(`${this.apiUrl}/detalle/${idNotificacion}`);
+    return this.http.get<Notificacion>(`${this.apiUrl}/${idNotificacion}`);
   }
 
   // Obtener notificaciones no leídas
@@ -74,16 +85,20 @@ export class NotificacionesService {
     }
     params = params.set('t', Date.now().toString());
     return this.http.get<Notificacion[]>(`${this.apiUrl}/no-leidas`, {
-      params,
-      headers: { 'Cache-Control': 'no-cache' },
+      params
     });
   }
 
   // ==================== CREATE (Crear) ====================
 
   // Crear nueva notificación/recordatorio
-  crearNotificacion(datos: CrearNotificacionRequest): Observable<Notificacion> {
-    return this.http.post<Notificacion>(`${this.apiUrl}/crear`, datos);
+  crearNotificacion(datos: CrearNotificacionRequest): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/crear`, datos);
+  }
+
+  // Crear alerta programada
+  crearAlertaProgramada(datos: CrearNotificacionRequest): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/alerta-programada`, datos);
   }
 
   // ==================== UPDATE (Actualizar) ====================
@@ -95,14 +110,19 @@ export class NotificacionesService {
 
   // Actualizar notificación
   actualizarNotificacion(idNotificacion: number, datos: Partial<Notificacion>): Observable<any> {
-    return this.http.put(`${this.apiUrl}/actualizar/${idNotificacion}`, datos);
+    return this.http.put(`${this.apiUrl}/${idNotificacion}`, datos);
+  }
+
+  // Actualizar estado de la notificación
+  actualizarEstado(idNotificacion: number, estado: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${idNotificacion}/estado`, { estado });
   }
 
   // ==================== DELETE (Eliminar) ====================
 
   // Eliminar una notificación
   eliminarNotificacion(idNotificacion: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/eliminar/${idNotificacion}`);
+    return this.http.delete(`${this.apiUrl}/${idNotificacion}`);
   }
 
   // Limpiar historial de notificaciones (eliminar todas las leídas)
@@ -112,6 +132,11 @@ export class NotificacionesService {
       url += `/${idUsuario}`;
     }
     return this.http.delete(url);
+  }
+
+  // Obtener estadísticas
+  obtenerEstadisticas(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/estadisticas`);
   }
 }
 
