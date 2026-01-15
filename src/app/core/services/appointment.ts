@@ -106,7 +106,9 @@ export class AppointmentService {
       hora: changes.hora,
       userIdUser: Number(changes.userIdUser),
       idServicio: Number(changes.idServicio),
-      motivo: changes.motivo ?? null
+      motivo: changes.motivo ?? null,
+      estadoCita: changes.estadoCita ?? 'programada'
+
     };
 
     // ✅ CORRECCIÓN: Removido tap() - el refresh se hace desde el componente

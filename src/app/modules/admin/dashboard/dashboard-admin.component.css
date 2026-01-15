@@ -108,10 +108,15 @@
   background: linear-gradient(135deg, #F27438 0%, #cc4773 100%);
   color: white !important;
   font-weight: 700 !important;
-  transform: translateX(5px) scale(1.02);
+  transform: translateX(5px);
   box-shadow: 0 8px 20px -5px rgba(242, 116, 56, 0.3);
   z-index: 10;
 }
+
+.active-menu:hover {
+  transform: translateX(8px); /* NO scale */
+}
+
 
 .active-menu .menu-icon {
   transform: scale(1.1);
@@ -159,10 +164,10 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    margin-top: 10px;
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    margin-top: 0;
   }
 }

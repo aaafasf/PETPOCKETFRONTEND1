@@ -12,8 +12,10 @@
     constructor(private http: HttpClient) {}
 
       listarAdmin(): Observable<any[]> {
-      return this.http.get<any[]>(`${this.API_URL}/`);
-    }
+  return this.http.get<any[]>(
+    `${this.API_URL}?t=${Date.now()}`
+  );
+ }
 
     crear(servicio: any): Observable<any> {
       return this.http.post<any>(`${this.API_URL}`, servicio);
@@ -22,6 +24,14 @@
     actualizar(id: number, servicio: any): Observable<any> {
       return this.http.put<any>(`${this.API_URL}/${id}`, servicio);
     }
+  
+    cambiarEstado(id: number, estadoServicio: string): Observable<any> {
+  return this.http.patch(
+    `${this.API_URL}/${id}/estado`,
+    { estadoServicio }
+  );
+ }
+
 
     eliminar(id: number): Observable<any> {
       return this.http.delete<any>(`${this.API_URL}/${id}`);

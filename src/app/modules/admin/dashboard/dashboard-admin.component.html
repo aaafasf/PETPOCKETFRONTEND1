@@ -8,7 +8,6 @@
               text-zinc-300 flex flex-col
               shadow-[0_25px_60px_rgba(0,0,0,0.9)]
               relative transition-colors duration-300">
-
     <!-- Accent top line -->
     <div class="absolute top-0 left-0 w-full h-[2px]
               bg-gradient-to-r from-[#F27438] via-orange-400 to-[#F27438]"></div>
@@ -25,15 +24,19 @@
     <!-- Navigation - AGREGAR CLASES DE CREATE-USER -->
     <nav class="flex-1 px-4 space-y-1 text-sm menu-items">
       <!-- Dashboard -->
-      <a routerLink="/admin/dashboard"
-         routerLinkActive="active-menu bg-white/10 text-white shadow-inner"
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
-                hover:bg-white/5 transition">
-        <span class="menu-icon text-xl">📊</span> 
-        <span class="menu-text">Dashboard</span>
-        <span class="menu-highlight"></span>
-      </a>
+     <a
+  routerLink="/admin/dashboard"
+  routerLinkActive="active-menu bg-white/10 text-white shadow-inner"
+  [routerLinkActiveOptions]="{ exact: true }"
+  class="menu-item flex items-center gap-4 px-5 py-3 rounded-xl
+         hover:bg-white/5 transition w-full">
+  <span class="menu-icon text-xl">📊</span>
+  <span class="menu-text">Dashboard</span>
+  <span class="menu-highlight"></span>
+</a>
+
+
+
 
       <!-- Agenda -->
       <a routerLink="/admin/agenda"

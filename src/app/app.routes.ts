@@ -13,6 +13,7 @@ import { AppointmentsComponent } from './modules/appointments/appointments.compo
 import { MisCitasComponent } from './modules/appointments/mis-citas/mis-citas.component';
 import { NotificationsComponent } from './modules/notifications/notifications.component';
 import { MyPetsComponent } from './modules/pets/my-pets/my-pets.component';
+import { serviciosResolver } from './core/resolvers/servicios.resolver';
 
 // ===================
 // IMPORTS ADMIN - USERS
@@ -25,74 +26,44 @@ export const routes: Routes = [
   // ===================
   // REDIRECCIÓN INICIAL
   // ===================
-  {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
-  },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
   // ===================
   // DASHBOARD
   // ===================
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-  },
+  { path: 'dashboard', component: DashboardComponent },
 
   // ===================
   // AUTH
   // ===================
-  {
-    path: 'auth',
-    children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
-      { path: 'forgot-password', component: ForgotPasswordComponent },
-      { path: 'reset-password', component: ResetPasswordComponent },
-    ],
-  },
+  { path: 'auth/login', component: LoginComponent },
+  { path: 'auth/register', component: RegisterComponent },
+  { path: 'auth/forgot-password', component: ForgotPasswordComponent },
+  { path: 'auth/reset-password', component: ResetPasswordComponent },
 
   // ===================
   // PETS
   // ===================
-  {
-    path: 'pets',
-    children: [
-      { path: 'register', component: RegisterPetComponent },
-      { path: 'my', component: MyPetsComponent },
-    ],
-  },
+  { path: 'pets/register', component: RegisterPetComponent },
+  { path: 'pets/my', component: MyPetsComponent },
 
   // ===================
   // APPOINTMENTS
   // ===================
-  {
-    path: 'appointments',
-    children: [
-      { path: '', component: AppointmentsComponent },
-      { path: 'mis-citas', component: MisCitasComponent },
-    ],
-  },
+  { path: 'appointments', component: AppointmentsComponent },
+  { path: 'appointments/mis-citas', component: MisCitasComponent },
 
   // ===================
   // NOTIFICATIONS
   // ===================
-  {
-    path: 'notifications',
-    component: NotificationsComponent,
-  },
+  { path: 'notifications', component: NotificationsComponent },
 
   // ===================
   // ADMIN - USERS
   // ===================
-  {
-    path: 'admin/users',
-    children: [
-      { path: '', component: UserListPage },                     // /admin/users
-      { path: 'create', component: CreateUserPage },             // /admin/users/create
-      { path: 'reset-password/:id', component: ResetPasswordPage }, // /admin/users/reset-password/:id
-    ],
-  },
+  { path: 'admin/users', component: UserListPage },
+  { path: 'admin/users/create', component: CreateUserPage },
+  { path: 'admin/users/reset-password/:id', component: ResetPasswordPage },
 
   // ===================
   // ADMIN DASHBOARD
@@ -102,7 +73,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./modules/admin/dashboard/dashboard-admin.component')
         .then(m => m.DashboardAdminComponent),
-    runGuardsAndResolvers: 'always',
+        resolve: {
+    servicios: serviciosResolver
+  }
+
   },
 
   // ===================
@@ -113,11 +87,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./modules/admin/servicios/servicios.component')
         .then(m => m.ServiciosComponent),
-    runGuardsAndResolvers: 'always',
   },
+
   {
     path: 'admin/catalogos',
-    loadComponent: () => import('./modules/admin/catalogos/catalogos.component').then(m => m.CatalogosComponent),
+    loadComponent: () =>
+      import('./modules/admin/catalogos/catalogos.component')
+        .then(m => m.CatalogosComponent),
   },
 
   // ===================
@@ -126,22 +102,21 @@ export const routes: Routes = [
   {
     path: 'admin/configuracion',
     loadComponent: () =>
-        import('./modules/admin/configuracion/configuracion.component')
-            .then(m => m.ConfiguracionComponent),
-    runGuardsAndResolvers: 'always'
-},
-{
-  path: 'admin/planner',
-  loadComponent: () =>
-    import('./modules/admin/planner/planner')
-      .then(m => m.Planner),
-},
-{
-  path: 'admin/agenda',
-  loadComponent: () =>
-    import('./modules/admin/agenda/agenda')
-      .then(m => m.Agenda),
-}
-  
+      import('./modules/admin/configuracion/configuracion.component')
+        .then(m => m.ConfiguracionComponent),
+  },
 
+  {
+    path: 'admin/planner',
+    loadComponent: () =>
+      import('./modules/admin/planner/planner')
+        .then(m => m.Planner),
+  },
+
+  {
+    path: 'admin/agenda',
+    loadComponent: () =>
+      import('./modules/admin/agenda/agenda')
+        .then(m => m.Agenda),
+  },
 ];

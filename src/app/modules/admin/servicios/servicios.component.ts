@@ -47,6 +47,7 @@ export class ServiciosComponent implements OnInit {
   // =========================
   cargarServicios(): void {
     this.servicioService.listarAdmin().subscribe({
+      
       next: (resp: any[]) => {
         this.servicios = resp.map((s: any) => ({
           idServicio: s.idServicio,
@@ -55,6 +56,7 @@ export class ServiciosComponent implements OnInit {
           precioServicio: s.precioServicio,
           estadoServicio: s.estadoServicio ?? 'activo',
           imagen: s.imagen ?? null
+          
         }));
         this.cdr.detectChanges();
       },
@@ -110,6 +112,8 @@ export class ServiciosComponent implements OnInit {
 
     this.servicioService.crear(formData).subscribe(() => {
       this.cargarServicios();
+     
+      
 
       // Reset
       this.nuevoServicio = {
@@ -164,17 +168,25 @@ export class ServiciosComponent implements OnInit {
   // =========================
   // Activar / Desactivar
   // =========================
-  toggleEstado(servicio: any): void {
-    const nuevoEstado =
-      servicio.estadoServicio === 'activo' ? 'inactivo' : 'activo';
+toggleEstado(servicio: any) {
+  const nuevoEstado =
+    servicio.estadoServicio === 'activo' ? 'inactivo' : 'activo';
 
-    this.servicioService
-      .actualizar(servicio.idServicio, { estadoServicio: nuevoEstado })
-      .subscribe(() => {
-        servicio.estadoServicio = nuevoEstado;
-        this.cdr.detectChanges();
-      });
-  }
+  this.servicioService
+    .cambiarEstado(servicio.idServicio, nuevoEstado)
+    .subscribe({
+      next: () => {
+        // 🔥 LA CLAVE
+        this.cargarServicios();
+      },
+      error: err => {
+        console.error('Error al cambiar estado', err);
+      }
+    });
+}
+
+
+
 
   // =========================
   // Eliminar
