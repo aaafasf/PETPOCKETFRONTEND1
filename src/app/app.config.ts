@@ -10,7 +10,7 @@ import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    providePrimeNG({theme: {preset: Aura, options: { darkModeSelector: 'none'}}}),
+    providePrimeNG({theme: {preset: Aura}}),
     provideRouter(routes),
     provideHttpClient(), // 2. Habilitamos el cliente para hacer peticiones al Backend
     { provide: LOCALE_ID, useValue: 'es' } // Configurar locale en español
