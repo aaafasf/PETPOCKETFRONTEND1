@@ -1,140 +1,261 @@
-<div class="flex h-screen bg-gray-100 font-sans">
-  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-    <div class="p-6">
-      <img src="img/logo-circular.png" alt="PetPocket Logo" class="w-32 mx-auto">
+<div class="flex h-screen bg-gray-50 font-sans relative overflow-hidden">
+  <!-- Fondo animado de agua/ondas -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-30"></div>
+  <div class="absolute inset-0 bg-water-pattern opacity-5"></div>
+  
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col relative z-10 sidebar-animation">
+    <div class="p-6 text-center">
+      <img src="img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto transform transition-transform duration-300 hover:scale-110" />
+      <p class="text-xs font-bold text-gray-400 mt-2 tracking-wider">PANEL CLIENTE</p>
     </div>
-    <nav class="flex-1 px-4 space-y-2">
-      <a href="/dashboard" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
-        <span class="mr-3">🏠</span> Inicio
+    
+    <nav class="flex-1 px-4 space-y-2 menu-items">
+      <!-- Inicio -->
+      <a href="/dashboard" 
+         class="menu-item group">
+        <span class="menu-icon">🏠</span>
+        <span class="menu-text">Inicio</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a href="/register-pet" class="flex items-center p-3 bg-gray-100 text-[#F27438] rounded-xl font-bold">
-        <span class="mr-3">➕</span> Registrar Mascota
+      
+      <!-- Mis Mascotas -->
+      <a routerLink="/pets/my" 
+         routerLinkActive="active-menu"
+         class="menu-item group">
+        <span class="menu-icon">🐾</span>
+        <span class="menu-text">Mis Mascotas</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a href="#" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
-        <span class="mr-3">📅</span> Historial
+      
+      <!-- Registrar Mascota (ACTIVO) -->
+      <a routerLink="/pets/register" 
+         routerLinkActive="active-menu"
+         class="menu-item group active-menu">
+        <span class="menu-icon">➕</span>
+        <span class="menu-text">Registrar Mascota</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a href="#" class="flex items-center p-3 text-gray-600 hover:bg-gray-50 rounded-xl transition">
-        <span class="mr-3">🛒</span> Servicios
+      
+      <!-- Historial -->
+      <a href="#" 
+         class="menu-item group">
+        <span class="menu-icon">📅</span>
+        <span class="menu-text">Historial</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
+      <!-- Servicios -->
+      <a href="#" 
+         class="menu-item group">
+        <span class="menu-icon">🛒</span>
+        <span class="menu-text">Servicios</span>
+        <span class="menu-highlight"></span>
       </a>
     </nav>
+    
     <div class="p-6 text-center">
-        <img src="img/pet-illustration.jpg" alt="Icon" class="w-24 mx-auto opacity-40">
+      <img src="img/pet-illustration.jpg" alt="Mascota" 
+           class="w-24 mx-auto opacity-40 transform transition-transform duration-300 hover:opacity-70 hover:scale-110" />
     </div>
   </aside>
 
-  <main class="flex-1 flex flex-col overflow-hidden">
-    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
-      <h2 class="text-xl font-bold text-gray-800">Registrar mascota</h2>
+  <!-- CONTENIDO PRINCIPAL (CON ANIMACIONES MEJORADAS) -->
+  <main class="flex-1 flex flex-col overflow-hidden relative z-10">
+    <!-- NAVBAR ANIMADO -->
+    <header class="bg-white h-20 border-b flex items-center justify-between px-8 shadow-sm relative overflow-hidden">
+      <h2 class="text-xl font-black text-gray-800 tracking-tight relative z-10 group">
+        <span class="inline-block transition-all duration-300 group-hover:tracking-wider group-hover:text-[#F27438]">
+          Registrar mascota
+        </span>
+        <!-- Subrayado animado -->
+        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F27438] group-hover:w-full transition-all duration-500"></span>
+      </h2>
+      
       <div class="flex items-center space-x-4">
-        <button class="bg-white border-2 border-[#F27438] text-[#F27438] px-6 py-2 rounded-full font-bold hover:bg-[#F27438] hover:text-white transition">
+        <button class="bg-white border-2 border-[#F27438] text-[#F27438] px-6 py-2 rounded-full font-bold hover:bg-[#F27438] hover:text-white transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-sm hover:shadow-md">
           Agendar Cita
         </button>
         <div class="flex items-center space-x-3">
-            <span class="text-gray-400">🔔</span>
-            <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600 border-2 border-white shadow-sm">J</div>
+          <span class="text-gray-400 hover:text-[#F27438] transition-colors duration-300 cursor-pointer transform hover:scale-110">🔔</span>
+          <div class="w-10 h-10 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center font-bold text-gray-600 border-2 border-white shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-105">
+            J
+          </div>
         </div>
       </div>
     </header>
 
-    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
-      <div class="max-w-4xl mx-auto bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
-        <h1 class="text-3xl font-black text-gray-800 mb-8">Nombre de la mascota</h1>
-        
-        <form class="space-y-6">
-          <input type="text" placeholder="Escribe el nombre aquí..." class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition shadow-inner">
+    <!-- CONTENIDO CON ANIMACIONES -->
+    <div class="flex-1 overflow-y-auto bg-gradient-to-b from-white/90 to-gray-50/90 p-8 animate-fadeIn">
+      <div class="max-w-4xl mx-auto">
+        <!-- CARD PRINCIPAL -->
+        <div class="bg-white rounded-3xl p-10 shadow-sm border border-gray-100 animate-slideUp hover:shadow-md transition-shadow duration-300">
+          <h1 class="text-3xl font-black text-gray-800 mb-8 transform transition-all duration-300 hover:scale-105 hover:translate-x-2 inline-block">
+            Nombre de la mascota
+          </h1>
+          
+          <form class="space-y-6 form-animation" (ngSubmit)="onSubmit()">
+            <!-- Nombre -->
+            <div class="form-group-animation">
+              <input type="text" 
+                     placeholder="Escribe el nombre aquí..." 
+                     class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 shadow-inner hover:shadow-md focus:shadow-lg"
+                     [(ngModel)]="nombreMascota"
+                     name="nombreMascota"
+                     required>
+            </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-gray-50 p-6 rounded-2xl border-2 border-gray-100">
-              <label class="block text-sm font-bold text-gray-600 mb-4">Especie *</label>
-              <div class="flex flex-wrap gap-4">
-                <label class="flex items-center space-x-2 cursor-pointer">
-                  <input type="radio" name="especie" class="accent-[#F27438]"> <span>Perros</span>
-                </label>
-                <label class="flex items-center space-x-2 cursor-pointer">
-                  <input type="radio" name="especie" class="accent-[#F27438]"> <span>Gatos</span>
-                </label>
-                <label class="flex items-center space-x-2 cursor-pointer">
-                  <input type="radio" name="especie" class="accent-[#F27438]"> <span>Aves</span>
-                </label>
-                <label class="flex items-center space-x-2 cursor-pointer">
-                  <input type="radio" name="especie" class="accent-[#F27438]"> <span>Otros</span>
-                </label>
+            <!-- Especie y Raza -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Especie -->
+              <div class="form-group-animation card-hover">
+                <label class="block text-sm font-bold text-gray-600 mb-2">Especie *</label>
+                <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer transition-all duration-300 hover:shadow-md focus:shadow-lg"
+                        [(ngModel)]="idEspecie"
+                        (ngModelChange)="onEspecieChange($event)"
+                        name="especie"
+                        required>
+                  <option value="" disabled selected>Selecciona especie</option>
+                  @for (especie of especies; track especie.idEspecie) {
+                    <option [value]="especie.idEspecie">{{ especie.nombre }}</option>
+                  }
+                </select>
+              </div>
+              
+              <!-- Raza -->
+              <div class="form-group-animation">
+                <label class="block text-sm font-bold text-gray-600 mb-2">Raza *</label>
+                <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer transition-all duration-300 hover:shadow-md focus:shadow-lg" 
+                        required 
+                        [disabled]="!idEspecie"
+                        [(ngModel)]="idRaza"
+                        name="raza">
+                  <option value="" disabled selected>Selecciona raza</option>
+                  @for (raza of razas; track raza.idRaza) {
+                    <option [value]="raza.idRaza">{{ raza.nombre }}</option>
+                  }
+                </select>
               </div>
             </div>
-            <div>
-              <label class="block text-sm font-bold text-gray-600 mb-2">Raza *</label>
-              <input type="text" class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438]">
-            </div>
-          </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label class="block text-sm font-bold text-gray-600 mb-2">Sexo *</label>
-              <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer">
-                <option>Macho</option>
-                <option>Hembra</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-bold text-gray-600 mb-2">Edad (años normales)</label>
-              <input type="number" class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438]">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label class="block text-sm font-bold text-gray-600 mb-2">Peso (kg)</label>
-              <input type="text" placeholder="kg" class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438]">
-            </div>
-            <div>
-              <label class="block text-sm font-bold text-gray-600 mb-2">Color</label>
-              <input type="text" class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438]">
-            </div>
-          </div>
-
-          <div class="space-y-2">
-            <label class="block text-sm font-bold text-gray-600">Alergias *</label>
-            <input type="text" placeholder="Ej: Polen, medicamentos, ninguna..." class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition">
-          </div>
-
-          <div class="space-y-2">
-            <label class="block text-sm font-bold text-gray-600">Carácter de la mascota *</label>
-            <input type="text" placeholder="Amigable, Tímido, Agresivo, Ansioso" class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition">
-          </div>
-
-          <div class="flex justify-center pt-6">
-            <button type="submit" class="bg-[#56C57F] hover:bg-[#45a067] text-white font-black px-16 py-4 rounded-full text-lg shadow-lg transition-all transform hover:scale-105 active:scale-95">
-              Registrar Mascota
-            </button>
-          </div>
-        </form>
-
-        <footer class="mt-16 pt-8 border-t border-gray-200">
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-6 md:space-y-0">
-            <div>
-              <h3 class="text-xl font-black text-[#F27438] mb-1">PetPocket</h3>
-              <p class="text-gray-400 text-xs">Cuidado experto y cariño para tu mejor amigo, siempre en tu bolsillo.</p>
-              <div class="flex space-x-3 mt-3">
-                <span class="text-gray-400 cursor-pointer hover:text-[#F27438]">📸</span>
-                <span class="text-gray-400 cursor-pointer hover:text-[#F27438]">👤</span>
-                <span class="text-gray-400 cursor-pointer hover:text-[#F27438]">🐦</span>
+            <!-- Sexo y Edad -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Sexo -->
+              <div class="form-group-animation">
+                <label class="block text-sm font-bold text-gray-600 mb-2">Sexo *</label>
+                <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer transition-all duration-300 hover:shadow-md focus:shadow-lg" 
+                        required
+                        [(ngModel)]="idSexo"
+                        name="sexo">
+                  <option value="" disabled selected>Selecciona sexo</option>
+                  @for (sexo of sexos; track sexo.idSexo) {
+                    <option [value]="sexo.idSexo">{{ sexo.nombre }}</option>
+                  }
+                </select>
+              </div>
+              
+              <!-- Edad -->
+              <div class="form-group-animation">
+                <label class="block text-sm font-bold text-gray-600 mb-2">Edad (años normales)</label>
+                <input type="number" 
+                       class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
+                       [(ngModel)]="edad"
+                       name="edad">
               </div>
             </div>
-            <div class="text-sm text-gray-600">
-              <p class="font-bold text-[#3D4F39] mb-2">Explora</p>
-              <p class="hover:text-[#F27438] cursor-pointer">Servicios Veterinarios</p>
-              <p class="hover:text-[#F27438] cursor-pointer">Agendar Cita</p>
+
+            <!-- Peso y Color -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Peso -->
+              <div class="form-group-animation">
+                <label class="block text-sm font-bold text-gray-600 mb-2">Peso (kg)</label>
+                <input type="text" 
+                       placeholder="kg" 
+                       class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
+                       [(ngModel)]="peso"
+                       name="peso">
+              </div>
+              
+              <!-- Color -->
+              <div class="form-group-animation">
+                <label class="block text-sm font-bold text-gray-600 mb-2">Color</label>
+                <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer transition-all duration-300 hover:shadow-md focus:shadow-lg"
+                        [(ngModel)]="idColor"
+                        name="color">
+                  <option value="" disabled selected>Selecciona color</option>
+                  @for (color of colores; track color.idColor) {
+                    <option [value]="color.idColor">{{ color.nombre }}</option>
+                  }
+                </select>
+              </div>
             </div>
-            <div class="text-sm text-gray-600">
-              <p class="font-bold text-[#3D4F39] mb-2">¿Necesitas Ayuda?</p>
-              <p>📞 +593 1234 5678</p>
-              <p>✉️ petpocket@yavirac.edu.ec</p>
+
+            <!-- Alergias -->
+            <div class="form-group-animation">
+              <label class="block text-sm font-bold text-gray-600 mb-2">Alergias *</label>
+              <input type="text" 
+                     placeholder="Ej: Polen, medicamentos, ninguna..." 
+                     class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
+                     [(ngModel)]="alergias"
+                     name="alergias"
+                     required>
             </div>
-          </div>
-          <div class="text-center text-[10px] text-gray-300 mt-10">
-            © 2025 PetPocket. Quito | Ecuador
-          </div>
-        </footer>
+
+            <!-- Carácter -->
+            <div class="form-group-animation">
+              <label class="block text-sm font-bold text-gray-600 mb-2">Carácter de la mascota *</label>
+              <input type="text" 
+                     placeholder="Amigable, Tímido, Agresivo, Ansioso" 
+                     class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
+                     [(ngModel)]="caracter"
+                     name="caracter"
+                     required>
+            </div>
+
+            <!-- Botón Registrar -->
+            <div class="flex justify-center pt-6">
+              <button type="submit" 
+                      class="bg-gradient-to-r from-[#56C57F] to-[#45a067] hover:from-[#45a067] hover:to-[#56C57F] text-white font-black px-16 py-4 rounded-full text-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl active:scale-95 animate-pulse-slow">
+                Registrar Mascota
+              </button>
+            </div>
+          </form>
+
+          <!-- FOOTER CON ANIMACIONES -->
+          <footer class="mt-16 pt-8 border-t border-gray-200 animate-fadeIn delay-500">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-6 md:space-y-0">
+              <!-- Logo y redes -->
+              <div class="transition-all duration-300 hover:translate-x-2">
+                <h3 class="text-xl font-black text-[#F27438] mb-1 transform transition-all duration-300 hover:scale-105 inline-block">PetPocket</h3>
+                <p class="text-gray-400 text-xs mt-2">Cuidado experto y cariño para tu mejor amigo, siempre en tu bolsillo.</p>
+                <div class="flex space-x-3 mt-3">
+                  <span class="text-gray-400 cursor-pointer hover:text-[#F27438] transition-all duration-300 transform hover:scale-125">📸</span>
+                  <span class="text-gray-400 cursor-pointer hover:text-[#F27438] transition-all duration-300 transform hover:scale-125">👤</span>
+                  <span class="text-gray-400 cursor-pointer hover:text-[#F27438] transition-all duration-300 transform hover:scale-125">🐦</span>
+                </div>
+              </div>
+              
+              <!-- Enlaces -->
+              <div class="text-sm text-gray-600 transition-all duration-300 hover:translate-y-1">
+                <p class="font-bold text-[#3D4F39] mb-2">Explora</p>
+                <p class="hover:text-[#F27438] cursor-pointer transition-colors duration-200">Servicios Veterinarios</p>
+                <p class="hover:text-[#F27438] cursor-pointer transition-colors duration-200">Agendar Cita</p>
+              </div>
+              
+              <!-- Contacto -->
+              <div class="text-sm text-gray-600 transition-all duration-300 hover:translate-y-1">
+                <p class="font-bold text-[#3D4F39] mb-2">¿Necesitas Ayuda?</p>
+                <p class="transition-colors duration-200 hover:text-[#F27438]">📞 +593 1234 5678</p>
+                <p class="transition-colors duration-200 hover:text-[#F27438]">✉️ petpocket@yavirac.edu.ec</p>
+              </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="text-center text-[10px] text-gray-300 mt-10 transition-all duration-300 hover:text-gray-400">
+              © 2025 PetPocket. Quito | Ecuador
+            </div>
+          </footer>
+        </div>
       </div>
     </div>
   </main>

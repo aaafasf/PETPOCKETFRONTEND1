@@ -12,6 +12,7 @@ import { RegisterComponent } from './modules/auth/register/register.component';
 import { AppointmentsComponent } from './modules/appointments/appointments.component';
 import { MisCitasComponent } from './modules/appointments/mis-citas/mis-citas.component';
 import { NotificationsComponent } from './modules/notifications/notifications.component';
+import { MyPetsComponent } from './modules/pets/my-pets/my-pets.component';
 
 // ===================
 // IMPORTS ADMIN - USERS
@@ -59,6 +60,7 @@ export const routes: Routes = [
     path: 'pets',
     children: [
       { path: 'register', component: RegisterPetComponent },
+      { path: 'my', component: MyPetsComponent },
     ],
   },
 
@@ -115,6 +117,10 @@ export const routes: Routes = [
       import('./modules/admin/servicios/servicios.component')
         .then(m => m.ServiciosComponent),
     runGuardsAndResolvers: 'always',
+  },
+  {
+    path: 'admin/catalogos',
+    loadComponent: () => import('./modules/admin/catalogos/catalogos.component').then(m => m.CatalogosComponent),
   },
 
   // ===================

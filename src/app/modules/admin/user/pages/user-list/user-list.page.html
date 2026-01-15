@@ -1,47 +1,77 @@
-<div class="flex h-screen bg-gray-100 font-sans">
-  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-    <div class="p-6">
-      <img src="/assets/img/logo-circular.png" class="w-28 mx-auto" />
-      <p class="text-center text-xs font-bold text-gray-400 mt-2 uppercase">ADMIN PANEL</p>
+<div class="flex h-screen bg-gray-50 font-sans relative overflow-hidden">
+  <!-- SIDEBAR - AGREGAR ESTAS CLASES -->
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col relative z-10 sidebar-animation">
+    <div class="p-6 text-center">
+      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto transform transition-transform duration-300 hover:scale-110" />
+      <p class="text-xs font-bold text-gray-400 mt-2 tracking-wider">ADMIN PANEL</p>
     </div>
 
-    <nav class="flex-1 px-4 space-y-2">
+    <nav class="flex-1 px-4 space-y-2 menu-items">
       <a routerLink="/admin/dashboard" 
-        routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"><span 
-        class="mr-3">📊</span> 
-        Dashboard
+         routerLinkActive="active-menu" 
+         class="menu-item">
+        <span class="menu-icon">📊</span>
+        <span class="menu-text">Dashboard</span>
+        <span class="menu-highlight"></span>
       </a>
-
+      
+      <a routerLink="/admin/agenda" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">📅</span>
+        <span class="menu-text">Agenda</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
+      <a routerLink="/admin/planner" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">📋</span>
+        <span class="menu-text">Panel</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
       <a routerLink="/admin/servicios" 
-        routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"><span 
-        class="mr-3">🩺</span> 
-        Servicios
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">🩺</span>
+        <span class="menu-text">Servicios</span>
+        <span class="menu-highlight"></span>
       </a>
-
+      
       <a routerLink="/admin/configuracion" 
-        routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"><span 
-        class="mr-3">⚙️</span> 
-        Configuración
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">⚙️</span>
+        <span class="menu-text">Configuración</span>
+        <span class="menu-highlight"></span>
       </a>
+      
       <a routerLink="/admin/users/create" 
-        routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"><span 
-        class="mr-3">➕</span> 
-        Registro de usuario
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item">
+        <span class="menu-icon">➕</span>
+        <span class="menu-text">Registro de usuario</span>
+        <span class="menu-highlight"></span>
       </a>
+      
       <a routerLink="/admin/users" 
-      routerLinkActive="bg-gray-100 text-[#F27438] font-bold" 
-      class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"><span 
-      class="mr-3">👥</span> 
-      Usuarios registrados
-    </a>
+         routerLinkActive="active-menu"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item">
+        <span class="menu-icon">👥</span>
+        <span class="menu-text">Usuarios registrados</span>
+        <span class="menu-highlight"></span>
+      </a>
     </nav>
   </aside>
 
-  <!-- MAIN -->
+  <!-- MAIN (TODO IGUAL) -->
   <main class="flex-1 flex flex-col overflow-hidden">
     <!-- HEADER -->
     <header class="bg-white h-20 border-b flex items-center justify-between px-8">
@@ -49,6 +79,7 @@
     </header>
 
     <div class="p-8 overflow-y-auto">
+      <!-- TODO EL CONTENIDO ORIGINAL SIGUE IGUAL -->
       <h1 class="text-2xl font-bold mb-6 text-gray-800">Lista de Personal</h1>
 
       <div class="grid gap-4">
@@ -57,16 +88,16 @@
           class="p-4 border rounded-xl transition-all duration-300"
           (click)="selectUser(user)"
           [ngClass]="{
-            'bg-gray-200 border-gray-400 grayscale opacity-80': user.desactivado,
-            'bg-white border-gray-200 shadow-sm hover:shadow-md': !user.desactivado && selectedUser?.idUser !== user.idUser,
-            'ring-2 ring-[#F27438] bg-white': selectedUser?.idUser === user.idUser && !user.desactivado
+            'bg-gray-200 border-gray-400 grayscale opacity-80': user['desactivado'],
+            'bg-white border-gray-200 shadow-sm': !user['desactivado'],
+            'ring-2 ring-[#F27438]': selectedUser?.idUser === user.idUser && !user['desactivado']
           }"
         >
           <div class="flex justify-between items-center">
-            <h3 class="font-bold text-lg" [class.text-gray-500]="user.desactivado">
+            <h3 class="font-bold text-lg" [ngClass]="user['desactivado'] ? 'text-gray-500' : 'text-gray-800'">
               {{ user.nameUsers }}
             </h3>
-            <span *ngIf="user.desactivado" class="text-[10px] bg-gray-500 text-white px-2 py-1 rounded-full font-black uppercase">Inactivo</span>
+            <span *ngIf="user['desactivado']" class="text-[10px] bg-gray-500 text-white px-2 py-1 rounded-full font-black uppercase">Inactivo</span>
           </div>
 
           <div *ngIf="selectedUser?.idUser === user.idUser" class="mt-4 border-t pt-4 space-y-2 animate-fade-in">
@@ -77,6 +108,7 @@
 
             <div class="mt-4 flex flex-wrap gap-2">
               <button
+                *ngIf="!user['desactivado']"
                 class="bg-[#F27438] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-orange-600 transition"
                 (click)="goToResetPassword($event, user.idUser)"
               >
@@ -86,9 +118,9 @@
               <button
                 (click)="toggleStatus($event, user)"
                 class="px-4 py-2 rounded-lg text-xs font-bold text-white transition-colors"
-                [ngClass]="user.desactivado ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600 hover:bg-gray-700'"
+                [ngClass]="user['desactivado'] ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600 hover:bg-gray-700'"
               >
-                {{ user.desactivado ? 'Activar Usuario' : 'Desactivar Usuario' }}
+                {{ user['desactivado'] ? 'Activar Usuario' : 'Desactivar Usuario' }}
               </button>
 
               <button

@@ -1,61 +1,99 @@
-<div class="flex h-screen bg-gray-100 font-sans">
-
-  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-    <div class="p-6">
-      <img src="assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto">
-      <p class="text-center text-xs font-bold text-gray-400 mt-2">ADMIN PANEL</p>
+<div class="flex h-screen bg-gray-50 font-sans relative overflow-hidden">
+  <!-- Fondo animado de agua/ondas -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-30"></div>
+  <div class="absolute inset-0 bg-water-pattern opacity-5"></div>
+  
+  <!-- Sidebar de create-user -->
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col relative z-10 sidebar-animation">
+    <div class="p-6 text-center">
+      <img src="assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto transform transition-transform duration-300 hover:scale-110" />
+      <p class="text-xs font-bold text-gray-400 mt-2 tracking-wider">ADMIN PANEL</p>
     </div>
-
-    <nav class="flex-1 px-4 space-y-2">
-      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">📊</span> Dashboard
+    <nav class="flex-1 px-4 space-y-2 menu-items">
+      <a routerLink="/admin/dashboard" 
+         routerLinkActive="active-menu" 
+         class="menu-item">
+        <span class="menu-icon">📊</span>
+        <span class="menu-text">Dashboard</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/agenda" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">📅</span> Agenda
+      
+      <a routerLink="/admin/agenda" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">📅</span>
+        <span class="menu-text">Agenda</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/planner" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">📋</span> Panel
+      
+      <a routerLink="/admin/planner" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">📋</span>
+        <span class="menu-text">Panel</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/servicios" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">🩺</span> Servicios
+      
+      <a routerLink="/admin/servicios" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">🩺</span>
+        <span class="menu-text">Servicios</span>
+        <span class="menu-highlight"></span>
       </a>
-      <a routerLink="/admin/configuracion" routerLinkActive="bg-gray-100 text-[#F27438] font-bold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="mr-3">⚙️</span> Configuración
+      
+      <a routerLink="/admin/configuracion" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }" 
+         class="menu-item">
+        <span class="menu-icon">⚙️</span>
+        <span class="menu-text">Configuración</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
+      <a routerLink="/admin/users/create" 
+         routerLinkActive="active-menu" 
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item">
+        <span class="menu-icon">➕</span>
+        <span class="menu-text">Registro de usuario</span>
+        <span class="menu-highlight"></span>
+      </a>
+      
+      <a routerLink="/admin/users" 
+         routerLinkActive="active-menu"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="menu-item">
+        <span class="menu-icon">👥</span>
+        <span class="menu-text">Usuarios registrados</span>
+        <span class="menu-highlight"></span>
       </a>
     </nav>
-
-    <div class="p-6">
-      <img src="assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30">
-    </div>
   </aside>
 
+  <!-- Main Content (EXACTAMENTE IGUAL al código original) -->
   <main class="flex-1 flex flex-col overflow-hidden">
 
-    <header class="bg-white h-20 border-b flex items-center justify-between px-8">
+    <!-- Header -->
+    <header class="bg-white h-20 border-b border-gray-100 flex items-center justify-between px-8 shadow-sm">
       <h2 class="text-xl font-black text-gray-800">Agenda Médica</h2>
       <div class="flex items-center space-x-6">
         <div class="flex items-center space-x-3">
           <span class="text-sm font-bold text-gray-600">Admin</span>
-          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">A
-          </div>
+          <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center font-bold text-white shadow-md">A</div>
         </div>
       </div>
     </header>
 
-    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
+    <!-- Content Area -->
+    <div class="flex-1 overflow-y-auto p-8 bg-[#F9FAFB]">
 
       <div class="agenda-view">
 
+        <!-- Header con badge -->
         <header class="agenda-header mb-8 flex items-center justify-between">
           <div class="title-section">
             <p class="date-subtitle text-gray-500 font-bold text-lg capitalize">
@@ -71,15 +109,18 @@
           </div>
         </header>
 
+        <!-- Timeline Container -->
         <main class="timeline-container">
 
           @let appointments = (appointments$ | async);
 
           @if (appointments) {
 
-            @for (appt of appointments; track appt.idCita) {
+            @for (appt of appointments; track appt.idCita; let i = $index) {
 
-              <div class="timeline-item mb-6" [ngClass]="appt.estadoCita">
+              <div class="timeline-item mb-6" 
+                   [ngClass]="appt.estadoCita"
+                   [style.animation-delay.s]="i * 0.1">
 
                 <div class="time-marker">
                   <span class="start-time">{{ appt.hora }}</span>
@@ -117,14 +158,16 @@
 
                       @if (appt.estadoCita === Status.PROGRAMADA) {
                         <button class="btn-action btn-start" (click)="onChangeStatus(appt.idCita, Status.CONFIRMADA)">
-                          ▶ Iniciar Consulta
+                          <span class="btn-icon">▶</span>
+                          <span>Iniciar Consulta</span>
                         </button>
                       }
 
                       @if (appt.estadoCita === Status.CONFIRMADA) {
                         <button class="btn-action btn-complete"
                           (click)="onChangeStatus(appt.idCita, Status.COMPLETADA)">
-                          ✓ Finalizar Consulta
+                          <span class="btn-icon">✓</span>
+                          <span>Finalizar Consulta</span>
                         </button>
                       }
 
@@ -137,6 +180,9 @@
 
                     </div>
                   </div>
+
+                  <!-- Glassmorphism overlay on hover -->
+                  <div class="card-overlay"></div>
                 </div>
               </div>
             }
@@ -149,6 +195,7 @@
             }
 
           } @else {
+            <!-- Skeleton Loading -->
             <div class="loader-container text-center py-10">
               <div class="spinner inline-block w-8 h-8 border-4 border-orange-200 border-t-[#F27438] rounded-full animate-spin mb-2"></div>
               <p class="text-gray-400 font-bold">Cargando agenda...</p>

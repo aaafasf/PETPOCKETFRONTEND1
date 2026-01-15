@@ -16,6 +16,8 @@ export interface Appointment {
   motivo?: string;
   notasAdicionales?: string;
   detallesMongo?: DetallesMongo;
+
+  
   
 }
 

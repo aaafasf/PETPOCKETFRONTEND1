@@ -1,121 +1,234 @@
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+/* --- 1. ESTADO: NO LEÍDAS (Vibrantes y con Energía) --- */
+/* Identificamos por la clase de gradiente naranja que ya tienes */
+main .lg\:col-span-2 div[class*="from-orange-50"] {
+  border-left: 5px solid #F27438 !important;
+  background: linear-gradient(90deg, #fff7ed 0%, #ffffff 100%) !important;
+  position: relative;
+}
+
+/* Hover específico para No Leídas: Efecto de "Iluminación" */
+main .lg\:col-span-2 div[class*="from-orange-50"]:hover {
+  border-left-width: 10px !important;
+  background: #ffffff !important;
+  box-shadow: 0 15px 30px -5px rgba(242, 116, 56, 0.2) !important;
+}
+
+/* El punto pulsante naranja se hace más grande en el hover */
+main .lg\:col-span-2 div[class*="from-orange-50"]:hover span[class*="bg-[#F27438]"] {
+  transform: scale(1.5);
+  box-shadow: 0 0 10px #F27438;
+}
+
+/* --- 2. ESTADO: LEÍDAS (Elegancia en Reposo) --- */
+/* Identificamos por la clase de borde gris */
+main .lg\:col-span-2 div[class*="border-gray-300"] {
+  opacity: 0.7; /* Se ven "apagadas" para dar prioridad a las nuevas */
+  filter: grayscale(0.5);
+  border-left: 4px solid #d1d5db !important;
+  background-color: #f9fafb !important;
+  transition: all 0.4s ease !important;
+}
+
+/* Hover específico para Leídas: "Despertar" la tarjeta */
+main .lg\:col-span-2 div[class*="border-gray-300"]:hover {
+  opacity: 1 !important;
+  filter: grayscale(0);
+  border-left-color: #9ca3af !important;
+  background-color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* --- 3. MEJORA DE LOS TEXTOS SEGÚN ESTADO --- */
+/* Título de No Leídas: Más pesado y oscuro */
+main .lg\:col-span-2 div[class*="from-orange-50"] h4 {
+  font-weight: 900 !important;
+  color: #1a1a1a !important;
+}
+
+/* Título de Leídas: Más suave */
+main .lg\:col-span-2 div[class*="border-gray-300"] h4 {
+  font-weight: 600 !important;
+  color: #6b7280 !important;
+}
+
+/* --- 4. BOTÓN "MARCAR COMO LEÍDA" (Solo en No Leídas) --- */
+main .lg\:col-span-2 div[class*="from-orange-50"] button {
+  background-color: #F27438 !important;
+  color: white !important;
+  border: none !important;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+main .lg\:col-span-2 div[class*="from-orange-50"] button:hover {
+  transform: scale(1.1) rotate(-2deg) !important;
+  box-shadow: 0 5px 15px rgba(242, 116, 56, 0.4) !important;
+}
+/* ===== ANIMACIONES PARA EL SIDEBAR ===== */
+
+/* Patrón de agua sutil */
+.bg-water-pattern {
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(102, 126, 234, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(102, 126, 234, 0.03) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.07) 0%, transparent 30%);
+  animation: waterFloat 20s ease-in-out infinite;
+}
+
+@keyframes waterFloat {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(10px, -5px) rotate(1deg);
+  }
+  66% {
+    transform: translate(-5px, 8px) rotate(-1deg);
+  }
+}
+
+/* Animación de entrada del sidebar */
+.sidebar-animation {
+  animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Estilos para los items del menú */
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  color: #4b5563;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
   overflow: hidden;
+  z-index: 1;
+  background: transparent;
 }
 
-/* Animaciones */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
+.menu-item:hover {
+  transform: translateX(10px) scale(1.05);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  z-index: 20;
+}
+
+.menu-item:hover .menu-icon {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.menu-item:hover .menu-text {
+  color: #292828;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Efecto de resalte en hover */
+.menu-highlight {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(242, 116, 56, 0.1), 
+    transparent);
+  transition: left 0.6s ease;
+  z-index: -1;
+}
+
+.menu-item:hover .menu-highlight {
+  left: 100%;
+}
+
+/* Ícono del menú */
+.menu-icon {
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+  width: 24px;
+  text-align: center;
+}
+
+.menu-text {
+  flex: 1;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+/* Estado activo del menú */
+.active-menu {
+  background: linear-gradient(135deg, #F27438 0%, #cc4773 100%);
+  color: white !important;
+  font-weight: 700 !important;
+  transform: translateX(5px) scale(1.02);
+  box-shadow: 0 8px 20px -5px rgba(242, 116, 56, 0.3);
+  z-index: 10;
+}
+
+.active-menu .menu-icon {
+  transform: scale(1.1);
+  filter: brightness(0) invert(1);
+}
+
+.active-menu::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  background: white;
+  border-radius: 2px 0 0 2px;
+  animation: pulseActive 2s infinite;
+}
+
+@keyframes pulseActive {
+  0%, 100% {
     opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-50%) scale(1.1);
   }
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Animación secuencial para los items del menú */
+.menu-items .menu-item {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
 }
+
+.menu-items .menu-item:nth-child(1) { animation-delay: 0.1s; }
+.menu-items .menu-item:nth-child(2) { animation-delay: 0.2s; }
+.menu-items .menu-item:nth-child(3) { animation-delay: 0.3s; }
+.menu-items .menu-item:nth-child(4) { animation-delay: 0.4s; }
+.menu-items .menu-item:nth-child(5) { animation-delay: 0.5s; }
+.menu-items .menu-item:nth-child(6) { animation-delay: 0.6s; }
+.menu-items .menu-item:nth-child(7) { animation-delay: 0.7s; }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
-@keyframes modalSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.2s ease-out;
-}
-
-.animate-slideDown {
-  animation: slideDown 0.3s ease-out;
-}
-
-.animate-fadeInUp {
-  animation: fadeInUp 0.4s ease-out forwards;
-  opacity: 0;
-}
-
-.animate-modalSlideUp {
-  animation: modalSlideUp 0.3s ease-out;
-}
-
-/* Estilo para scrollbar personalizada */
-.overflow-y-auto::-webkit-scrollbar {
-  width: 10px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-  margin: 8px 0;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #F27438, #ff8c42);
-  border-radius: 10px;
-  border: 2px solid #f1f1f1;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #d8602e, #F27438);
-}
-
-/* Mejoras adicionales */
-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  filter: invert(0.5) sepia(1) saturate(5) hue-rotate(0deg);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-}
-
-/* Efectos de hover mejorados */
-button:not(:disabled):hover {
-  transform: translateY(-2px);
-}
-
-/* Transiciones suaves */
-* {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* Sombra mejorada para cards */
-.shadow-lg {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-.shadow-xl {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-

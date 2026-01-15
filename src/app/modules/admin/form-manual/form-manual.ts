@@ -22,7 +22,7 @@ interface ManualAppointmentForm {
   idServicio: number;
   fecha: string;
   hora: string;
-  estadoCita: AppointmentStatus;
+  estadoCita: string; // ✅ Cambiado de AppointmentStatus a string
 
   motivo?: string;
 }
@@ -36,13 +36,13 @@ interface ManualAppointmentForm {
 })
 export class FormManual implements OnInit {
 
-
   appointmentForm!: FormGroup;
-  appointmentStatuses = Object.values(AppointmentStatus);
+  
+  // ✅ CORRECCIÓN: Usar array de strings en minúsculas
+  appointmentStatuses = ['programada', 'confirmada', 'cancelada', 'completada'];
 
-  @Input() clientes: ClienteDto[] = [];           // ✅ Nueva entrada
+  @Input() clientes: ClienteDto[] = [];
   @Input() mascotas: MascotaDto[] = [];
-
   @Input() services: ClinicServiceInfo[] = [];
   @Input() veterinarians: { id: number; name: string }[] = [];
 
@@ -50,76 +50,91 @@ export class FormManual implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Input() appointmentId: number | null = null;
 
+  // ✅ NUEVO: Variable para guardar el idCita actual
+  private currentCitaId: number | null = null;
+
   constructor(
-  private fb: FormBuilder,
-  private appointmentService: AppointmentService,
-  private clienteService: ClienteService,
-  private mascotaService: MascotaService,
-  private clinicService: ClinicService
-) {}
+    private fb: FormBuilder,
+    private appointmentService: AppointmentService,
+    private clienteService: ClienteService,
+    private mascotaService: MascotaService,
+    private clinicService: ClinicService
+  ) {}
 
   ngOnInit(): void {
-  this.initForm();
+    this.initForm();
 
-  // 👤 CLIENTES
-  this.clienteService.getAll().subscribe(data => {
-    console.log('👤 Clientes cargados:', data);
+    // 👤 CLIENTES
+    this.clienteService.getAll().subscribe(data => {
+      console.log('👤 Clientes cargados:', data);
       this.clientes = data;
-  });
+    });
 
-  // 🐶 MASCOTAS (todas por ahora)
-  this.mascotaService.getAll().subscribe(data => {
-    console.log('🐶 Mascotas cargadas:', data);
-    this.mascotas = data;
-  });
+    // 🐶 MASCOTAS
+    this.mascotaService.getAll().subscribe(data => {
+      console.log('🐶 Mascotas cargadas:', data);
+      this.mascotas = data;
+    });
 
-  this.clinicService.getVeterinarians().subscribe(data => {
-  console.log('🧑‍⚕️ Veterinarios cargados:', data);
-  this.veterinarians = data; // ya está mapeado {id, name, specialty}
-  
-});
+    // 🧑‍⚕️ VETERINARIOS
+    this.clinicService.getVeterinarians().subscribe(data => {
+      console.log('🧑‍⚕️ Veterinarios cargados:', data);
+      this.veterinarians = data;
+    });
 
+    // ✏️ MODO EDICIÓN
+    if (this.appointmentId) {
+      console.log('✏️ Modo edición - Cargando cita:', this.appointmentId);
+      
+      this.appointmentService.appointments$
+        .pipe(map(list => list.find(a => a.idCita === this.appointmentId)))
+        .subscribe(appt => {
+          if (!appt) {
+            console.warn('⚠️ No se encontró la cita:', this.appointmentId);
+            return;
+          }
 
-  // ✏️ EDICIÓN (esto ya lo tenías, se queda igual)
-  if (this.appointmentId) {
-    this.appointmentService.appointments$
-      .pipe(map(list => list.find(a => a.idCita === this.appointmentId)))
-      .subscribe(appt => {
-        if (!appt) return;
+          console.log('📥 Cita encontrada para editar:', appt);
 
-        this.appointmentForm.patchValue({
-          idCita: appt.idCita,
-          idCliente: appt.idCliente,
-          idMascota: appt.idMascota,
-          idServicio: appt.idServicio,
-          userIdUser: appt.userIdUser,
-          fecha: appt.fecha,
-          hora: appt.hora,
-          estadoCita: appt.estadoCita,
-          motivo: appt.motivo
+          // ✅ CORRECCIÓN: Guardar el ID de la cita
+          this.currentCitaId = appt.idCita;
+
+          // ✅ CORRECCIÓN: Normalizar el estado a minúsculas
+          const estadoNormalizado = (appt.estadoCita || 'programada').toLowerCase();
+
+          this.appointmentForm.patchValue({
+            idCliente: appt.idCliente,
+            idMascota: appt.idMascota,
+            idServicio: appt.idServicio,
+            userIdUser: appt.userIdUser,
+            fecha: appt.fecha,
+            hora: appt.hora,
+            estadoCita: estadoNormalizado, // ✅ Estado en minúsculas
+            motivo: appt.motivo || ''
+          });
+
+          console.log('✅ Formulario cargado con valores:', this.appointmentForm.value);
         });
-      });
+    }
   }
-}
 
   private initForm(): void {
     this.appointmentForm = this.fb.group({
-  idCliente: [null, Validators.required],
-  idMascota: [null, Validators.required],
-  userIdUser: [null, Validators.required],  // veterinario
-  idServicio: [null, Validators.required],
-  fecha: [new Date().toISOString().substring(0,10), Validators.required],
-  hora: [null, Validators.required],
-  estadoCita: ['programada', Validators.required],
-  motivo: ['']
-});
-
+      idCliente: [null, Validators.required],
+      idMascota: [null, Validators.required],
+      userIdUser: [null, Validators.required],
+      idServicio: [null, Validators.required],
+      fecha: [new Date().toISOString().substring(0,10), Validators.required],
+      hora: [null, Validators.required],
+      estadoCita: ['programada', Validators.required], // ✅ Minúsculas por defecto
+      motivo: ['']
+    });
   }
-
 
   onSubmit(): void {
     if (this.appointmentForm.invalid) {
-      this.appointmentForm.markAllAsTouched(); // Para ver qué falta
+      this.appointmentForm.markAllAsTouched();
+      console.warn('⚠️ Formulario inválido:', this.appointmentForm.value);
       return;
     }
 
@@ -129,22 +144,31 @@ export class FormManual implements OnInit {
     const idServicioNum = Number(raw.idServicio);
     const userIdUserNum = Number(raw.userIdUser);
 
-    // Si alguno es 0 o NaN, mostramos alerta y no enviamos
+    // Validación
     if (!idClienteNum || !idMascotaNum || !idServicioNum || !userIdUserNum) {
       alert('Por favor seleccione Cliente, Mascota, Veterinario y Servicio válidos.');
       return;
     }
 
-    // Convertimos explícitamente a número para evitar NaN
+    // ✅ CORRECCIÓN: Incluir idCita si estamos editando
     const data: ManualAppointmentForm = {
-      ...raw,
-      idCita: raw.idCita ? Number(raw.idCita) : undefined,
       idCliente: idClienteNum,
       idMascota: idMascotaNum,
       idServicio: idServicioNum,
-      userIdUser: userIdUserNum
+      userIdUser: userIdUserNum,
+      fecha: raw.fecha,
+      hora: raw.hora,
+      estadoCita: raw.estadoCita.toLowerCase(), // ✅ Asegurar minúsculas
+      motivo: raw.motivo || ''
     };
-    console.log('📦 Formulario valido enviado:', data); // Para depurar
+
+    // ✅ CORRECCIÓN CRÍTICA: Incluir idCita si estamos en modo edición
+    if (this.currentCitaId) {
+      data.idCita = this.currentCitaId;
+      console.log('📝 Actualizando cita:', this.currentCitaId, data);
+    } else {
+      console.log('➕ Creando nueva cita:', data);
+    }
 
     this.save.emit(data);
   }

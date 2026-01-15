@@ -1,0 +1,113 @@
+<div class="p-8">
+  <h1 class="text-3xl font-black text-gray-800 mb-8">Catálogos de Mascotas</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    @for (catalogo of catalogos; track catalogo.key) {
+      <div class="bg-white rounded-2xl shadow p-6 border border-gray-100">
+        <h2 class="text-xl font-bold mb-4">{{ catalogo.nombre }}</h2>
+
+        <button
+          class="bg-[#F27438] text-white px-4 py-2 rounded font-bold mb-2"
+          (click)="abrirAgregar(catalogo)">
+          Añadir
+        </button>
+
+        <table class="w-full text-sm">
+          <thead>
+            <tr>
+              <th class="text-left py-2">Nombre</th>
+              <th class="text-left py-2">Estado</th>
+              <th class="text-left py-2">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (item of catalogo.items; track item.id) {
+              <tr>
+                <td class="py-1">{{ item.nombre }}</td>
+
+                <td class="py-1">
+                  @if (item.activo) {
+                    <span class="text-green-600">Activo</span>
+                  } @else {
+                    <span class="text-gray-400">Inactivo</span>
+                  }
+                </td>
+
+                <td class="py-1">
+                  <button
+                    class="text-blue-600 font-bold mr-2"
+                    (click)="abrirEditar(catalogo, item)">
+                    Editar
+                  </button>
+
+                  @if (item.activo) {
+                    <button
+                      class="text-red-500 font-bold"
+                      (click)="desactivar(catalogo, item)">
+                      Desactivar
+                    </button>
+                  } @else {
+                    <button
+                      class="text-green-600 font-bold"
+                      (click)="activar(catalogo, item)">
+                      Activar
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+  <!-- Modal -->
+  @if (showModal) {
+    <div class="catalogo-modal">
+      <div class="catalogo-modal-content">
+        <h2 class="text-xl font-bold mb-4">
+          {{ editMode ? 'Editar' : 'Añadir' }} {{ modalCatalogo?.nombre }}
+        </h2>
+
+        <form (ngSubmit)="guardarModal()">
+          <label class="block text-sm font-bold text-gray-600 mb-2">Nombre</label>
+
+          <input
+            type="text"
+            [(ngModel)]="modalItem.nombre"
+            name="nombre"
+            class="w-full p-2 border rounded mb-4"
+            required
+            autofocus
+          >
+
+          @if (modalCatalogo?.key === 'raza') {
+            <label class="block text-sm font-bold text-gray-600 mb-2">Especie</label>
+
+            <select
+              [(ngModel)]="modalItem.idEspecie"
+              name="idEspecie"
+              class="w-full p-2 border rounded mb-4"
+              required
+            >
+              <option *ngFor="let esp of especies" [value]="esp.idEspecie">
+                {{ esp.nombre }}
+              </option>
+            </select>
+          }
+
+          <div class="flex justify-end space-x-2">
+            <button type="button" (click)="cerrarModal()" class="px-4 py-2 bg-gray-200 rounded">
+              Cancelar
+            </button>
+            <button type="submit" class="px-4 py-2 bg-[#F27438] text-white rounded font-bold">
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>
