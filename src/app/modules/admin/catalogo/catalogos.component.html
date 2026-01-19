@@ -1,0 +1,47 @@
+<div class="container">
+
+  <h2>Catálogo de Especies</h2>
+
+  <!-- FORMULARIO -->
+  <div style="margin-bottom: 1rem;">
+    <input
+      type="text"
+      placeholder="Nombre de la especie"
+      [(ngModel)]="nuevaEspecie"
+    />
+    <button (click)="guardarEspecie()">Guardar</button>
+  </div>
+
+  <!-- ERROR -->
+  <p *ngIf="error" style="color:red">{{ error }}</p>
+
+  <!-- CARGANDO -->
+  <p *ngIf="cargando">Cargando...</p>
+
+  <!-- TABLA -->
+  <table *ngIf="especies.length" border="1" cellpadding="5">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Activo</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let especie of especies">
+        <td>{{ especie.idEspecie }}</td>
+        <td>{{ especie.nombre }}</td>
+        <td>{{ especie.activo ? 'Sí' : 'No' }}</td>
+        <td>
+          <button
+            (click)="desactivarEspecie(especie)"
+            [disabled]="!especie.activo">
+            Desactivar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

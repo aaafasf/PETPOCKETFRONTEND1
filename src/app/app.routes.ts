@@ -120,4 +120,10 @@ export const routes: Routes = [
       import('./modules/admin/agenda/agenda')
         .then(m => m.Agenda),
   },
+  {
+  path: 'admin/expedientes',
+  loadComponent: () =>
+    import('./modules/admin/expedientes/expedientes.component')
+      .then(m => m.ExpedientesComponent),
+}
 ];

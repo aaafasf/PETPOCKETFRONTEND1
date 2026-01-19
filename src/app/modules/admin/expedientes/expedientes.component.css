@@ -1,0 +1,92 @@
+/* ===== CONTENEDOR ===== */
+.bg-water-pattern {
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+/* ===== HEADER ===== */
+.expedientes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.titulo-expedientes {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #292828;
+}
+
+/* ===== BUSCADOR ===== */
+.buscador-expedientes {
+  padding: 0.6rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.buscador-expedientes:focus {
+  outline: none;
+  border-color: #F27438;
+  box-shadow: 0 0 0 3px rgba(242, 116, 56, 0.15);
+}
+
+/* ===== TABLA ===== */
+.tabla-expedientes {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+}
+
+.tabla-expedientes th,
+.tabla-expedientes td {
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.tabla-expedientes th {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* ===== FILAS ===== */
+.fila-expediente {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fila-expediente:hover {
+  background: rgba(242, 116, 56, 0.06);
+  transform: scale(1.01);
+}
+
+/* ===== ACCIONES ===== */
+.acciones-expediente {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-expediente {
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.6rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-expediente.ver {
+  background: #e5e7eb;
+}
+
+.btn-expediente.editar {
+  background: linear-gradient(135deg, #F27438, #cc4773);
+  color: white;
+}
+
+.btn-expediente:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
