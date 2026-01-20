@@ -1,13 +1,10 @@
-<div class="flex flex-col h-full bg-gray-50 font-sans relative overflow-hidden">
-  <!-- Fondo animado de agua/ondas -->
+<div class="flex flex-col h-full bg-gray-50 font-sans relative overflow-hidden text-gray-900">
   <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-30"></div>
   <div class="absolute inset-0 bg-water-pattern opacity-5"></div>
 
-  <!-- Main Content (EXACTAMENTE IGUAL al código original) -->
   <main class="flex-1 flex flex-col overflow-hidden">
 
-    <!-- Header -->
-    <header class="bg-white h-20 border-b border-gray-100 flex items-center justify-between px-8 shadow-sm">
+    <header class="bg-white h-20 border-b border-gray-100 flex items-center justify-between px-8 shadow-sm relative z-20">
       <h2 class="text-xl font-black text-gray-800">Agenda Médica</h2>
       <div class="flex items-center space-x-6">
         <div class="flex items-center space-x-3">
@@ -17,108 +14,120 @@
       </div>
     </header>
 
-    <!-- Content Area -->
     <div class="flex-1 overflow-y-auto p-8 bg-[#F9FAFB]">
 
       <div class="agenda-view">
 
-        <!-- Header con badge -->
         <header class="agenda-header mb-8 flex items-center justify-between">
           <div class="title-section">
-            <p class="date-subtitle text-gray-500 font-bold text-lg capitalize">
+            <p class="date-subtitle text-gray-600 font-bold text-lg capitalize">
               {{ todayStr | date:'EEEE, d MMMM, y' }}
             </p>
           </div>
 
           <div class="summary-badge bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-100 flex items-center gap-2">
-            <span class="badge-count text-[#F27438] font-black text-xl">
+            <span class="badge-count text-orange-600 font-black text-xl">
               {{ (appointments$ | async)?.length ?? 0 }}
             </span>
-            <span class="badge-label text-xs font-bold text-gray-400 uppercase">Pacientes Hoy</span>
+            <span class="badge-label text-xs font-bold text-gray-500 uppercase">Pacientes Hoy</span>
           </div>
         </header>
 
-        <!-- Timeline Container -->
         <main class="timeline-container">
 
-          <ng-container *ngIf="appointments$ | async as appointments">
+          @let appointments = (appointments$ | async);
 
-            <div *ngFor="let appt of appointments; let i = index" class="timeline-item mb-6"
-                 [ngClass]="appt.estadoCita"
-                 [style.animation-delay.s]="i * 0.1">
+          @if (appointments) {
+
+            @for (appt of appointments; track appt.idCita; let i = $index) {
+
+              <div class="timeline-item mb-6" 
+                   [ngClass]="appt.estadoCita"
+                   [style.animation-delay.s]="i * 0.1">
 
                 <div class="time-marker">
-                  <span class="start-time">{{ appt.hora }}</span>
+                  <span class="start-time text-gray-800 bg-white font-bold px-3 py-1 rounded shadow-sm border border-gray-200">
+                    {{ appt.hora }}
+                  </span>
                   <div class="line"></div>
                 </div>
 
-                <div class="appointment-card" [ngClass]="'border-' + appt.estadoCita">
+                <div class="appointment-card bg-white" [ngClass]="'border-' + appt.estadoCita">
 
                   <div class="card-content">
 
                     <div class="patient-header">
                       <div>
-                        <h3 class="patient-name">{{ appt.nombreMascota }}</h3>
-                        <span class="owner-name">
-                          Propietario: <strong>{{ appt.nombreCliente }}</strong>
+                        <h3 class="patient-name text-gray-900 font-black text-2xl">
+                            {{ appt.nombreMascota }}
+                        </h3>
+                        
+                        <span class="owner-name text-gray-500 block mt-1">
+                          Propietario: 
+                          <strong class="text-gray-800">{{ appt.nombreCliente }}</strong>
                         </span>
                       </div>
 
-                      <span [class]="getStatusClass(appt.estadoCita) + ' status-pill'">
+                      <span [class]="getStatusClass(appt.estadoCita) + ' status-pill font-bold'">
                         {{ appt.estadoLabel }}
                       </span>
                     </div>
 
-                    <div class="service-detail">
-                      <div class="service-tag">
-                        <span class="icon">🩺</span>
-                        <span>{{ appt.serviceName }}</span>
+                    <div class="service-detail mt-4 p-4 rounded-lg bg-gray-50 border border-gray-100">
+                      <div class="service-tag flex items-center gap-2">
+                        <span class="icon text-xl">🩺</span>
+                        <span class="font-bold text-gray-800 text-lg">{{ appt.serviceName }}</span>
                       </div>
-                      <p class="reason-text">
+                      <p class="reason-text text-gray-600 italic mt-1 ml-7">
                         "{{ appt.motivo || 'Sin motivo especificado' }}"
                       </p>
                     </div>
 
-                    <div class="card-footer">
+                    <div class="card-footer mt-4 pt-4 border-t border-gray-100 flex justify-end">
 
-                      <button *ngIf="appt.estadoCita === Status.PROGRAMADA" class="btn-action btn-start" (click)="onChangeStatus(appt.idCita, Status.CONFIRMADA)">
-                        <span class="btn-icon">▶</span>
-                        <span>Iniciar Consulta</span>
-                      </button>
+                      @if (appt.estadoCita === Status.PROGRAMADA) {
+                        <button class="btn-action btn-start text-blue-800" (click)="onChangeStatus(appt.idCita, Status.CONFIRMADA)">
+                          <span class="btn-icon">▶</span>
+                          <span>Iniciar Consulta</span>
+                        </button>
+                      }
 
-                      <button *ngIf="appt.estadoCita === Status.CONFIRMADA" class="btn-action btn-complete"
-                        (click)="onChangeStatus(appt.idCita, Status.COMPLETADA)">
-                        <span class="btn-icon">✓</span>
-                        <span>Finalizar Consulta</span>
-                      </button>
+                      @if (appt.estadoCita === Status.CONFIRMADA) {
+                        <button class="btn-action btn-complete text-green-800"
+                          (click)="onChangeStatus(appt.idCita, Status.COMPLETADA)">
+                          <span class="btn-icon">✓</span>
+                          <span>Finalizar Consulta</span>
+                        </button>
+                      }
 
-                      <div *ngIf="appt.estadoCita === Status.COMPLETADA" class="completed-info">
-                        <span class="check-icon">✅</span>
-                        <span class="completed-text">Consulta Finalizada</span>
-                      </div>
+                      @if (appt.estadoCita === Status.COMPLETADA) {
+                        <div class="completed-info text-green-700">
+                          <span class="check-icon">✅</span>
+                          <span class="completed-text font-bold">Consulta Finalizada</span>
+                        </div>
+                      }
 
                     </div>
                   </div>
 
-                  <!-- Glassmorphism overlay on hover -->
                   <div class="card-overlay"></div>
                 </div>
               </div>
+            }
 
-            <div *ngIf="appointments.length === 0" class="empty-state text-center py-10">
-              <div class="empty-icon text-4xl mb-2">🗓️</div>
-              <p class="text-gray-400 font-bold">No tienes pacientes agendados para hoy.</p>
-            </div>
+            @if (appointments.length === 0) {
+              <div class="empty-state text-center py-10">
+                <div class="empty-icon text-4xl mb-2">🗓️</div>
+                <p class="text-gray-500 font-bold text-lg">No tienes pacientes agendados para hoy.</p>
+              </div>
+            }
 
-          </ng-container>
-
-          <div *ngIf="!(appointments$ | async)">
-            <!-- Skeleton Loading -->
+          } @else {
             <div class="loader-container text-center py-10">
               <div class="spinner inline-block w-8 h-8 border-4 border-orange-200 border-t-[#F27438] rounded-full animate-spin mb-2"></div>
-              <p class="text-gray-400 font-bold">Cargando agenda...</p>
+              <p class="text-gray-500 font-bold">Cargando agenda...</p>
             </div>
-          </div>
+          }
 
         </main>
       </div>
