@@ -10,11 +10,11 @@
     <div class="p-8 overflow-y-auto">
       <!-- TODO EL CONTENIDO ORIGINAL SIGUE IGUAL -->
       <h1 class="text-2xl font-bold mb-6 text-gray-800">Lista de Personal</h1>
-
+      
       <div class="grid gap-4">
-        <div
-          *ngFor="let user of users"
-          class="p-4 border rounded-xl transition-all duration-300"
+       <div
+  *ngFor="let user of users"
+  class="p-4 border rounded-xl transition-all duration-300 text-gray-800"
           (click)="selectUser(user)"
           [ngClass]="{
             'bg-gray-200 border-gray-400 grayscale opacity-80': user['desactivado'],

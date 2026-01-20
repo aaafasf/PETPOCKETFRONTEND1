@@ -83,31 +83,27 @@
         <div class="bg-white rounded-3xl p-10 shadow-sm border border-gray-100 animate-slideUp hover:shadow-md transition-shadow duration-300">
           
           <!-- CONTENIDO ORIGINAL DE MASCOTAS (CON ANIMACIONES AGREGADAS) -->
-          @if (mascotas.length === 0) {
-            <div class="text-gray-400 animate-pulse text-center py-10">
-              🐾 No tienes mascotas registradas. ¡Registra tu primera mascota!
-            </div>
-          }
-          
-          @for (mascota of mascotas; let i = $index; track mascota.idMascota) {
+          <div *ngIf="mascotas.length === 0" class="text-gray-400 animate-pulse text-center py-10">
+            🐾 No tienes mascotas registradas. ¡Registra tu primera mascota!
+          </div>
+
+          <ng-container *ngFor="let mascota of mascotas; let i = index">
             <div class="mb-8 border-b pb-6 hover:bg-gray-50 hover:px-4 hover:py-3 hover:rounded-xl transition-all duration-300 mascota-item">
-              
-              @if (editIndex !== i) {
-                <!-- Vista normal -->
-                <div class="font-bold text-lg transition-colors duration-300 hover:text-[#F27438]">
-                  🐕 {{ mascota.nombreMascota }}
-                </div>
-                <div class="text-sm text-gray-500 mt-1">
-                  Especie: {{ mascota.especie }} | Raza: {{ mascota.raza }} | 
-                  Sexo: {{ mascota.sexo }} | Color: {{ mascota.color }}
-                </div>
-                <button class="mt-3 px-4 py-2 bg-[#F27438] text-white rounded-lg font-bold transition-all duration-300 hover:bg-[#FF8C42] hover:shadow-lg hover:scale-105 active:scale-95 edit-button"
-                        (click)="onEdit(i)">
-                  ✏️ Editar
-                </button>
-              }
-              
-              @if (editIndex === i) {
+
+              <div *ngIf="editIndex !== i">
+  <div class="nombre-mascota">
+    🐕 {{ mascota.nombreMascota }}
+  </div>
+  <div class="detalles-mascota">
+    Especie: {{ mascota.especie }} | Raza: {{ mascota.raza }} | Sexo: {{ mascota.sexo }} | Color: {{ mascota.color }}
+  </div>
+  <button class="mt-3 px-4 py-2 bg-[#F27438] text-white rounded-lg font-bold transition-all duration-300 hover:bg-[#FF8C42] hover:shadow-lg hover:scale-105 active:scale-95 edit-button"
+          (click)="onEdit(i)">
+    ✏️ Editar
+  </button>
+</div>
+
+              <div *ngIf="editIndex === i">
                 <!-- Formulario de edición -->
                 <form class="space-y-4 form-animation" (ngSubmit)="onSave()">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -124,9 +120,7 @@
                               [(ngModel)]="mascotaEdit.especie" 
                               name="especie{{i}}" 
                               (change)="onEspecieChange(mascotaEdit.especie)">
-                        @for (esp of especies; track esp.idEspecie) {
-                          <option [value]="esp.idEspecie">{{ esp.nombre }}</option>
-                        }
+                        <option *ngFor="let esp of especies" [value]="esp.idEspecie">{{ esp.nombre }}</option>
                       </select>
                     </div>
                   </div>
@@ -137,9 +131,7 @@
                       <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
                               [(ngModel)]="mascotaEdit.raza" 
                               name="raza{{i}}">
-                        @for (r of razas; track r.idRaza) {
-                          <option [value]="r.idRaza">{{ r.nombre }}</option>
-                        }
+                        <option *ngFor="let r of razas" [value]="r.idRaza">{{ r.nombre }}</option>
                       </select>
                     </div>
                     <div class="form-group-animation">
@@ -157,9 +149,7 @@
                       <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
                               [(ngModel)]="mascotaEdit.sexo" 
                               name="sexo{{i}}">
-                        @for (s of sexos; track s.idSexo) {
-                          <option [value]="s.idSexo">{{ s.nombre }}</option>
-                        }
+                        <option *ngFor="let s of sexos" [value]="s.idSexo">{{ s.nombre }}</option>
                       </select>
                     </div>
                     <div class="form-group-animation">
@@ -177,9 +167,7 @@
                       <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
                               [(ngModel)]="mascotaEdit.color" 
                               name="color{{i}}">
-                        @for (c of colores; track c.idColor) {
-                          <option [value]="c.idColor">{{ c.nombre }}</option>
-                        }
+                        <option *ngFor="let c of colores" [value]="c.idColor">{{ c.nombre }}</option>
                       </select>
                     </div>
                     <div class="form-group-animation">
@@ -217,9 +205,9 @@
                     </button>
                   </div>
                 </form>
-              }
+              </div>
             </div>
-          }
+          </ng-container>
         </div>
       </div>
     </div>

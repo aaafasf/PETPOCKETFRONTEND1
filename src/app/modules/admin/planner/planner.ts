@@ -18,9 +18,12 @@ import { FormManual } from '../form-manual/form-manual';
   standalone: true,
   imports: [CommonModule, FormsModule, FormManual, RouterModule],
   templateUrl: './planner.html',
-  styleUrl: './planner.css', // ← YA ESTÁ CORRECTO
+  styleUrls: ['./planner.css'],
 })
 export class Planner implements OnInit {
+
+  // dark mode state for this page
+  dark = false;
 
   // --- FILTROS ---
   selectedDate = this.getLocalDate();
@@ -48,6 +51,13 @@ export class Planner implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // initialize dark from localStorage
+    const saved = localStorage.getItem('petpocket-theme');
+    if (saved) {
+      this.dark = saved === 'dark';
+      if (this.dark) document.documentElement.classList.add('dark');
+    }
+
     // 1️⃣ Cargar catálogos
     this.clinicService.getServices().subscribe(s => this.clinicServices = s);
     this.clinicService.getVeterinarians().subscribe(v => {
@@ -268,4 +278,11 @@ export class Planner implements OnInit {
       const d = new Date();
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
+    
+  toggleDark(): void {
+    this.dark = !this.dark;
+    localStorage.setItem('petpocket-theme', this.dark ? 'dark' : 'light');
+    if (this.dark) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
   }
+}

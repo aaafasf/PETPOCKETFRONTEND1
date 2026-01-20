@@ -2,7 +2,7 @@
   <h1 class="text-3xl font-black text-gray-800 mb-8">Catálogos de Mascotas</h1>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    @for (catalogo of catalogos; track catalogo.key) {
+    <div *ngFor="let catalogo of catalogos">
       <div class="bg-white rounded-2xl shadow p-6 border border-gray-100">
         <h2 class="text-xl font-bold mb-4">{{ catalogo.nombre }}</h2>
 
@@ -22,50 +22,41 @@
           </thead>
 
           <tbody>
-            @for (item of catalogo.items; track item.id) {
-              <tr>
-                <td class="py-1">{{ item.nombre }}</td>
+            <tr *ngFor="let item of catalogo.items">
+              <td class="py-1">{{ item.nombre }}</td>
 
-                <td class="py-1">
-                  @if (item.activo) {
-                    <span class="text-green-600">Activo</span>
-                  } @else {
-                    <span class="text-gray-400">Inactivo</span>
-                  }
-                </td>
+              <td class="py-1">
+                <span *ngIf="item.activo" class="text-green-600">Activo</span>
+                <span *ngIf="!item.activo" class="text-gray-400">Inactivo</span>
+              </td>
 
-                <td class="py-1">
-                  <button
-                    class="text-blue-600 font-bold mr-2"
-                    (click)="abrirEditar(catalogo, item)">
-                    Editar
-                  </button>
+              <td class="py-1">
+                <button
+                  class="text-blue-600 font-bold mr-2"
+                  (click)="abrirEditar(catalogo, item)">
+                  Editar
+                </button>
 
-                  @if (item.activo) {
-                    <button
-                      class="text-red-500 font-bold"
-                      (click)="desactivar(catalogo, item)">
-                      Desactivar
-                    </button>
-                  } @else {
-                    <button
-                      class="text-green-600 font-bold"
-                      (click)="activar(catalogo, item)">
-                      Activar
-                    </button>
-                  }
-                </td>
-              </tr>
-            }
+                <button *ngIf="item.activo"
+                  class="text-red-500 font-bold"
+                  (click)="desactivar(catalogo, item)">
+                  Desactivar
+                </button>
+                <button *ngIf="!item.activo"
+                  class="text-green-600 font-bold"
+                  (click)="activar(catalogo, item)">
+                  Activar
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
-    }
+    </div>
   </div>
 
   <!-- Modal -->
-  @if (showModal) {
-    <div class="catalogo-modal">
+  <div *ngIf="showModal" class="catalogo-modal">
       <div class="catalogo-modal-content">
         <h2 class="text-xl font-bold mb-4">
           {{ editMode ? 'Editar' : 'Añadir' }} {{ modalCatalogo?.nombre }}
@@ -83,7 +74,7 @@
             autofocus
           >
 
-          @if (modalCatalogo?.key === 'raza') {
+          <div *ngIf="modalCatalogo?.key === 'raza'">
             <label class="block text-sm font-bold text-gray-600 mb-2">Especie</label>
 
             <select
@@ -96,7 +87,7 @@
                 {{ esp.nombre }}
               </option>
             </select>
-          }
+          </div>
 
           <div class="flex justify-end space-x-2">
             <button type="button" (click)="cerrarModal()" class="px-4 py-2 bg-gray-200 rounded">
@@ -109,5 +100,4 @@
         </form>
       </div>
     </div>
-  }
 </div>

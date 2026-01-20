@@ -188,3 +188,19 @@ textarea:focus {
     grid-column: span 1;
   }
 }
+
+/* Ensure date/time inputs show their value clearly and don't get visually hidden
+   (some browsers render native picker controls which can overlap; normalize) */
+input[type="date"], input[type="time"] {
+  font-size: 1rem;
+  color: #1f2937;
+  background-color: #f9fafb;
+}
+
+/* Hide native calendar icon to avoid overlapping custom UI in planner
+   (keeps modal controls native while avoiding duplicate indicators) */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  -webkit-appearance: none;
+  display: inline-block; /* keep time pickers functional but avoid added icon overlap */
+}

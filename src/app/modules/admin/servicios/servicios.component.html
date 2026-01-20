@@ -67,14 +67,19 @@
                       placeholder="Precio">
               </div>
 
-              <div class="form-group-animation">
-                <input type="file" accept="image/*" (change)="onFileSelectedEdit($event)"
-                      class="w-full mb-3 p-3 rounded-xl border border-gray-300 cursor-pointer transition hover:border-[#F27438]">
-              </div>
+              <input
+  [(ngModel)]="servicioEditando.imagen"
+  name="imagenEdit"
+  placeholder="URL de la imagen"
+  class="w-full mb-3 p-3 rounded-xl border border-gray-300
+         focus:ring-2 focus:ring-[#F27438]
+         outline-none transition bg-white text-gray-900 font-semibold"
+/>
 
-              <img *ngIf="previewImagenEdit || servicioEditando.imagen"
-                  [src]="previewImagenEdit || 'http://localhost:3000/uploads/servicios/' + servicioEditando.imagen + '?t=' + timestamp"
-                  class="w-24 h-24 object-cover rounded-xl mb-3 border shadow-sm">
+<img *ngIf="servicioEditando.imagen"
+     [src]="servicioEditando.imagen"
+     class="w-24 h-24 object-cover rounded-xl mb-3 border shadow-sm" />
+
 
               <div class="flex gap-3">
                 <button type="submit"
@@ -118,10 +123,19 @@
                     class="w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold">
             </div>
 
-            <div class="form-group-animation">
-              <input type="file" accept="image/*" (change)="onFileSelected($event)"
-                    class="w-full p-3.5 rounded-xl border border-gray-300 cursor-pointer transition hover:border-[#F27438]">
-            </div>
+            <input
+  [(ngModel)]="nuevoServicio.imagen"
+  name="imagen"
+  placeholder="URL de la imagen"
+  class="w-full p-3.5 rounded-xl border border-gray-300
+         focus:ring-2 focus:ring-[#F27438]
+         outline-none transition bg-white text-gray-900 font-semibold"
+/>
+
+<img *ngIf="nuevoServicio.imagen"
+     [src]="nuevoServicio.imagen"
+     class="w-24 h-24 object-cover rounded-xl mx-auto border shadow-sm" />
+
 
             <img *ngIf="previewImagen" [src]="previewImagen" 
                 class="w-24 h-24 object-cover rounded-xl mb-3 border shadow-sm mx-auto">
@@ -140,9 +154,9 @@
             
             <div class="relative w-full h-32 overflow-hidden rounded-xl mb-4 bg-gray-50 border">
               <img *ngIf="s.imagen"
-                  [src]="'http://localhost:3000/uploads/servicios/' + s.imagen + '?t=' + timestamp"
-                  [alt]="s.nombreServicio || 'Servicio'" 
-                  class="w-full h-full object-contain p-2">
+     [src]="s.imagen + '?t=' + timestamp"
+     [alt]="s.nombreServicio || 'Servicio'"
+     class="w-full h-full object-contain p-2">
             </div>
 
             <h3 class="font-black text-lg text-gray-800 mb-1">{{ s.nombreServicio }}</h3>

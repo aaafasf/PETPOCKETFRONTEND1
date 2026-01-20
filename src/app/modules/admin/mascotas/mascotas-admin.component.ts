@@ -70,8 +70,23 @@ export class MascotasAdminComponent implements OnInit {
     this.loading = true;
     this.mascotaService.getAll().subscribe({
       next: data => {
-        this.mascotas = data;
-        this.filteredMascotas = data;
+        // Normalize backend response to ensure pesoKg and color are top-level
+        const normalized = (data as any[] || []).map(d => ({
+          idMascota: d.idMascota,
+          nombreMascota: d.nombreMascota || d.nombre,
+          especie: d.especie,
+          raza: d.raza || d.detallesMongo?.razaDetallada || '',
+          edad: d.edad ?? d.detallesMongo?.edad ?? undefined,
+          sexo: d.sexo,
+          idPropietario: d.idPropietario ?? d.idCliente ?? null,
+          pesoKg: d.pesoKg ?? d.detallesMongo?.pesoKg ?? undefined,
+          color: d.color ?? d.detallesMongo?.color ?? '',
+          propietario: d.propietario || (d.nombreCliente ? { nombre: d.nombreCliente } : undefined),
+          observaciones: d.observaciones ?? d.detallesMongo?.observaciones ?? ''
+        }));
+
+        this.mascotas = normalized;
+        this.filteredMascotas = [...normalized];
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -85,7 +100,11 @@ export class MascotasAdminComponent implements OnInit {
   cargarPropietarios(): void {
     this.http.get<any[]>('http://localhost:3000/api/cliente/lista').subscribe({
       next: data => {
-        this.propietarios = data;
+        // Normalize backend `cliente` shape to `propietario` shape expected by this component
+        this.propietarios = (data || []).map(p => ({
+          idPropietario: p.idClientes ?? p.idCliente ?? p.id,
+          nombrePropietario: p.nombreCliente ?? p.nombre
+        }));
         this.cdr.detectChanges();
       },
       error: err => console.error('Error al cargar propietarios:', err)
@@ -124,7 +143,7 @@ export class MascotasAdminComponent implements OnInit {
       return;
     }
 
-    const payload = {
+    const payload: Partial<Mascota> = {
       nombreMascota: this.nuevaMascota.nombreMascota,
       especie: this.nuevaMascota.especie,
       raza: this.nuevaMascota.raza || undefined,  
@@ -132,6 +151,11 @@ export class MascotasAdminComponent implements OnInit {
       sexo: this.nuevaMascota.sexo || undefined, 
       idPropietario: Number(this.nuevaMascota.idPropietario)
     };
+    // include optional fields (use inline casts to avoid template/type narrowing issues)
+    if ((this.nuevaMascota as any).pesoKg !== undefined) payload.pesoKg = (this.nuevaMascota as any).pesoKg;
+    if ((this.nuevaMascota as any).color) payload.color = (this.nuevaMascota as any).color;
+    if ((this.nuevaMascota as any).observaciones) payload.observaciones = (this.nuevaMascota as any).observaciones;
+    if ((this.nuevaMascota as any).esterilizado !== undefined) payload.esterilizado = (this.nuevaMascota as any).esterilizado;
 
     this.loading = true;
     this.mascotaService.create(payload).subscribe({

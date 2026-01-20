@@ -1,10 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CatalogosService } from '../../../core/services/catalogos.service';
 import { MascotaService } from '../../../core/services/mascota.service';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-pets',
@@ -31,12 +33,25 @@ export class MyPetsComponent implements OnInit {
     private catalogos: CatalogosService,
     private mascotaService: MascotaService,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.cargarMascotas();
     this.cargarCatalogos();
+    // Re-load mascotas when navigation ends (helps when navigating back from register)
+    this._navSub = this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.cargarMascotas();
+    });
+  }
+
+  private _navSub?: Subscription;
+
+  ngOnDestroy(): void {
+    if (this._navSub) this._navSub.unsubscribe();
   }
 
   private cargarMascotas() {
@@ -44,7 +59,21 @@ export class MyPetsComponent implements OnInit {
     // Obtener mascotas del propietario actual
     this.mascotaService.getByPropietario(this.idPropietario).subscribe({
       next: (data) => {
-        this.mascotas = data;
+        console.log('DEBUG my-pets: received', (data as any[]).length, data ? data[0] : null);
+        // Normalize backend response to expected frontend shape
+        this.mascotas = (data as any[] || []).map(d => ({
+          idMascota: d.idMascota,
+          nombreMascota: d.nombreMascota || d.nombre,
+          especie: d.especie,
+          raza: d.raza || d.detallesMongo?.razaDetallada || '',
+          edad: d.edad ?? d.detallesMongo?.edad ?? undefined,
+          sexo: d.sexo,
+          idPropietario: d.idPropietario ? Number(d.idPropietario) : (d.idCliente ? Number(d.idCliente) : null),
+          pesoKg: d.pesoKg ?? d.detallesMongo?.pesoKg ?? undefined,
+          color: d.color ?? d.detallesMongo?.color ?? '',
+          esterilizado: d.esterilizado ?? d.detallesMongo?.esterilizado ?? false,
+          observaciones: d.observaciones ?? d.detallesMongo?.observaciones ?? ''
+        }));
         this.loading = false;
         this.cdr.detectChanges();
       },

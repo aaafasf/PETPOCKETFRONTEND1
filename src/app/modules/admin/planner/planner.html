@@ -1,133 +1,229 @@
-<div class="flex flex-col h-full bg-gray-100 font-sans">
- 
+<div class="planner-wrapper">
+<div class="flex flex-col flex-1 min-h-0 bg-[#F8FAFC]">
 
-  <main class="flex-1 flex flex-col overflow-hidden">
-    
-    <!-- HEADER - AGREGAR CLASES DE NAVBAR -->
-    <header class="bg-white h-20 border-b flex items-center justify-between px-8 navbar-container">
-      <h2 class="text-xl font-black text-gray-800 navbar-title group">
-        <span class="inline-block transition-all duration-300 group-hover:tracking-wider group-hover:text-[#F27438]">
-          Panel Clínico
-        </span>
-        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F27438] group-hover:w-full transition-all duration-500"></span>
-      </h2>
-      <div class="flex items-center space-x-6">
-        <div class="flex items-center space-x-3">
-          <span class="text-sm font-bold text-gray-600">Admin</span>
-          <div class="w-10 h-10 bg-gradient-to-r from-[#F27438] to-orange-500 rounded-full flex items-center justify-center font-bold text-white">
-            A
-          </div>
+  <!-- HEADER -->
+  <header
+    class="bg-white h-20 shrink-0 border-b flex items-center justify-between px-8 navbar-container"
+  >
+    <h2 class="text-xl font-black text-gray-800 navbar-title group relative">
+      <span
+        class="inline-block transition-all duration-300 group-hover:tracking-wider group-hover:text-[#F27438]"
+      >
+        Panel Clínico
+      </span>
+      <span
+        class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F27438] group-hover:w-full transition-all duration-500"
+      ></span>
+    </h2>
+
+    <div class="flex items-center space-x-6">
+      <div class="flex items-center space-x-3">
+        <span class="text-sm font-bold text-gray-600">Admin</span>
+        <div
+          class="w-10 h-10 bg-gradient-to-r from-[#F27438] to-orange-500 rounded-full flex items-center justify-center font-bold text-white"
+        >
+          A
         </div>
       </div>
-    </header>
 
-    <div class="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]">
-      
-      <div class="planner-wrapper card-animation">
-       
-        <!-- Sección de filtros -->
-        <section class="search-filters">
-          <div class="filters-left">
-            <div class="filter-group">
-              <label>Fecha</label>
-              <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" class="filter-input">
+      <button
+        (click)="toggleDark()"
+        class="px-3 py-1 rounded-lg border"
+        title="Toggle dark"
+      >
+        {{ dark ? '🌙' : '☀️' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENIDO SCROLLABLE -->
+  <div class="flex-1 min-h-0 overflow-y-auto p-8">
+
+    <div class="planner-wrapper card-animation">
+
+      <!-- FILTROS -->
+      <section class="search-filters">
+        <div class="filters-left">
+
+          <div class="filter-group date-with-button">
+            <label>Fecha</label>
+            <div class="flex gap-2 items-center">
+              <input
+                #plannerDate
+                type="date"
+                [(ngModel)]="selectedDate"
+                (change)="onDateChange()"
+                class="filter-input"
+              />
+              <button
+                type="button"
+                class="btn-calendar"
+                title="Abrir calendario"
+                (click)="plannerDate.focus()"
+              >
+                📅
+              </button>
             </div>
-       
-            <div class="filter-group">
-              <label>Veterinario</label>
-              <select [(ngModel)]="searchVetId" (change)="onFilterChange()" class="filter-select">
-                <option value="">Todos los veterinarios</option>
-                <option *ngFor="let vet of veterinarians" [value]="vet.id">{{ vet.name }}</option>
-              </select>
-            </div>
-       
-            <div class="filter-group">
-              <label>Servicios:</label>
-              <select [(ngModel)]="searchServiceId" (change)="onFilterChange()" class="filter-select">
-                <option value="">Todos los servicios</option>
-                <option *ngFor="let srv of clinicServices" [value]="srv.idServicio">{{ srv.nombreServicio }}</option>
-              </select>
-            </div>
-       
-            <button class="btn-reset" (click)="resetFilters()" title="Reset Filters">
-              🔄
-            </button>
           </div>
-       
-          <div class="actions-right">
-            <button class="btn-add icon-button" (click)="openCreateModal()">
-              <span class="icon">+</span> Nueva Cita
-            </button>
+
+          <div class="filter-group">
+            <label>Veterinario</label>
+            <select
+              [(ngModel)]="searchVetId"
+              (change)="onFilterChange()"
+              class="filter-select"
+            >
+              <option value="">Todos los veterinarios</option>
+              <option
+                *ngFor="let vet of veterinarians"
+                [value]="vet.id"
+              >
+                {{ vet.name }}
+              </option>
+            </select>
           </div>
-        </section>
-       
-        <!-- Contenedor del calendario -->
-        <div class="calendar-container">
-          <div class="planner-grid" [style.grid-template-columns]="'repeat(' + veterinarians.length + ', 1fr)'">
-            <div *ngFor="let vet of veterinarians" class="vet-column">
-              <div class="header-cell">
-                <span class="vet-name">{{ vet.name }}</span>
-              </div>
-       
-              <div class="slots-container">
-                <ng-container *ngIf="plannerAppointments$ | async as allAppts">
-                  <!-- Tarjetas de citas -->
-                  <div *ngFor="let appt of getAppointmentsForVet(vet.id, allAppts)" 
-                       class="appointment-card card-service"
-                       [ngClass]="appt.estadoCita"
-                       (click)="onAppointmentClick(appt.idCita)">
-       
-                    <div class="card-header" [ngClass]="getEstadoClass(appt.estadoCita)">
-                      <div class="date-box">
-                        <span class="day">{{ appt.fecha | date:'dd' }}</span>
-                        <span class="month-year">{{ appt.fecha | date:'MMM' }}</span>
-                      </div>
-                      <span class="status-label" [ngClass]="getEstadoLabelClass(appt.estadoCita)">
-                        {{ appt.estadoCita | titlecase }}
+
+          <div class="filter-group">
+            <label>Servicios</label>
+            <select
+              [(ngModel)]="searchServiceId"
+              (change)="onFilterChange()"
+              class="filter-select"
+            >
+              <option value="">Todos los servicios</option>
+              <option
+                *ngFor="let srv of clinicServices"
+                [value]="srv.idServicio"
+              >
+                {{ srv.nombreServicio }}
+              </option>
+            </select>
+          </div>
+
+          <button
+            class="btn-reset"
+            (click)="resetFilters()"
+            title="Reset Filters"
+          >
+            🔄
+          </button>
+        </div>
+
+        <div class="actions-right">
+          <button
+            class="btn-add icon-button"
+            (click)="openCreateModal()"
+          >
+            <span class="icon">+</span> Nueva Cita
+          </button>
+        </div>
+      </section>
+
+      <!-- CALENDARIO -->
+      <div class="calendar-container">
+        <div
+          class="planner-grid"
+          [style.grid-template-columns]="'repeat(' + veterinarians.length + ', 1fr)'"
+        >
+
+          <div
+            *ngFor="let vet of veterinarians"
+            class="vet-column"
+          >
+            <div class="header-cell">
+              <span class="vet-name">{{ vet.name }}</span>
+            </div>
+
+            <div class="slots-container">
+              <ng-container *ngIf="plannerAppointments$ | async as allAppts">
+
+                <div
+                  *ngFor="let appt of getAppointmentsForVet(vet.id, allAppts)"
+                  class="appointment-card card-service"
+                  [ngClass]="appt.estadoCita"
+                  (click)="onAppointmentClick(appt.idCita)"
+                >
+                  <div
+                    class="card-header"
+                    [ngClass]="getEstadoClass(appt.estadoCita)"
+                  >
+                    <div class="date-box">
+                      <span class="day">{{ appt.fecha | date:'dd' }}</span>
+                      <span class="month-year">{{ appt.fecha | date:'MMM' }}</span>
+                    </div>
+
+                    <span
+                      class="status-label"
+                      [ngClass]="getEstadoLabelClass(appt.estadoCita)"
+                    >
+                      {{ appt.estadoCita | titlecase }}
+                    </span>
+                  </div>
+
+                  <div class="card-body">
+                    <div class="main-info">
+                      <h3 class="patient-name">
+                        {{ appt.mascotaNombre }}
+                      </h3>
+                      <span class="owner-name">
+                        Dueño: {{ appt.clienteNombre }}
                       </span>
                     </div>
-       
-                    <div class="card-body">
-                      <div class="main-info">
-                        <h3 class="patient-name">{{ appt.mascotaNombre }}</h3>
-                        <span class="owner-name">Dueño: {{ appt.clienteNombre }}</span>
+
+                    <div class="tags-row">
+                      <div class="tag-item">
+                        ⏰ {{ appt.hora }}
                       </div>
-       
-                      <div class="tags-row">
-                        <div class="tag-item"><span>⏰</span> {{ appt.hora }}</div>
-                        <div class="tag-item" [style.color]="appt.color"><span>🩺</span> {{ (appt.servicioNombre) }}</div>
+                      <div
+                        class="tag-item"
+                        [style.color]="appt.color"
+                      >
+                        🩺 {{ appt.servicioNombre }}
                       </div>
-       
-                      <div class="card-footer">
-                        <div class="action-buttons">
-                          <button class="btn-icon edit">✎</button>
-                          <button class="btn-icon delete" (click)="onDeleteClick($event, appt.idCita)">🗑</button>
-                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                      <div class="action-buttons">
+                        <button class="btn-icon edit">✎</button>
+                        <button
+                          class="btn-icon delete"
+                          (click)="onDeleteClick($event, appt.idCita)"
+                        >
+                          🗑
+                        </button>
                       </div>
                     </div>
                   </div>
-       
-                  <div *ngIf="getAppointmentsForVet(vet.id, allAppts).length === 0" class="empty-col-msg">
-                    Libre
-                  </div>
-                </ng-container>
-              </div>
+                </div>
+
+                <div
+                  *ngIf="getAppointmentsForVet(vet.id, allAppts).length === 0"
+                  class="empty-col-msg"
+                >
+                  Libre
+                </div>
+
+              </ng-container>
             </div>
           </div>
+
         </div>
       </div>
-       
-      <!-- Modal -->
-      <app-form-manual 
-        *ngIf="isModalOpen" 
-        [veterinarians]="veterinarians" 
-        [clientes]="clientes" 
-        [mascotas]="mascotas"
-        [services]="clinicServices"
-        [appointmentId]="selectedAppointmentId" 
-        (save)="handleSaveAppointment($event)" 
-        (close)="isModalOpen = false">
-      </app-form-manual>
     </div>
-  </main>
+
+    <!-- MODAL -->
+    <app-form-manual
+      *ngIf="isModalOpen"
+      [veterinarians]="veterinarians"
+      [clientes]="clientes"
+      [mascotas]="mascotas"
+      [services]="clinicServices"
+      [appointmentId]="selectedAppointmentId"
+      (save)="handleSaveAppointment($event)"
+      (close)="isModalOpen = false"
+    >
+    </app-form-manual>
+
+  </div>
+</div>
 </div>

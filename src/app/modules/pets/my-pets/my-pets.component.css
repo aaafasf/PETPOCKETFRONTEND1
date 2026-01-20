@@ -166,3 +166,43 @@
     transform: translateY(0);
   }
 }
+
+/* Forzar que todos los textos del sidebar sean negros */
+.sidebar-animation,
+.sidebar-animation .menu-item,
+.sidebar-animation .menu-item .menu-text,
+.sidebar-animation .menu-item .menu-icon {
+  color: #000 !important;  /* fuerza negro */
+}
+
+/* Opcional: quitar brillo o filtros en íconos */
+.sidebar-animation .menu-item .menu-icon {
+  filter: none !important;
+}
+
+/* Forzar texto negro incluso en estado activo */
+.sidebar-animation .active-menu,
+.sidebar-animation .active-menu .menu-text,
+.sidebar-animation .active-menu .menu-icon {
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+/* Nombres de las mascotas */
+.mascota-item .nombre-mascota {
+  font-size: 1.5rem;        /* más grande */
+  font-weight: 800;          /* negrita fuerte */
+  color: #000;               /* negro sólido */
+  transition: color 0.3s ease;
+}
+
+/* Detalles de la mascota (raza, especie, sexo, color) */
+.mascota-item .detalles-mascota {
+  font-size: 0.95rem;        /* más pequeño */
+  color: #000000;            /* gris oscuro para diferenciar */
+  margin-top: 0.25rem;
+}
+
+/* Hover opcional sobre nombre para que resalte aún más */
+.mascota-item:hover .nombre-mascota {
+  color: #F27438;             /* un naranja suave al pasar el mouse */
+}

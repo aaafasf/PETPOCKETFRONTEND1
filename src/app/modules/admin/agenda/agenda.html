@@ -41,15 +41,11 @@
         <!-- Timeline Container -->
         <main class="timeline-container">
 
-          @let appointments = (appointments$ | async);
+          <ng-container *ngIf="appointments$ | async as appointments">
 
-          @if (appointments) {
-
-            @for (appt of appointments; track appt.idCita; let i = $index) {
-
-              <div class="timeline-item mb-6" 
-                   [ngClass]="appt.estadoCita"
-                   [style.animation-delay.s]="i * 0.1">
+            <div *ngFor="let appt of appointments; let i = index" class="timeline-item mb-6"
+                 [ngClass]="appt.estadoCita"
+                 [style.animation-delay.s]="i * 0.1">
 
                 <div class="time-marker">
                   <span class="start-time">{{ appt.hora }}</span>
@@ -85,27 +81,21 @@
 
                     <div class="card-footer">
 
-                      @if (appt.estadoCita === Status.PROGRAMADA) {
-                        <button class="btn-action btn-start" (click)="onChangeStatus(appt.idCita, Status.CONFIRMADA)">
-                          <span class="btn-icon">▶</span>
-                          <span>Iniciar Consulta</span>
-                        </button>
-                      }
+                      <button *ngIf="appt.estadoCita === Status.PROGRAMADA" class="btn-action btn-start" (click)="onChangeStatus(appt.idCita, Status.CONFIRMADA)">
+                        <span class="btn-icon">▶</span>
+                        <span>Iniciar Consulta</span>
+                      </button>
 
-                      @if (appt.estadoCita === Status.CONFIRMADA) {
-                        <button class="btn-action btn-complete"
-                          (click)="onChangeStatus(appt.idCita, Status.COMPLETADA)">
-                          <span class="btn-icon">✓</span>
-                          <span>Finalizar Consulta</span>
-                        </button>
-                      }
+                      <button *ngIf="appt.estadoCita === Status.CONFIRMADA" class="btn-action btn-complete"
+                        (click)="onChangeStatus(appt.idCita, Status.COMPLETADA)">
+                        <span class="btn-icon">✓</span>
+                        <span>Finalizar Consulta</span>
+                      </button>
 
-                      @if (appt.estadoCita === Status.COMPLETADA) {
-                        <div class="completed-info">
-                          <span class="check-icon">✅</span>
-                          <span class="completed-text">Consulta Finalizada</span>
-                        </div>
-                      }
+                      <div *ngIf="appt.estadoCita === Status.COMPLETADA" class="completed-info">
+                        <span class="check-icon">✅</span>
+                        <span class="completed-text">Consulta Finalizada</span>
+                      </div>
 
                     </div>
                   </div>
@@ -114,22 +104,21 @@
                   <div class="card-overlay"></div>
                 </div>
               </div>
-            }
 
-            @if (appointments.length === 0) {
-              <div class="empty-state text-center py-10">
-                <div class="empty-icon text-4xl mb-2">🗓️</div>
-                <p class="text-gray-400 font-bold">No tienes pacientes agendados para hoy.</p>
-              </div>
-            }
+            <div *ngIf="appointments.length === 0" class="empty-state text-center py-10">
+              <div class="empty-icon text-4xl mb-2">🗓️</div>
+              <p class="text-gray-400 font-bold">No tienes pacientes agendados para hoy.</p>
+            </div>
 
-          } @else {
+          </ng-container>
+
+          <div *ngIf="!(appointments$ | async)">
             <!-- Skeleton Loading -->
             <div class="loader-container text-center py-10">
               <div class="spinner inline-block w-8 h-8 border-4 border-orange-200 border-t-[#F27438] rounded-full animate-spin mb-2"></div>
               <p class="text-gray-400 font-bold">Cargando agenda...</p>
             </div>
-          }
+          </div>
 
         </main>
       </div>

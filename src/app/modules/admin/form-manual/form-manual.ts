@@ -125,7 +125,7 @@ export class FormManual implements OnInit {
       userIdUser: [null, Validators.required],
       idServicio: [null, Validators.required],
       fecha: [new Date().toISOString().substring(0,10), Validators.required],
-      hora: [null, Validators.required],
+      hora: ['', Validators.required],
       estadoCita: ['programada', Validators.required], // ✅ Minúsculas por defecto
       motivo: ['']
     });

@@ -116,9 +116,7 @@
                         name="especie"
                         required>
                   <option value="" disabled selected>Selecciona especie</option>
-                  @for (esp of especies; track esp.idEspecie) {
-                    <option [value]="esp.idEspecie">{{ esp.nombre }}</option>
-                  }
+                  <option *ngFor="let esp of especies" [value]="esp.idEspecie">{{ esp.nombre }}</option>
                 </select>
               </div>
               
@@ -130,9 +128,7 @@
                         [(ngModel)]="raza"
                         name="raza">
                   <option value="" disabled selected>Selecciona raza</option>
-                  @for (r of razas; track r.idRaza) {
-                    <option [value]="r.idRaza">{{ r.nombre }}</option>
-                  }
+                  <option *ngFor="let r of razas" [value]="r.idRaza">{{ r.nombre }}</option>
                 </select>
               </div>
             </div>
@@ -147,9 +143,7 @@
                         [(ngModel)]="sexo"
                         name="sexo">
                   <option value="" disabled selected>Selecciona sexo</option>
-                  @for (s of sexos; track s.idSexo) {
-                    <option [value]="s.idSexo">{{ s.nombre }}</option>
-                  }
+                  <option *ngFor="let s of sexos" [value]="s.idSexo">{{ s.nombre }}</option>
                 </select>
               </div>
               
@@ -182,9 +176,7 @@
                         [(ngModel)]="color"
                         name="color">
                   <option value="" disabled selected>Selecciona color</option>
-                  @for (c of colores; track c.idColor) {
-                    <option [value]="c.idColor">{{ c.nombre }}</option>
-                  }
+                  <option *ngFor="let c of colores" [value]="c.idColor">{{ c.nombre }}</option>
                 </select>
               </div>
             </div>

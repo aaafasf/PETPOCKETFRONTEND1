@@ -102,19 +102,19 @@ export class CatalogosService {
   /* ===================== ESTADOS MASCOTA ===================== */
 
   getEstadosMascota(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/estados-mascota`);
+    return this.http.get<any[]>(`${this.api}/tipos-mascota`);
   }
 
   addEstadoMascota(data: any) {
-    return this.http.post(`${this.api}/estados-mascota`, data);
+    return this.http.post(`${this.api}/tipos-mascota`, data);
   }
 
   updateEstadoMascota(id: number, data: any) {
-    return this.http.put(`${this.api}/estados-mascota/${id}`, data);
+    return this.http.put(`${this.api}/tipos-mascota/${id}`, data);
   }
 
   setEstadoMascotaActiva(id: number, activo: boolean) {
-    return this.http.patch(`${this.api}/estados-mascota/${id}`, { activo });
+    return this.http.patch(`${this.api}/tipos-mascota/${id}`, { activo });
   }
 
   

@@ -166,3 +166,34 @@
     transform: translateY(0);
   }
 }
+/* ===== FORZAR COLOR DE TEXTO EN FORMULARIOS ===== */
+
+input,
+select,
+textarea {
+  color: #111827 !important; /* negro Tailwind gray-900 */
+}
+
+/* Texto de las opciones */
+option {
+  color: #111827 !important;
+}
+
+/* Placeholder visible */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important; /* gray-400 */
+  opacity: 1;
+}
+
+/* Cuando está deshabilitado */
+select:disabled,
+input:disabled,
+textarea:disabled {
+  color: #6b7280 !important; /* gray-500 */
+}
+
+/* Checkbox no se ve afectado */
+input[type="checkbox"] {
+  accent-color: #f27438;
+}

@@ -158,8 +158,9 @@
             
             <div class="relative h-48 w-full p-4">
               <div class="w-full h-full rounded-[28px] overflow-hidden bg-gray-50 transition-colors duration-500 group-hover:bg-orange-50">
-                <img [src]="'http://localhost:3000/uploads/' + item.imagen" 
-                     class="w-full h-full object-contain p-3 transition-transform duration-700 group-hover:scale-110">
+               <img *ngIf="item.imagen"
+     [src]="item.imagen"
+     class="w-full h-full object-contain p-3 transition-transform duration-700 group-hover:scale-110">
               </div>
               <div class="absolute top-6 right-6 bg-white/90 backdrop-blur-md w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-lg border border-white transition-all duration-300 group-hover:bg-[#F27438] group-hover:text-white group-hover:rotate-12">
                 {{item.icon || '🩺'}}

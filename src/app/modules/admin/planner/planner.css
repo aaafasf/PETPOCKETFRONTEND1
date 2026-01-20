@@ -75,6 +75,32 @@
   height: 38px;
 }
 
+/* Hide native calendar icon to avoid overlapping our custom button (WebKit/Blink) */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+/* Calendar button styling */
+.btn-calendar {
+  font-size: 1rem;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 8px;
+  box-shadow: none;
+  transition: background 0.15s, transform 0.08s;
+  z-index: 5;
+}
+
+.btn-calendar:hover { background: #f3f4f6; transform: translateY(-1px); }
+
 .filter-input:focus, .filter-select:focus {
   border-color: #F27438; /* Color corporativo naranja */
   box-shadow: 0 0 0 3px rgba(242, 116, 56, 0.1);

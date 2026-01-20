@@ -9,29 +9,31 @@ import { ServicioService } from '../../../core/services/servicio.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './servicios.component.html',
-  styleUrls: ['./servicios.component.css']  // ← ESTA LÍNEA ES LO ÚNICO QUE AGREGAS
+  styleUrls: ['./servicios.component.css']
 })
 export class ServiciosComponent implements OnInit {
 
   servicios: any[] = [];
+  
+  imagenSeleccionada: File | null = null;
+  previewImagen: string | null = null;
 
+  imagenSeleccionadaEdit: File | null = null;
+  previewImagenEdit: string | null = null;
+
+  // 🔹 AHORA imagen es URL
   nuevoServicio = {
     nombreServicio: '',
     descripcionServicio: '',
     precioServicio: 0,
-    estadoServicio: 'activo'
+    estadoServicio: 'activo',
+    imagen: '' // 👈 URL
   };
 
   editando = false;
   servicioEditando: any = null;
 
-  // IMAGEN para AGREGAR
-  imagenSeleccionada: File | null = null;
-  previewImagen: string | null = null;
-
-  // IMAGEN para EDITAR
-  imagenSeleccionadaEdit: File | null = null;
-  previewImagenEdit: string | null = null;
+  timestamp = new Date().getTime();
 
   constructor(
     private servicioService: ServicioService,
@@ -47,7 +49,6 @@ export class ServiciosComponent implements OnInit {
   // =========================
   cargarServicios(): void {
     this.servicioService.listarAdmin().subscribe({
-      
       next: (resp: any[]) => {
         this.servicios = resp.map((s: any) => ({
           idServicio: s.idServicio,
@@ -56,7 +57,6 @@ export class ServiciosComponent implements OnInit {
           precioServicio: s.precioServicio,
           estadoServicio: s.estadoServicio ?? 'activo',
           imagen: s.imagen ?? null
-          
         }));
         this.cdr.detectChanges();
       },
@@ -65,65 +65,28 @@ export class ServiciosComponent implements OnInit {
   }
 
   // =========================
-  // Seleccionar imagen (Agregar)
-  // =========================
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    this.imagenSeleccionada = file || null;
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewImagen = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  // =========================
-  // Seleccionar imagen (Editar)
-  // =========================
-  onFileSelectedEdit(event: any): void {
-    const file = event.target.files[0];
-    this.imagenSeleccionadaEdit = file || null;
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewImagenEdit = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  // =========================
-  // Agregar servicio
+  // Agregar servicio (SIN FormData)
   // =========================
   agregarServicio(): void {
-    const formData = new FormData();
-    formData.append('nombre', this.nuevoServicio.nombreServicio);
-    formData.append('descripcion', this.nuevoServicio.descripcionServicio);
-    formData.append('precio', this.nuevoServicio.precioServicio.toString());
-    formData.append('estadoServicio', 'activo');
+    const payload = {
+      nombre: this.nuevoServicio.nombreServicio,
+      descripcion: this.nuevoServicio.descripcionServicio,
+      precio: this.nuevoServicio.precioServicio,
+      estadoServicio: 'activo',
+      imagen: this.nuevoServicio.imagen // 👈 URL
+    };
 
-    if (this.imagenSeleccionada) {
-      formData.append('imagen', this.imagenSeleccionada);
-    }
-
-    this.servicioService.crear(formData).subscribe(() => {
+    this.servicioService.crear(payload).subscribe(() => {
       this.cargarServicios();
-     
-      
 
       // Reset
       this.nuevoServicio = {
         nombreServicio: '',
         descripcionServicio: '',
         precioServicio: 0,
-        estadoServicio: 'activo'
+        estadoServicio: 'activo',
+        imagen: ''
       };
-      this.imagenSeleccionada = null;
-      this.previewImagen = null;
 
       this.cdr.detectChanges();
     });
@@ -136,27 +99,22 @@ export class ServiciosComponent implements OnInit {
     this.editando = true;
     this.servicioEditando = { ...servicio };
   }
-  
-  timestamp = new Date().getTime();
-  
+
   guardarEdicion(): void {
-    const formData = new FormData();
-    formData.append('nombre', this.servicioEditando.nombreServicio);
-    formData.append('descripcion', this.servicioEditando.descripcionServicio);
-    formData.append('precio', this.servicioEditando.precioServicio.toString());
-    formData.append('estadoServicio', this.servicioEditando.estadoServicio);
+    const payload = {
+      nombre: this.servicioEditando.nombreServicio,
+      descripcion: this.servicioEditando.descripcionServicio,
+      precio: this.servicioEditando.precioServicio,
+      estadoServicio: this.servicioEditando.estadoServicio,
+      imagen: this.servicioEditando.imagen // 👈 URL
+    };
 
-    if (this.imagenSeleccionadaEdit) {
-      formData.append('imagen', this.imagenSeleccionadaEdit);
-    }
-
-    this.servicioService.actualizar(this.servicioEditando.idServicio, formData)
+    this.servicioService
+      .actualizar(this.servicioEditando.idServicio, payload)
       .subscribe(() => {
-        this.timestamp = new Date().getTime(); // 🔹 fuerza recarga de imagen
+        this.timestamp = new Date().getTime();
         this.cargarServicios();
         this.cancelarEdicion();
-        this.imagenSeleccionadaEdit = null;
-        this.previewImagenEdit = null;
       });
   }
 
@@ -168,25 +126,17 @@ export class ServiciosComponent implements OnInit {
   // =========================
   // Activar / Desactivar
   // =========================
-toggleEstado(servicio: any) {
-  const nuevoEstado =
-    servicio.estadoServicio === 'activo' ? 'inactivo' : 'activo';
+  toggleEstado(servicio: any) {
+    const nuevoEstado =
+      servicio.estadoServicio === 'activo' ? 'inactivo' : 'activo';
 
-  this.servicioService
-    .cambiarEstado(servicio.idServicio, nuevoEstado)
-    .subscribe({
-      next: () => {
-        // 🔥 LA CLAVE
-        this.cargarServicios();
-      },
-      error: err => {
-        console.error('Error al cambiar estado', err);
-      }
-    });
-}
-
-
-
+    this.servicioService
+      .cambiarEstado(servicio.idServicio, nuevoEstado)
+      .subscribe({
+        next: () => this.cargarServicios(),
+        error: err => console.error('Error al cambiar estado', err)
+      });
+  }
 
   // =========================
   // Eliminar

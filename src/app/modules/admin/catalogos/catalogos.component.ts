@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CatalogosService } from '../../../core/services/catalogos.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -28,7 +29,7 @@ interface CatalogoDef {
 @Component({
   selector: 'app-catalogos',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './catalogos.component.html',
   styleUrls: ['./catalogos.component.css']
 })
