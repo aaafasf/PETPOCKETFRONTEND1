@@ -1,35 +1,33 @@
 /* --- 1. ESTADO: NO LEÍDAS (Vibrantes y con Energía) --- */
-/* Identificamos por la clase de gradiente naranja que ya tienes */
 main .lg\:col-span-2 div[class*="from-orange-50"] {
-  border-left: 5px solid #F27438 !important;
+  box-sizing: border-box;
+  border-left: 10px solid transparent !important;
   background: linear-gradient(90deg, #fff7ed 0%, #ffffff 100%) !important;
   position: relative;
+  transition: border-left-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
-/* Hover específico para No Leídas: Efecto de "Iluminación" */
 main .lg\:col-span-2 div[class*="from-orange-50"]:hover {
-  border-left-width: 10px !important;
+  border-left-color: #F27438 !important;
   background: #ffffff !important;
   box-shadow: 0 15px 30px -5px rgba(242, 116, 56, 0.2) !important;
 }
 
-/* El punto pulsante naranja se hace más grande en el hover */
 main .lg\:col-span-2 div[class*="from-orange-50"]:hover span[class*="bg-[#F27438]"] {
   transform: scale(1.5);
   box-shadow: 0 0 10px #F27438;
 }
 
 /* --- 2. ESTADO: LEÍDAS (Elegancia en Reposo) --- */
-/* Identificamos por la clase de borde gris */
 main .lg\:col-span-2 div[class*="border-gray-300"] {
-  opacity: 0.7; /* Se ven "apagadas" para dar prioridad a las nuevas */
+  box-sizing: border-box;
+  opacity: 0.7;
   filter: grayscale(0.5);
-  border-left: 4px solid #d1d5db !important;
+  border-left: 10px solid #d1d5db !important;
   background-color: #f9fafb !important;
   transition: all 0.4s ease !important;
 }
 
-/* Hover específico para Leídas: "Despertar" la tarjeta */
 main .lg\:col-span-2 div[class*="border-gray-300"]:hover {
   opacity: 1 !important;
   filter: grayscale(0);
@@ -40,13 +38,11 @@ main .lg\:col-span-2 div[class*="border-gray-300"]:hover {
 }
 
 /* --- 3. MEJORA DE LOS TEXTOS SEGÚN ESTADO --- */
-/* Título de No Leídas: Más pesado y oscuro */
 main .lg\:col-span-2 div[class*="from-orange-50"] h4 {
   font-weight: 900 !important;
   color: #1a1a1a !important;
 }
 
-/* Título de Leídas: Más suave */
 main .lg\:col-span-2 div[class*="border-gray-300"] h4 {
   font-weight: 600 !important;
   color: #6b7280 !important;
@@ -64,11 +60,10 @@ main .lg\:col-span-2 div[class*="from-orange-50"] button:hover {
   transform: scale(1.1) rotate(-2deg) !important;
   box-shadow: 0 5px 15px rgba(242, 116, 56, 0.4) !important;
 }
-/* ===== ANIMACIONES PARA EL SIDEBAR ===== */
 
-/* Patrón de agua sutil */
+/* ===== ANIMACIONES PARA EL FONDO ===== */
 .bg-water-pattern {
-  background-image: 
+  background-image:
     radial-gradient(circle at 10% 20%, rgba(102, 126, 234, 0.05) 0%, transparent 20%),
     radial-gradient(circle at 90% 80%, rgba(102, 126, 234, 0.03) 0%, transparent 20%),
     radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.07) 0%, transparent 30%);
@@ -76,15 +71,9 @@ main .lg\:col-span-2 div[class*="from-orange-50"] button:hover {
 }
 
 @keyframes waterFloat {
-  0%, 100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  33% {
-    transform: translate(10px, -5px) rotate(1deg);
-  }
-  66% {
-    transform: translate(-5px, 8px) rotate(-1deg);
-  }
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(10px, -5px) rotate(1deg); }
+  66% { transform: translate(-5px, 8px) rotate(-1deg); }
 }
 
 /* Animación de entrada del sidebar */
@@ -93,17 +82,11 @@ main .lg\:col-span-2 div[class*="from-orange-50"] button:hover {
 }
 
 @keyframes slideInLeft {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
-/* Estilos para los items del menú */
+/* ===== MENÚ LATERAL ===== */
 .menu-item {
   display: flex;
   align-items: center;
@@ -120,7 +103,7 @@ main .lg\:col-span-2 div[class*="from-orange-50"] button:hover {
 
 .menu-item:hover {
   transform: translateX(10px) scale(1.05);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
               0 10px 10px -5px rgba(0, 0, 0, 0.04);
   z-index: 20;
 }
@@ -142,10 +125,7 @@ main .lg\:col-span-2 div[class*="from-orange-50"] button:hover {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(242, 116, 56, 0.1), 
-    transparent);
+  background: linear-gradient(90deg, transparent, rgba(242, 116, 56, 0.1), transparent);
   transition: left 0.6s ease;
   z-index: -1;
 }
@@ -163,6 +143,7 @@ main .lg\:col-span-2 div[class*="from-orange-50"] button:hover {
   text-align: center;
 }
 
+/* Texto del menú */
 .menu-text {
   flex: 1;
   font-size: 0.95rem;
@@ -198,14 +179,8 @@ main .lg\:col-span-2 div[class*="from-orange-50"] button:hover {
 }
 
 @keyframes pulseActive {
-  0%, 100% {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: translateY(-50%) scale(1.1);
-  }
+  0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+  50% { opacity: 0.7; transform: translateY(-50%) scale(1.1); }
 }
 
 /* Animación secuencial para los items del menú */
@@ -223,12 +198,6 @@ main .lg\:col-span-2 div[class*="from-orange-50"] button:hover {
 .menu-items .menu-item:nth-child(7) { animation-delay: 0.7s; }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

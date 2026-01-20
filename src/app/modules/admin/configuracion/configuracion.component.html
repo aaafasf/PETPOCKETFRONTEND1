@@ -2,90 +2,6 @@
   <!-- Fondo animado de agua/ondas -->
   <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-30"></div>
   
-  <!-- SIDEBAR IDÉNTICO AL CREATE-USER -->
-  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col relative z-10 sidebar-animation">
-    <div class="p-6 text-center">
-      <img src="/assets/img/logo-circular.png" alt="PetPocket Logo" class="w-28 mx-auto transform transition-transform duration-300 hover:scale-110" />
-      <p class="text-xs font-bold text-gray-400 mt-2 tracking-wider">ADMIN PANEL</p>
-    </div>
-    
-    <nav class="flex-1 px-4 space-y-2 menu-items">
-      <!-- Dashboard -->
-      <a routerLink="/admin/dashboard" 
-         routerLinkActive="active-menu" 
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="menu-icon mr-3">📊</span>
-        <span class="menu-text">Dashboard</span>
-        <span class="menu-highlight"></span>
-      </a>
-      
-      <!-- Agenda -->
-      <a routerLink="/admin/agenda" 
-         routerLinkActive="active-menu" 
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="menu-icon mr-3">📅</span>
-        <span class="menu-text">Agenda</span>
-        <span class="menu-highlight"></span>
-      </a>
-      
-      <!-- Panel -->
-      <a routerLink="/admin/planner" 
-         routerLinkActive="active-menu" 
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="menu-icon mr-3">📋</span>
-        <span class="menu-text">Panel</span>
-        <span class="menu-highlight"></span>
-      </a>
-      
-      <!-- Servicios -->
-      <a routerLink="/admin/servicios" 
-         routerLinkActive="active-menu" 
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="menu-icon mr-3">🩺</span>
-        <span class="menu-text">Servicios</span>
-        <span class="menu-highlight"></span>
-      </a>
-      
-      <!-- Configuración (ACTIVO) -->
-      <a routerLink="/admin/configuracion" 
-         routerLinkActive="active-menu" 
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="menu-icon mr-3">⚙️</span>
-        <span class="menu-text">Configuración</span>
-        <span class="menu-highlight"></span>
-      </a>
-      
-      <!-- Registro de usuario -->
-      <a routerLink="/admin/users/create" 
-         routerLinkActive="active-menu" 
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="menu-icon mr-3">➕</span>
-        <span class="menu-text">Registro de usuario</span>
-        <span class="menu-highlight"></span>
-      </a>
-      
-      <!-- Usuarios registrados -->
-      <a routerLink="/admin/users" 
-         routerLinkActive="active-menu"
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="menu-item flex items-center p-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-        <span class="menu-icon mr-3">👥</span>
-        <span class="menu-text">Usuarios registrados</span>
-        <span class="menu-highlight"></span>
-      </a>
-    </nav>
-    
-    <!-- Pet illustration al final -->
-    <div class="p-6">
-      <img src="/assets/img/pet-illustration.jpg" class="w-20 mx-auto opacity-30" alt="Pet illustration">
-    </div>
-  </aside>
 
   <!-- MAIN CONTENT -->
   <main class="flex-1 flex flex-col overflow-hidden relative z-10">
@@ -117,6 +33,15 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <div class="flex-1 overflow-y-auto bg-gradient-to-b from-white/90 to-gray-50/90 p-8">
+      
+      <!-- Mensaje de estado -->
+      <div *ngIf="mensaje" 
+           [ngClass]="tipoMensaje === 'exito' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'"
+           class="mb-6 p-4 rounded-xl border-l-4 transition-all animate-slideDown">
+        <p [ngClass]="tipoMensaje === 'exito' ? 'text-green-800' : 'text-red-800'" 
+           class="font-semibold">{{ mensaje }}</p>
+      </div>
+
       <!-- Formulario de datos de la clínica -->
       <div class="bg-white rounded-3xl p-10 shadow-lg max-w-4xl mx-auto card-animation border-2 border-transparent hover:border-[#F27438]/20 transition-all form-container">
         <h3 class="text-lg font-black text-[#F27438] mb-6">
@@ -127,37 +52,43 @@
           <div class="form-group-animation">
             <input [(ngModel)]="datosClinica.nombre" 
                    placeholder="Nombre clínica" 
-                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+                   name="nombre"
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold">
           </div>
           
           <div class="form-group-animation">
             <input [(ngModel)]="datosClinica.telefono" 
                    placeholder="Teléfono" 
-                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+                   name="telefono"
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold">
           </div>
           
           <div class="form-group-animation">
             <input [(ngModel)]="datosClinica.correo" 
                    placeholder="Correo" 
-                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+                   name="correo"
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold">
           </div>
           
           <div class="form-group-animation">
             <input [(ngModel)]="datosClinica.direccion" 
                    placeholder="Dirección" 
-                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+                   name="direccion"
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold">
           </div>
           
           <div class="form-group-animation">
             <input [(ngModel)]="datosClinica.horarios" 
                    placeholder="Horarios de atención" 
-                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+                   name="horarios"
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold">
           </div>
           
           <div class="form-group-animation">
             <input type="text" [(ngModel)]="datosClinica.logo" 
                    placeholder="URL del logo o nombre del archivo" 
-                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+                   name="logo"
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold">
           </div>
         </div>
 
@@ -169,7 +100,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 form-fields">
           <div class="form-group-animation">
             <select [(ngModel)]="datosClinica.zonaHoraria" 
-                    class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90 cursor-pointer">
+                    name="zonaHoraria"
+                    class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold cursor-pointer">
               <option value="">Zona horaria</option>
               <option value="America/Guayaquil">America/Guayaquil</option>
               <option value="America/Bogota">America/Bogotá</option>
@@ -178,7 +110,8 @@
 
           <div class="form-group-animation">
             <select [(ngModel)]="datosClinica.idioma" 
-                    class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90 cursor-pointer">
+                    name="idioma"
+                    class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold cursor-pointer">
               <option value="">Idioma</option>
               <option value="es">Español</option>
               <option value="en">Inglés</option>
@@ -187,7 +120,8 @@
 
           <div class="form-group-animation">
             <select [(ngModel)]="datosClinica.formatoFecha" 
-                    class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90 cursor-pointer">
+                    name="formatoFecha"
+                    class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold cursor-pointer">
               <option value="">Formato fecha</option>
               <option value="DD/MM/YYYY">DD/MM/YYYY</option>
               <option value="MM/DD/YYYY">MM/DD/YYYY</option>
@@ -198,20 +132,23 @@
         <div class="form-group-animation mb-8">
           <textarea [(ngModel)]="datosClinica.politicas" 
                     placeholder="Políticas de la clínica"
-                    class="w-full p-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-[#F27438] outline-none transition min-h-[120px] bg-white/90"></textarea>
+                    name="politicas"
+                    class="w-full p-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-[#F27438] outline-none transition min-h-[120px] bg-white text-gray-900 font-semibold"></textarea>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 form-fields">
           <div class="form-group-animation">
             <input type="number" [(ngModel)]="datosClinica.horasMinimasCancelacion"
                    placeholder="Horas mínimas de cancelación" 
-                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+                   name="horasMinimasCancelacion"
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold">
           </div>
 
           <div class="form-group-animation">
             <input type="number" [(ngModel)]="datosClinica.limiteMascotas" 
                    placeholder="Máximo de mascotas"
-                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white/90">
+                   name="limiteMascotas"
+                   class="input-admin w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#F27438] outline-none transition bg-white text-gray-900 font-semibold">
           </div>
         </div>
 

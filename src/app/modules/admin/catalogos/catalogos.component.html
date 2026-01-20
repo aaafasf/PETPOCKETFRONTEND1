@@ -78,7 +78,7 @@
             type="text"
             [(ngModel)]="modalItem.nombre"
             name="nombre"
-            class="w-full p-2 border rounded mb-4"
+            class="w-full p-2 border rounded mb-4 bg-white text-gray-900 font-semibold"
             required
             autofocus
           >
@@ -89,7 +89,7 @@
             <select
               [(ngModel)]="modalItem.idEspecie"
               name="idEspecie"
-              class="w-full p-2 border rounded mb-4"
+              class="w-full p-2 border rounded mb-4 bg-white text-gray-900 font-semibold"
               required
             >
               <option *ngFor="let esp of especies" [value]="esp.idEspecie">

@@ -13,11 +13,11 @@ export interface ClienteDto {
   providedIn: 'root'
 })
 export class ClienteService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ClienteDto[]> {
-    return this.http.get<ClienteDto[]>(`${this.apiUrl}/cliente/lista`);
+    return this.http.get<ClienteDto[]>(`${this.apiUrl}/api/cliente/lista`);
   }
 }

@@ -111,7 +111,7 @@
                   id="mascota"
                   [(ngModel)]="cita.idMascota"
                   name="mascota"
-                  class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg appearance-none"
+                  class="w-full p-4 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg appearance-none"
                   required
                 >
                   <option [value]="0">Selecciona una mascota</option>
@@ -128,7 +128,7 @@
                   id="servicio"
                   [(ngModel)]="cita.idServicio"
                   name="servicio"
-                  class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg appearance-none"
+                  class="w-full p-4 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg appearance-none"
                   required
                 >
                   <option [value]="0">Selecciona un servicio</option>
@@ -151,7 +151,7 @@
                     name="fecha"
                     [min]="fechaMinima"
                     (change)="verificarDisponibilidad()"
-                    class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
+                    class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg text-gray-900 font-semibold placeholder-gray-400"
                     required
                   />
                 </div>
@@ -166,7 +166,7 @@
                     [(ngModel)]="cita.hora"
                     name="hora"
                     (change)="verificarDisponibilidad()"
-                    class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
+                    class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg text-gray-900 font-semibold placeholder-gray-400"
                     required
                   />
                 </div>
@@ -202,7 +202,7 @@
                   [(ngModel)]="cita.userIdUser"
                   name="veterinario"
                   (change)="verificarDisponibilidad()"
-                  class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg appearance-none"
+                  class="w-full p-4 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg appearance-none"
                 >
                   <option [ngValue]="null">Sin preferencia</option>
                   <option *ngFor="let vet of veterinarios" [ngValue]="vet.idUser">
@@ -228,7 +228,7 @@
                   [(ngModel)]="cita.motivo"
                   name="motivo"
                   rows="3"
-                  class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none"
+                  class="w-full p-4 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none placeholder-gray-400"
                   placeholder="Describe brevemente el motivo de la consulta..."
                 ></textarea>
               </div>
@@ -240,7 +240,7 @@
                   [(ngModel)]="cita.sintomas"
                   name="sintomas"
                   rows="3"
-                  class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none"
+                  class="w-full p-4 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none placeholder-gray-400"
                   placeholder="¿Qué síntomas presenta la mascota?"
                 ></textarea>
               </div>
@@ -254,7 +254,7 @@
                   [(ngModel)]="cita.diagnosticoPrevio"
                   name="diagnosticoPrevio"
                   rows="2"
-                  class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none"
+                  class="w-full p-4 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none placeholder-gray-400"
                   placeholder="Si ya tiene un diagnóstico previo..."
                 ></textarea>
               </div>
@@ -281,7 +281,7 @@
                     type="text"
                     [(ngModel)]="tratamiento"
                     name="tratamiento"
-                    class="flex-1 p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
+                    class="flex-1 p-4 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg placeholder-gray-400"
                     placeholder="Agregar tratamiento anterior..."
                     (keyup.enter)="agregarTratamiento()"
                   />

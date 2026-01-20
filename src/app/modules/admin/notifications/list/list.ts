@@ -41,7 +41,7 @@ export class ListComponent implements OnInit {
   notificaciones: Notificacion[] = [];
   notificacionesFiltradas: Notificacion[] = [];
   loading = false;
-  searchTerm: string = '';
+  searchTerm: string = '';      
 
   constructor(
     private notificacionesService: NotificacionesService,

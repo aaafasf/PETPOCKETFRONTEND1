@@ -1,0 +1,140 @@
+
+  /* ===== SIDEBAR ENTRADA ===== */
+  .sidebar-animation {
+    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  /* ===== MENU ITEM (CUADRADO + TARJETA) ===== */
+  .menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+
+  /* 🔥 CLAVE */
+  border-radius: 6px; /* casi cuadrado */
+  color: #d4d4d8;
+  background: transparent;
+
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    padding-left 0.3s ease;
+ }
+
+
+  /* TARJETA EN HOVER */
+  .menu-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  padding-left: 24px; /* animación tipo admin */
+}
+
+
+  /* ICONO */
+  .menu-icon {
+  font-size: 1.25rem;
+  width: 26px;
+  text-align: center;
+  transition: transform 0.25s ease;
+}
+
+.menu-item:hover .menu-icon {
+  transform: scale(1.15);
+}
+
+
+  /* TEXTO */
+  .menu-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.25s ease;
+}
+
+.menu-item:hover .menu-text {
+  color: white;
+}
+
+
+  /* ===== EFECTO DE BARRIDO ===== */
+  .menu-highlight {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(242, 116, 56, 0.18),
+      transparent
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    z-index: -1;
+  }
+
+  .menu-item:hover .menu-highlight {
+    transform: translateX(100%);
+  }
+.menu-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 3px;
+  height: 0;
+  background: #F27438;
+  border-radius: 2px;
+  transform: translateY(-50%);
+  transition: height 0.3s ease;
+}
+
+.menu-item:hover::before {
+  height: 70%;
+}
+
+
+  /* ===== ACTIVO ===== */
+  .active-menu {
+  background: rgba(255, 255, 255, 0.12);
+  color: white !important;
+  font-weight: 600;
+}
+
+.active-menu::before {
+  height: 80%;
+}
+
+
+  .active-menu::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: white;
+    border-radius: 2px 0 0 2px;
+    animation: pulseActive 2s infinite;
+  }
+
+  @keyframes pulseActive {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }

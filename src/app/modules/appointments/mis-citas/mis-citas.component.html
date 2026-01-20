@@ -354,8 +354,9 @@
             type="date"
             id="nuevaFecha"
             [(ngModel)]="nuevaFecha"
+            name="nuevaFecha"
             [min]="nuevaFecha"
-            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#F27438] focus:outline-none transition"
+            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#F27438] focus:outline-none transition bg-white text-gray-900 font-semibold"
           />
         </div>
 
@@ -367,7 +368,8 @@
             type="time"
             id="nuevaHora"
             [(ngModel)]="nuevaHora"
-            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#F27438] focus:outline-none transition"
+            name="nuevaHora"
+            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#F27438] focus:outline-none transition bg-white text-gray-900 font-semibold"
           />
         </div>
 
@@ -378,8 +380,9 @@
           <textarea
             id="motivoReprogramacion"
             [(ngModel)]="motivoReprogramacion"
+            name="motivoReprogramacion"
             rows="3"
-            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#F27438] focus:outline-none resize-none transition"
+            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#F27438] focus:outline-none resize-none transition bg-white text-gray-900 font-semibold"
             placeholder="Razón de la reprogramación..."
           ></textarea>
         </div>

@@ -7,7 +7,7 @@ import { environment } from '../../enviroments/enviroments';
 @Injectable({ providedIn: 'root' })
 export class AppointmentService {
 
-  private apiUrl = `${environment.apiUrl}/cita`;
+  private apiUrl = `http://localhost:3000/api/cita`;
 
   /* ==========================
       Estado Reactivo Global

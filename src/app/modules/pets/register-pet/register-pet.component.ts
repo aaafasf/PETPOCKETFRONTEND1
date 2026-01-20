@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CatalogosService } from '../../../core/services/catalogos.service';
-import { RouterModule } from '@angular/router'; // <-- AÑADIDO
+import { MascotaService } from '../../../core/services/mascota.service';
+import { RouterModule, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register-pet',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule], // <-- AÑADIDO RouterModule
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './register-pet.component.html',
   styleUrl: './register-pet.component.css'
 })
@@ -22,18 +24,25 @@ export class RegisterPetComponent implements OnInit {
 
   // Propiedades del formulario (bindeadas con [(ngModel)])
   nombreMascota: string = '';
-  idEspecie: number | null = null;
-  idRaza: number | null = null;
-  idTamano: number | null = null;
-  idSexo: number | null = null;
-  idColor: number | null = null;
-  idEstadoMascota: number | null = null;
+  especie: string = '';
+  raza: string = '';
   edad: number | null = null;
-  peso: string = '';
+  sexo: string = '';
+  pesoKg: number | null = null;
+  color: string = '';
   alergias: string = '';
-  caracter: string = '';
+  observaciones: string = '';
+  esterilizado: boolean = false;
 
-  constructor(private catalogos: CatalogosService) {}
+  idPropietario: number = 1; // Idealmente obtener del usuario logueado
+  loading = false;
+
+  constructor(
+    private catalogos: CatalogosService,
+    private mascotaService: MascotaService,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.cargarCatalogos();
@@ -47,20 +56,19 @@ export class RegisterPetComponent implements OnInit {
     this.catalogos.getEstadosMascota().subscribe(data => this.estadosMascota = data.filter(e => e.activo));
   }
 
-  onEspecieChange(idEspecie: number | string) {
-    this.idEspecie = typeof idEspecie === 'string' ? Number(idEspecie) : idEspecie;
-    this.idRaza = null; // Resetear raza cuando cambia especie
-    
-    if (this.idEspecie) {
+  onEspecieChange(especie: string) {
+    this.especie = especie;
+    this.raza = '';
+
+    if (this.especie) {
       this.catalogos.getRazas().subscribe(data => {
-        this.razas = data.filter(r => r.activo && r.idEspecie === this.idEspecie);
+        this.razas = data.filter(r => r.activo && (r.idEspecie === parseInt(especie) || r.especie === especie));
       });
     } else {
       this.razas = [];
     }
   }
 
-  // Método para enviar el formulario
   onSubmit() {
     // Validaciones básicas
     if (!this.nombreMascota.trim()) {
@@ -68,95 +76,65 @@ export class RegisterPetComponent implements OnInit {
       return;
     }
 
-    if (!this.idEspecie) {
+    if (!this.especie) {
       alert('Por favor selecciona una especie');
       return;
     }
 
-    if (!this.idRaza) {
-      alert('Por favor selecciona una raza');
-      return;
-    }
-
-    if (!this.idSexo) {
+    if (!this.sexo) {
       alert('Por favor selecciona el sexo');
       return;
     }
 
-    if (!this.alergias.trim()) {
-      alert('Por favor indica las alergias');
-      return;
-    }
+    this.loading = true;
 
-    if (!this.caracter.trim()) {
-      alert('Por favor describe el carácter de la mascota');
-      return;
-    }
-
-    // Crear objeto con los datos
     const mascotaData = {
       nombreMascota: this.nombreMascota,
-      idEspecie: this.idEspecie,
-      idRaza: this.idRaza,
-      idTamano: this.idTamano,
-      idSexo: this.idSexo,
-      idColor: this.idColor,
-      idEstadoMascota: this.idEstadoMascota || 1, // Valor por defecto si no se selecciona
-      edad: this.edad,
-      peso: this.peso,
-      alergias: this.alergias,
-      caracter: this.caracter,
-      fechaRegistro: new Date().toISOString()
+      especie: this.especie,
+      raza: this.raza || '',
+      edad: this.edad || 0,
+      sexo: this.sexo,
+      pesoKg: this.pesoKg || 0,
+      color: this.color || '',
+      alergias: this.alergias ? [this.alergias] : [],
+      observaciones: this.observaciones || '',
+      esterilizado: this.esterilizado,
+      idPropietario: this.idPropietario
     };
 
-    console.log('Datos a enviar:', mascotaData);
-    
-    // Aquí iría la llamada a tu servicio para guardar la mascota
-    // Ejemplo:
-    // this.mascotasService.registrarMascota(mascotaData).subscribe({
-    //   next: (response) => {
-    //     console.log('Mascota registrada:', response);
-    //     alert('Mascota registrada exitosamente');
-    //     this.limpiarFormulario();
-    //   },
-    //   error: (error) => {
-    //     console.error('Error al registrar mascota:', error);
-    //     alert('Error al registrar la mascota');
-    //   }
-    // });
-
-    // Por ahora solo mostramos en consola
-    alert(`Mascota "${this.nombreMascota}" registrada exitosamente (simulado)`);
-    this.limpiarFormulario();
+    this.mascotaService.create(mascotaData).subscribe({
+      next: (response) => {
+        alert('¡Mascota registrada exitosamente!');
+        this.limpiarFormulario();
+        this.loading = false;
+        this.router.navigate(['/pets/my']);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        alert('Error al registrar mascota: ' + (error?.error?.message || error?.message));
+        this.loading = false;
+      }
+    });
   }
 
-  // Método para limpiar el formulario después de registrar
   private limpiarFormulario() {
     this.nombreMascota = '';
-    this.idEspecie = null;
-    this.idRaza = null;
-    this.idTamano = null;
-    this.idSexo = null;
-    this.idColor = null;
-    this.idEstadoMascota = null;
+    this.especie = '';
+    this.raza = '';
     this.edad = null;
-    this.peso = '';
+    this.sexo = '';
+    this.pesoKg = null;
+    this.color = '';
     this.alergias = '';
-    this.caracter = '';
-    this.razas = []; // Resetear razas
+    this.observaciones = '';
+    this.esterilizado = false;
+    this.razas = [];
   }
 
-  // Método para cancelar/limpiar el formulario manualmente
   onCancel() {
-    if (confirm('¿Estás seguro de que quieres cancelar? Se perderán los datos ingresados.')) {
+    if (confirm('¿Descartar cambios?')) {
       this.limpiarFormulario();
+      this.router.navigate(['/pets/my']);
     }
-  }
-
-  // Método auxiliar para obtener el nombre de un elemento por ID
-  getNombrePorId(array: any[], id: number | null, propiedad: string = 'nombre'): string {
-    if (!id) return 'No seleccionado';
-    const item = array.find(item => item.id === id);
-    return item ? item[propiedad] : 'Desconocido';
   }
 }

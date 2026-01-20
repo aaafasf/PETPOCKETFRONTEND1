@@ -112,23 +112,20 @@
                 <form class="space-y-4 form-animation" (ngSubmit)="onSave()">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="form-group-animation">
-                      <label class="block text-sm font-bold text-gray-600 mb-2">Especie</label>
-                      <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none"
-                              [(ngModel)]="mascotaEdit.idEspecie" 
-                              name="especie{{i}}" 
-                              (change)="onEspecieChange(mascotaEdit.idEspecie)">
-                        @for (especie of especies; track especie.idEspecie) {
-                          <option [value]="especie.idEspecie">{{ especie.nombre }}</option>
-                        }
-                      </select>
+                      <label class="block text-sm font-bold text-gray-600 mb-2">Nombre</label>
+                      <input type="text" 
+                             class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
+                             [(ngModel)]="mascotaEdit.nombreMascota" 
+                             name="nombre{{i}}">
                     </div>
                     <div class="form-group-animation">
-                      <label class="block text-sm font-bold text-gray-600 mb-2">Raza</label>
-                      <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none"
-                              [(ngModel)]="mascotaEdit.idRaza" 
-                              name="raza{{i}}">
-                        @for (raza of razas; track raza.idRaza) {
-                          <option [value]="raza.idRaza">{{ raza.nombre }}</option>
+                      <label class="block text-sm font-bold text-gray-600 mb-2">Especie</label>
+                      <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
+                              [(ngModel)]="mascotaEdit.especie" 
+                              name="especie{{i}}" 
+                              (change)="onEspecieChange(mascotaEdit.especie)">
+                        @for (esp of especies; track esp.idEspecie) {
+                          <option [value]="esp.idEspecie">{{ esp.nombre }}</option>
                         }
                       </select>
                     </div>
@@ -136,31 +133,82 @@
                   
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="form-group-animation">
-                      <label class="block text-sm font-bold text-gray-600 mb-2">Sexo</label>
-                      <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none"
-                              [(ngModel)]="mascotaEdit.idSexo" 
-                              name="sexo{{i}}">
-                        @for (sexo of sexos; track sexo.idSexo) {
-                          <option [value]="sexo.idSexo">{{ sexo.nombre }}</option>
+                      <label class="block text-sm font-bold text-gray-600 mb-2">Raza</label>
+                      <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
+                              [(ngModel)]="mascotaEdit.raza" 
+                              name="raza{{i}}">
+                        @for (r of razas; track r.idRaza) {
+                          <option [value]="r.idRaza">{{ r.nombre }}</option>
                         }
                       </select>
                     </div>
                     <div class="form-group-animation">
-                      <label class="block text-sm font-bold text-gray-600 mb-2">Color</label>
-                      <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none"
-                              [(ngModel)]="mascotaEdit.idColor" 
-                              name="color{{i}}">
-                        @for (color of colores; track color.idColor) {
-                          <option [value]="color.idColor">{{ color.nombre }}</option>
+                      <label class="block text-sm font-bold text-gray-600 mb-2">Edad (años)</label>
+                      <input type="number" 
+                             class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
+                             [(ngModel)]="mascotaEdit.edad" 
+                             name="edad{{i}}">
+                    </div>
+                  </div>
+                  
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group-animation">
+                      <label class="block text-sm font-bold text-gray-600 mb-2">Sexo</label>
+                      <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
+                              [(ngModel)]="mascotaEdit.sexo" 
+                              name="sexo{{i}}">
+                        @for (s of sexos; track s.idSexo) {
+                          <option [value]="s.idSexo">{{ s.nombre }}</option>
                         }
                       </select>
                     </div>
+                    <div class="form-group-animation">
+                      <label class="block text-sm font-bold text-gray-600 mb-2">Peso (kg)</label>
+                      <input type="number" 
+                             class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
+                             [(ngModel)]="mascotaEdit.pesoKg" 
+                             name="peso{{i}}">
+                    </div>
+                  </div>
+                  
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group-animation">
+                      <label class="block text-sm font-bold text-gray-600 mb-2">Color</label>
+                      <select class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
+                              [(ngModel)]="mascotaEdit.color" 
+                              name="color{{i}}">
+                        @for (c of colores; track c.idColor) {
+                          <option [value]="c.idColor">{{ c.nombre }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="form-group-animation">
+                      <label class="block text-sm font-bold text-gray-600 mb-2">Alergias</label>
+                      <input type="text" 
+                             class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none bg-white text-gray-900 font-semibold"
+                             [(ngModel)]="mascotaEdit.alergias" 
+                             name="alergias{{i}}">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group-animation">
+                    <label class="block text-sm font-bold text-gray-600 mb-2">Observaciones</label>
+                    <textarea class="w-full p-2 border rounded-lg transition-all duration-300 hover:border-[#F27438] focus:border-[#F27438] focus:ring-2 focus:ring-[#F27438] outline-none resize-none bg-white text-gray-900 font-semibold"
+                              rows="3"
+                              [(ngModel)]="mascotaEdit.observaciones" 
+                              name="obs{{i}}"></textarea>
                   </div>
                   
                   <div class="flex gap-4 mt-6">
                     <button type="submit" 
-                            class="flex-1 bg-gradient-to-r from-[#56C57F] to-[#45a067] hover:from-[#45a067] hover:to-[#56C57F] text-white px-6 py-3 rounded-lg font-bold transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95">
+                            [disabled]="loading"
+                            class="flex-1 bg-gradient-to-r from-[#56C57F] to-[#45a067] hover:from-[#45a067] hover:to-[#56C57F] text-white px-6 py-3 rounded-lg font-bold transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-50">
                       ✅ Guardar Cambios
+                    </button>
+                    <button type="button" 
+                            (click)="onDelete(i)"
+                            class="flex-1 bg-gradient-to-r from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 text-white px-6 py-3 rounded-lg font-bold transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95">
+                      🗑️ Eliminar
                     </button>
                     <button type="button" 
                             class="flex-1 bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-200 text-gray-700 px-6 py-3 rounded-lg font-bold transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95"

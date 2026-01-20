@@ -18,7 +18,7 @@
         <span class="menu-highlight"></span>
       </a>
       
-      <a routerLink="/notifications" 
+      <a routerLink="/notificationes"
          routerLinkActive="active-menu" 
          class="menu-item active-menu">
         <span class="menu-icon">🔔</span>
@@ -27,8 +27,8 @@
       </a>
     </nav>
   </aside>
-
-ERROR RuntimeError: NG04002: Cannot match any routes. URL Segment: 'admin/notifications  <main class="flex-1 flex flex-col overflow-hidden p-8 overflow-y-auto">
+<main class="flex-1 flex flex-col overflow-hidden p-8 overflow-y-auto">
+  <div class="max-w-7xl mx-auto w-full">
     <!-- Header -->
     <div class="flex justify-between items-start mb-8">
       <div class="flex-1">
@@ -90,7 +90,7 @@ ERROR RuntimeError: NG04002: Cannot match any routes. URL Segment: 'admin/notifi
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
       <!-- Panel de Crear Alerta -->
       <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-200 h-fit backdrop-blur-sm bg-opacity-95 sticky top-8">
         <div class="flex items-center gap-3 mb-6">
@@ -107,14 +107,16 @@ ERROR RuntimeError: NG04002: Cannot match any routes. URL Segment: 'admin/notifi
             <input 
               [(ngModel)]="nuevaAlerta.titulo" 
               placeholder="Ej: Vacuna en 6 meses" 
-              class="w-full p-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl outline-none focus:border-[#F27438] focus:bg-white focus:shadow-md transition-all duration-200 placeholder:text-gray-400">
+              name="titulo"
+              class="w-full p-3.5 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-xl outline-none focus:border-[#F27438] focus:shadow-md transition-all duration-200 placeholder:text-gray-400">
           </div>
           
           <div>
             <label class="block text-sm font-bold text-gray-700 mb-2">Tipo</label>
             <select 
               [(ngModel)]="nuevaAlerta.tipo" 
-              class="w-full p-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl outline-none focus:border-[#F27438] focus:bg-white focus:shadow-md transition-all duration-200 cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22currentColor%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22></polyline></svg>')] bg-no-repeat bg-right bg-[length:20px] pr-10">
+              name="tipo"
+              class="w-full p-3.5 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-xl outline-none focus:border-[#F27438] focus:shadow-md transition-all duration-200 cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22currentColor%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22></polyline></svg>')] bg-no-repeat bg-right bg-[length:20px] pr-10">
               <option *ngFor="let tipo of tiposNotificacion" [value]="tipo.value">{{tipo.label}}</option>
             </select>
           </div>
@@ -124,8 +126,9 @@ ERROR RuntimeError: NG04002: Cannot match any routes. URL Segment: 'admin/notifi
             <textarea 
               [(ngModel)]="nuevaAlerta.mensaje" 
               placeholder="Recordatorio: Vacuna de rabia en 6 meses..." 
+              name="mensaje"
               rows="4"
-              class="w-full p-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl outline-none focus:border-[#F27438] focus:bg-white focus:shadow-md transition-all duration-200 placeholder:text-gray-400 resize-none"></textarea>
+              class="w-full p-3.5 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-xl outline-none focus:border-[#F27438] focus:shadow-md transition-all duration-200 placeholder:text-gray-400 resize-none"></textarea>
           </div>
 
           <div>
@@ -136,7 +139,8 @@ ERROR RuntimeError: NG04002: Cannot match any routes. URL Segment: 'admin/notifi
             <input 
               type="datetime-local"
               [(ngModel)]="nuevaAlerta.fechaProgramada" 
-              class="w-full p-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl outline-none focus:border-[#F27438] focus:bg-white focus:shadow-md transition-all duration-200">
+              name="fechaProgramada"
+              class="w-full p-3.5 bg-white text-gray-900 font-semibold border-2 border-gray-200 rounded-xl outline-none focus:border-[#F27438] focus:shadow-md transition-all duration-200">
           </div>
 
           <button 
@@ -238,6 +242,7 @@ ERROR RuntimeError: NG04002: Cannot match any routes. URL Segment: 'admin/notifi
           </div>
         </div>
       </div>
+    </div>
     </div>
   </main>
 

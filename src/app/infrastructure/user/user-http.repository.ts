@@ -9,7 +9,7 @@ import { CreateUserDto } from '../../infrastructure/user/create-user.dto';
 @Injectable({ providedIn: 'root' })
 export class UserHttpRepository extends UserRepository {
 
-  private apiUrl = 'http://localhost:3000/usuario';
+  private apiUrl = 'http://localhost:3000/api/usuario';
 
   constructor(private http: HttpClient) {
     super();

@@ -1,0 +1,53 @@
+/* Tabla y Cards */
+.card-animation {
+  animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+table {
+  border-collapse: collapse;
+}
+
+tbody tr {
+  transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+  box-shadow: inset 0 0 10px rgba(242, 116, 56, 0.1);
+}
+
+/* Inputs y Selects */
+input, select, textarea {
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  box-shadow: 0 0 0 3px rgba(242, 116, 56, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  table {
+    font-size: 0.875rem;
+  }
+
+  .px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+}

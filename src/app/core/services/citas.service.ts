@@ -20,7 +20,7 @@ import {
 })
 export class CitasService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/cita';
+  private apiUrl = 'http://localhost:3000/api/cita';
 
   constructor() {}
 

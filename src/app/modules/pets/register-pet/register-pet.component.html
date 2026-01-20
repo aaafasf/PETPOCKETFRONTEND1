@@ -99,7 +99,7 @@
             <div class="form-group-animation">
               <input type="text" 
                      placeholder="Escribe el nombre aquí..." 
-                     class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 shadow-inner hover:shadow-md focus:shadow-lg"
+                     class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 shadow-inner hover:shadow-md focus:shadow-lg text-gray-900 font-semibold placeholder-gray-400"
                      [(ngModel)]="nombreMascota"
                      name="nombreMascota"
                      required>
@@ -111,28 +111,27 @@
               <div class="form-group-animation card-hover">
                 <label class="block text-sm font-bold text-gray-600 mb-2">Especie *</label>
                 <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer transition-all duration-300 hover:shadow-md focus:shadow-lg"
-                        [(ngModel)]="idEspecie"
+                        [(ngModel)]="especie"
                         (ngModelChange)="onEspecieChange($event)"
                         name="especie"
                         required>
                   <option value="" disabled selected>Selecciona especie</option>
-                  @for (especie of especies; track especie.idEspecie) {
-                    <option [value]="especie.idEspecie">{{ especie.nombre }}</option>
+                  @for (esp of especies; track esp.idEspecie) {
+                    <option [value]="esp.idEspecie">{{ esp.nombre }}</option>
                   }
                 </select>
               </div>
               
               <!-- Raza -->
               <div class="form-group-animation">
-                <label class="block text-sm font-bold text-gray-600 mb-2">Raza *</label>
+                <label class="block text-sm font-bold text-gray-600 mb-2">Raza</label>
                 <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer transition-all duration-300 hover:shadow-md focus:shadow-lg" 
-                        required 
-                        [disabled]="!idEspecie"
-                        [(ngModel)]="idRaza"
+                        [disabled]="!especie"
+                        [(ngModel)]="raza"
                         name="raza">
                   <option value="" disabled selected>Selecciona raza</option>
-                  @for (raza of razas; track raza.idRaza) {
-                    <option [value]="raza.idRaza">{{ raza.nombre }}</option>
+                  @for (r of razas; track r.idRaza) {
+                    <option [value]="r.idRaza">{{ r.nombre }}</option>
                   }
                 </select>
               </div>
@@ -145,20 +144,20 @@
                 <label class="block text-sm font-bold text-gray-600 mb-2">Sexo *</label>
                 <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer transition-all duration-300 hover:shadow-md focus:shadow-lg" 
                         required
-                        [(ngModel)]="idSexo"
+                        [(ngModel)]="sexo"
                         name="sexo">
                   <option value="" disabled selected>Selecciona sexo</option>
-                  @for (sexo of sexos; track sexo.idSexo) {
-                    <option [value]="sexo.idSexo">{{ sexo.nombre }}</option>
+                  @for (s of sexos; track s.idSexo) {
+                    <option [value]="s.idSexo">{{ s.nombre }}</option>
                   }
                 </select>
               </div>
               
               <!-- Edad -->
               <div class="form-group-animation">
-                <label class="block text-sm font-bold text-gray-600 mb-2">Edad (años normales)</label>
+                <label class="block text-sm font-bold text-gray-600 mb-2">Edad (años)</label>
                 <input type="number" 
-                       class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
+                       class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg text-gray-900 font-semibold"
                        [(ngModel)]="edad"
                        name="edad">
               </div>
@@ -169,54 +168,71 @@
               <!-- Peso -->
               <div class="form-group-animation">
                 <label class="block text-sm font-bold text-gray-600 mb-2">Peso (kg)</label>
-                <input type="text" 
+                <input type="number" 
                        placeholder="kg" 
-                       class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
-                       [(ngModel)]="peso"
-                       name="peso">
+                       class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg text-gray-900 font-semibold placeholder-gray-400"
+                       [(ngModel)]="pesoKg"
+                       name="pesoKg">
               </div>
               
               <!-- Color -->
               <div class="form-group-animation">
                 <label class="block text-sm font-bold text-gray-600 mb-2">Color</label>
                 <select class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] appearance-none cursor-pointer transition-all duration-300 hover:shadow-md focus:shadow-lg"
-                        [(ngModel)]="idColor"
+                        [(ngModel)]="color"
                         name="color">
                   <option value="" disabled selected>Selecciona color</option>
-                  @for (color of colores; track color.idColor) {
-                    <option [value]="color.idColor">{{ color.nombre }}</option>
+                  @for (c of colores; track c.idColor) {
+                    <option [value]="c.idColor">{{ c.nombre }}</option>
                   }
                 </select>
               </div>
             </div>
 
-            <!-- Alergias -->
-            <div class="form-group-animation">
-              <label class="block text-sm font-bold text-gray-600 mb-2">Alergias *</label>
-              <input type="text" 
-                     placeholder="Ej: Polen, medicamentos, ninguna..." 
-                     class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
-                     [(ngModel)]="alergias"
-                     name="alergias"
-                     required>
+            <!-- Alergias y Observaciones -->
+            <div class="grid grid-cols-1 gap-6">
+              <div class="form-group-animation">
+                <label class="block text-sm font-bold text-gray-600 mb-2">Alergias</label>
+                <input type="text" 
+                       placeholder="Ej: Polen, medicamentos, ninguna..." 
+                       class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg text-gray-900 font-semibold placeholder-gray-400"
+                       [(ngModel)]="alergias"
+                       name="alergias">
+              </div>
             </div>
 
             <!-- Carácter -->
             <div class="form-group-animation">
-              <label class="block text-sm font-bold text-gray-600 mb-2">Carácter de la mascota *</label>
-              <input type="text" 
-                     placeholder="Amigable, Tímido, Agresivo, Ansioso" 
-                     class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg"
-                     [(ngModel)]="caracter"
-                     name="caracter"
-                     required>
+              <label class="block text-sm font-bold text-gray-600 mb-2">Observaciones adicionales</label>
+              <textarea placeholder="Información extra sobre tu mascota..." 
+                        class="w-full p-4 bg-white border-2 border-gray-200 rounded-2xl outline-none focus:border-[#F27438] transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none text-gray-900 font-semibold placeholder-gray-400"
+                        rows="4"
+                        [(ngModel)]="observaciones"
+                        name="observaciones"></textarea>
             </div>
 
-            <!-- Botón Registrar -->
-            <div class="flex justify-center pt-6">
+            <!-- Esterilizado -->
+            <div class="form-group-animation flex items-center space-x-4">
+              <label class="flex items-center cursor-pointer group">
+                <input type="checkbox" 
+                       class="w-5 h-5 accent-[#F27438] cursor-pointer"
+                       [(ngModel)]="esterilizado"
+                       name="esterilizado">
+                <span class="ml-3 text-sm font-bold text-gray-600 group-hover:text-[#F27438] transition-colors">¿Está esterilizado?</span>
+              </label>
+            </div>
+
+            <!-- Botones -->
+            <div class="flex justify-center gap-4 pt-6">
               <button type="submit" 
-                      class="bg-gradient-to-r from-[#56C57F] to-[#45a067] hover:from-[#45a067] hover:to-[#56C57F] text-white font-black px-16 py-4 rounded-full text-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl active:scale-95 animate-pulse-slow">
-                Registrar Mascota
+                      [disabled]="loading"
+                      class="bg-gradient-to-r from-[#56C57F] to-[#45a067] hover:from-[#45a067] hover:to-[#56C57F] text-white font-black px-16 py-4 rounded-full text-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl active:scale-95 disabled:opacity-50">
+                {{ loading ? 'Registrando...' : 'Registrar Mascota' }}
+              </button>
+              <button type="button"
+                      (click)="onCancel()"
+                      class="bg-white border-2 border-gray-300 text-gray-700 hover:border-[#F27438] hover:text-[#F27438] font-black px-16 py-4 rounded-full text-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl active:scale-95">
+                Cancelar
               </button>
             </div>
           </form>

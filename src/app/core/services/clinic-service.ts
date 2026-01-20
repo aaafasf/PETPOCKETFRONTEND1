@@ -10,8 +10,8 @@ import * as CryptoJS from 'crypto-js';
 })
 export class ClinicService {
   
-  // Apunta a http://localhost:3000/cita/veterinarios
-  private apiUrl = environment.apiUrl;
+  // Apunta a http://localhost:3000/api/cita/veterinarios
+  private apiUrl = 'http://localhost:3000';
 
   private secretKey = 'cifrarDatos';
 
@@ -55,7 +55,7 @@ export class ClinicService {
     return this.defaultColors[index];
   }
 getVeterinarians(): Observable<{ id: number; name: string }[]> {
-  return this.http.get<any>(`${this.apiUrl}/cita/veterinarios`).pipe(
+  return this.http.get<any>(`${this.apiUrl}/api/cita/veterinarios`).pipe(
     map(response => {
       console.log('📡 Respuesta REAL de la Base de Datos:', response); 
 

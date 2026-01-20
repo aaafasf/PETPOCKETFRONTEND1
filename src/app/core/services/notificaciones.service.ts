@@ -39,9 +39,9 @@ export interface CrearNotificacionRequest {
 @Injectable({
   providedIn: 'root',
 })
-export class NotificacionesService {
+export class NotificacionesService { 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/notificacion';
+  private apiUrl = 'http://localhost:3000/api/notificaciones';
 
   // ==================== READ (Consultas) ====================
 

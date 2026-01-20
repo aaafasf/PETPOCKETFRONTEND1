@@ -299,6 +299,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   cambiarFiltro(tipo: 'todas' | 'leidas' | 'no-leidas'): void {
     this.filtroLeidas = tipo;
     this.aplicarFiltro();
+    this.cdr.detectChanges(); // Forzar detección de cambios
   }
 
   // ==================== CREATE (Crear) ====================
